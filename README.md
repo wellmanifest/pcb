@@ -88,7 +88,8 @@ został jawnie zaakceptowany, więc blokuj jego wzrost.
 
 Każdy baseline jest związany z `id`, wersją, nazwą i SHA-256 efektywnego profilu,
 pełną ścieżką względną oraz SHA-256 pliku w chwili akceptacji. Wymaga też
-`accepted.by`, `accepted.at` i uzasadnienia. Uszkodzony dokument, nieznana reguła,
+`accepted.by`, `accepted.at` i uzasadnienia. Zwykła kontrola blokuje wzrost reguł
+`blocking`, a tryb `strict` — wzrost każdej kategorii osobno. Uszkodzony dokument, nieznana reguła,
 powtórzona ścieżka albo inny profil są błędem bramki — nigdy cichym pominięciem.
 Przykład: `examples/panel9-baseline.json`; schemat:
 `schemas/pcb-style-baseline.schema.v1.json`.

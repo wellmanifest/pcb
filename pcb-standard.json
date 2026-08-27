@@ -149,7 +149,7 @@
       "inherited_debt": "naruszenie obecne po obu stronach nie blokuje decyzji"
     },
     "source_debt_baseline": {
-      "rule": "baseline nie zmienia profilu ani liczby naruszeń; CI blokuje wzrost reguły ponad jawnie zaakceptowany limit",
+      "rule": "baseline nie zmienia profilu ani liczby naruszeń; CI blokuje wzrost reguły blocking ponad jawnie zaakceptowany limit, a tryb strict blokuje wzrost każdej reguły",
       "profile_binding": "id, version, name i SHA-256 efektywnego profilu muszą się zgadzać; niezgodność lub nieczytelny baseline blokuje",
       "identity": "pełna ścieżka względna pliku, nigdy sama nazwa",
       "acceptance": "dokument wymaga accepted.by, accepted.at i accepted.reason",

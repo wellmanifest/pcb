@@ -49,7 +49,7 @@
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:07f09a20a2ef27fc96b699806df8c1c116e5f96b2ca0f2f6d5d241f27fcbb9bd"
+      "digest": "sha256:70a4e32d8e6b2a2b2d9d1703a97c2147bd584a351bb22af49d496fcd0d07ea1b"
     },
     {
       "path": "schemas/pcb-style.schema.v1.json",
@@ -94,7 +94,7 @@
     {
       "path": "README.md",
       "role": "documentation",
-      "digest": "sha256:dff954114c66f4182d2c6e31614ff9f01b16336cffe0605eaf84470b85d41e2b"
+      "digest": "sha256:bfc2c18fdd78fb9f3ddf7f78eb9e5f478b987d068a06e853b7bc441d6705f442"
     }
   ],
   "namespaces": [
