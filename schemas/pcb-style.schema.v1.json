@@ -1,0 +1,272 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wellmanifest.com/schemas/pcb/style.v1.json",
+  "title": "wellmanifest.pcb/style/v1",
+  "description": "Deklaratywny profil wyglądu płytki i schematu. Słownik reguł jest zamknięty: nieznana nazwa reguły to błąd profilu, nie cicha zmiana zachowania.",
+  "type": "object",
+  "required": [
+    "schema_id"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_id": {
+      "const": "wellmanifest.pcb/style/v1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "profile": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "RULE_NO_COPPER_UNDER_PART": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "shielded_pattern": {
+              "type": "string",
+              "format": "regex"
+            }
+          }
+        },
+        "RULE_ZONE_LAYER_ALLOWLIST": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "layers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "RULE_TRACK_WIDTH_MIN": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "min_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "RULE_FOOTPRINT_GRID": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "grid_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "rotations_deg": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "RULE_REFERENCE_NAMING": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "pattern": {
+              "type": "string",
+              "format": "regex"
+            }
+          }
+        },
+        "RULE_RAIL_LABEL_CANONICAL": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "require_prefix": {
+              "type": "string",
+              "maxLength": 4
+            }
+          }
+        },
+        "RULE_SIGNAL_LABEL_NAMING": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "pattern": {
+              "type": "string",
+              "format": "regex"
+            }
+          }
+        },
+        "RULE_LAYER_STACKUP": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "layers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            }
+          }
+        },
+        "RULE_TRACK_WIDTH_MAX": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "max_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "RULE_COORDINATE_GRID": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "min_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "RULE_TRACK_GRID": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "grid_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "RULE_TRACK_ANGLE": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "angles_deg": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "RULE_PIN_WIRE_GAP": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "max_gap_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "RULE_SCH_PCB_NET_PARITY": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {}
+        }
+      }
+    },
+    "repairs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "zone_fill_clears": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "severity": {
+          "enum": [
+            "blocking",
+            "advisory",
+            "off"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "pcb",
+            "schematic",
+            "project"
+          ]
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

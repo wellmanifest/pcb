@@ -1,0 +1,61 @@
+{
+  "schema_id": "wellmanifest.pcb/style/v1",
+  "id": "wellmanifest/pcb",
+  "version": "1.1.0",
+  "profile": "panel9",
+  "title": "Lokalne rozszerzenie standardu wellmanifest/pcb dla projektu panel9",
+  "rules": {
+    "RULE_LAYER_STACKUP": {
+      "layers": ["F.Cu", "B.Cu"],
+      "count": 2,
+      "description": "Dwie warstwy: elementy na B.Cu, przyciski na F.Cu. Trzecia warstwa zmienia wycenę."
+    },
+    "RULE_TRACK_WIDTH_MIN": {
+      "min_mm": 0.35,
+      "description": "Najwęższa ścieżka użyta na panel9; poniżej producent nie gwarantuje trawienia."
+    },
+    "RULE_TRACK_WIDTH_MAX": {
+      "max_mm": 0.6,
+      "description": "Najszersza użyta ścieżka to magistrala GND 0.6 mm."
+    },
+    "RULE_COORDINATE_GRID": {
+      "min_mm": 0.005,
+      "description": "Raster minimalny projektu — nic drobniejszego nie ma prawa się pojawić."
+    },
+    "RULE_TRACK_GRID": {
+      "severity": "advisory",
+      "grid_mm": 0.05,
+      "description": "Raster trasowania. Dziś 38 końców ścieżek jest poza nim — dług do uporządkowania."
+    },
+    "RULE_FOOTPRINT_GRID": {
+      "severity": "advisory",
+      "grid_mm": 0.5,
+      "rotations_deg": [0, 90, 180, 270],
+      "description": "Raster montażowy. U1, J1 i kondensatory stoją poza nim — dług do uporządkowania."
+    },
+    "RULE_TRACK_ANGLE": {
+      "severity": "advisory",
+      "angles_deg": [0, 45, 90],
+      "description": "Zasada prowadzenia. Cztery skosy zostały po ręcznym trasowaniu."
+    },
+    "RULE_ZONE_LAYER_ALLOWLIST": {
+      "layers": [],
+      "description": "Panel9 nie używa stref: wypełnienie B.Cu zostało usunięte świadomie (commit 4d04d6f)."
+    },
+    "RULE_NO_COPPER_UNDER_PART": {
+      "shielded_pattern": "SW|TACT|BUTTON|RJ45|SHIELD|USB|JACK",
+      "description": "Przyciski tact mają metalową kopułkę dociskaną do laminatu."
+    },
+    "RULE_PIN_WIRE_GAP": {
+      "max_gap_mm": 1.0,
+      "description": "C3 stał tak z luką 0,63 mm i wyglądał na podłączony."
+    },
+    "RULE_SCH_PCB_NET_PARITY": {
+      "severity": "blocking",
+      "description": "Schemat i PCB muszą mówić to samo o każdym pinie."
+    }
+  },
+  "repairs": {
+    "zone_fill_clears": ["unconnected_items", "via_dangling"]
+  }
+}

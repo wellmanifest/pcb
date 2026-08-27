@@ -1,0 +1,130 @@
+{
+  "schema_id": "wellmanifest.pcb/style/v1",
+  "id": "wellmanifest/pcb",
+  "version": "1.1.0",
+  "profile": "default",
+  "title": "Domyślny profil wyglądu płytki i schematu",
+  "rules": {
+    "RULE_LAYER_STACKUP": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "count": 2,
+      "description": "Liczba i nazwy warstw miedzi wynikają z zamówionego procesu, nie z trasowania."
+    },
+    "RULE_NO_COPPER_UNDER_PART": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "shielded_pattern": "SW|TACT|BUTTON|RJ45|SHIELD|USB|JACK",
+      "description": "Obca miedź nie przechodzi tranzytem pod obrysem elementu dociskającego metal do laminatu."
+    },
+    "RULE_ZONE_LAYER_ALLOWLIST": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "description": "Strefy miedzi tylko na warstwach dopuszczonych przez profil."
+    },
+    "RULE_TRACK_WIDTH_MIN": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "min_mm": 0.25,
+      "description": "Minimalna szerokość ścieżki sygnałowej wynikająca z procesu producenta."
+    },
+    "RULE_TRACK_WIDTH_MAX": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "max_mm": 2.0,
+      "description": "Górny limit szerokości ścieżki; szersze przewodzenie prądu robi się polygonem."
+    },
+    "RULE_COORDINATE_GRID": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "min_mm": 0.001,
+      "description": "Raster minimalny — najdrobniejszy krok, jaki wolno zapisać w projekcie."
+    },
+    "RULE_TRACK_GRID": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "grid_mm": 0.05,
+      "description": "Raster trasowania: końce ścieżek na wspólnej siatce."
+    },
+    "RULE_TRACK_ANGLE": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "angles_deg": [
+        0,
+        45,
+        90
+      ],
+      "description": "Zasada prowadzenia: tylko dozwolone kąty, bez przypadkowych skosów."
+    },
+    "RULE_FOOTPRINT_GRID": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "grid_mm": 0.5,
+      "rotations_deg": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "description": "Elementy stoją na siatce i w dozwolonych obrotach — to jest ten „określony wygląd”."
+    },
+    "RULE_REFERENCE_NAMING": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "pattern": "^[A-Z]{1,3}[0-9]+$",
+      "description": "Oznaczenia elementów w konwencji litera+numer, bez sufiksów i spacji."
+    },
+    "RULE_PIN_WIRE_GAP": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "schematic",
+      "max_gap_mm": 1.0,
+      "description": "Przewód kończący się obok punktu pinu, a nie w nim — niewidoczne w renderze."
+    },
+    "RULE_RAIL_LABEL_CANONICAL": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "schematic",
+      "pattern": "^\\+?([0-9]+V[0-9]*|V(?:CC|DD))$",
+      "require_prefix": "+",
+      "description": "Szyna zasilania zapisana zawsze w jednej postaci; wariant bez plusa tworzy osobną sieć."
+    },
+    "RULE_SIGNAL_LABEL_NAMING": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "schematic",
+      "pattern": "^[A-Z][A-Z0-9_]*$",
+      "description": "Etykiety sygnałów wielkimi literami, bez spacji i znaków diakrytycznych."
+    },
+    "RULE_SCH_PCB_NET_PARITY": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "project",
+      "description": "Ten sam pin musi mieć tę samą sieć w schemacie i w PCB."
+    }
+  },
+  "repairs": {
+    "zone_fill_clears": [
+      "unconnected_items",
+      "via_dangling"
+    ]
+  }
+}
