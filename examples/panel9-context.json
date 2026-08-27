@@ -1,0 +1,128 @@
+{
+  "schema_id": "wellmanifest.pcb/context/v1",
+  "project": "panel9",
+  "title": "Kontekst projektu panel9 — co jest gdzie, co od czego zależy, kto ma rację",
+  "authority": [
+    {
+      "subject": "gpio-mapping",
+      "order": [
+        "firmware/code.py",
+        "pcb/panel9.kicad_sch",
+        "pcb/panel9.kicad_pcb",
+        "firmware/hardware_pins.toml"
+      ],
+      "why": "Program jest jedyną warstwą, która realnie steruje pinami — jeśli code.py czyta GP14, to klawisz siedzi na GP14 niezależnie od tego, co rysunek twierdzi. Schemat jest przed płytką, bo opisuje intencję połączeń; płytka jest jej realizacją. hardware_pins.toml jest opisem mapowania, nie jego źródłem, więc rozstrzyga ostatni."
+    },
+    {
+      "subject": "net-connectivity",
+      "order": ["pcb/panel9.kicad_sch", "pcb/panel9.kicad_pcb"],
+      "why": "Schemat mówi, co miało być połączone; płytka mówi, co jest połączone. Rozjazd oznacza, że płytka jeszcze nie nadążyła za intencją — albo że intencja była błędna i trzeba ją poprawić w schemacie, nie w miedzi."
+    },
+    {
+      "subject": "board-geometry",
+      "order": ["pcb/panel9.kicad_pcb", "drawings/panel-frame.scad"],
+      "why": "Obrys i pozycje elementów pochodzą z płytki; model obudowy jest jej konsekwencją i musi się do niej dopasować, nie odwrotnie."
+    }
+  ],
+  "files": [
+    {
+      "path": "firmware/code.py",
+      "role": "firmware",
+      "contains": "Aktywne mapowanie klawiszy na GPIO i piny enkodera (ENCODER_CLK/DT/SW_PIN).",
+      "authoritative_for": ["gpio-mapping"],
+      "edit": "manual",
+      "change_when": "Zmienia się przypisanie klawisza do pinu. Po zmianie sprawdź parity sch↔PCB i konflikty prawdy."
+    },
+    {
+      "path": "firmware/hardware_pins.toml",
+      "role": "firmware",
+      "contains": "Opis mapowania GPIO dla człowieka: klawiatura, enkoder, poziomy logiczne.",
+      "edit": "manual",
+      "change_when": "Natychmiast po zmianie code.py. To dokumentacja mapowania, nie jego źródło — rozjazd z code.py jest zawsze błędem tego pliku."
+    },
+    {
+      "path": "firmware/generator-layers.py",
+      "role": "firmware",
+      "contains": "Historyczny generator rysunków warstw i płytki panel9.legacy.kicad_pcb; nie jest źródłem bieżącego PCB.",
+      "edit": "manual",
+      "change_when": "Tylko przy aktualizacji ilustracji historycznej. Bieżące panel9.kicad_pcb zmienia się przez kandydata i nie jest nadpisywane przez ten skrypt."
+    },
+    {
+      "path": "firmware/*.py",
+      "role": "firmware",
+      "contains": "Pozostałe moduły firmware: HAL, walidator, boot, generator kodu.",
+      "edit": "manual",
+      "change_when": "Zmienia się logika firmware. Nie zawierają mapowania pinów."
+    },
+    {
+      "path": "pcb/panel9.kicad_sch",
+      "role": "eda",
+      "contains": "Intencja połączeń: symbole, etykiety globalne, szyny zasilania. Połączenia są wyrażone etykietami, nie rysowanymi przewodami.",
+      "authoritative_for": ["net-connectivity"],
+      "edit": "manual-or-twinstudio",
+      "change_when": "Zmienia się to, co ma być z czym połączone. Zmiana tutaj wyprzedza płytkę i podnosi rozjazd w RULE_SCH_PCB_NET_PARITY do czasu przetrasowania miedzi."
+    },
+    {
+      "path": "pcb/panel9.kicad_pcb",
+      "role": "eda",
+      "contains": "Bieżąca realizacja: footprinty, miedź, warstwy i obrys; wersjonowana przez kandydatów TwinStudio i decyzje Viewera.",
+      "authoritative_for": ["board-geometry"],
+      "edit": "twinstudio-candidate",
+      "change_when": "Zmienia się trasowanie, pozycje elementów albo przypisanie sieci do padów. Zmiany idą przez kandydata TwinStudio i decyzję w Viewerze, nigdy bezpośrednio."
+    },
+    {
+      "path": "pcb/panel9.kicad_pro",
+      "role": "eda",
+      "contains": "Ustawienia projektu KiCad: netclassy, reguły.",
+      "edit": "manual",
+      "change_when": "Zmieniają się reguły projektowe KiCada. Progi profilu wellmanifest/pcb trzymamy osobno, w .wellmanifest/pcb.json."
+    },
+    {
+      "path": "drawings/panel-frame.scad",
+      "role": "cad",
+      "contains": "Model ramki panelu w OpenSCAD.",
+      "edit": "manual",
+      "change_when": "Zmienia się obrys płytki albo pozycje przycisków. Wynika z PCB, więc idzie po niej."
+    },
+    {
+      "path": "drawings/*.svg",
+      "role": "render",
+      "contains": "Rysunki poglądowe warstw i klawiatury.",
+      "edit": "manual",
+      "change_when": "Rzadko; to materiał ilustracyjny, nie źródło prawdy o połączeniach."
+    },
+    {
+      "path": "docs/*.md",
+      "role": "documentation",
+      "contains": "Opis projektu i bieżącego stanu prac.",
+      "edit": "manual",
+      "change_when": "Po każdej zmianie, która zmienia stan faktyczny opisany w dokumencie."
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "firmware/code.py",
+      "to": "firmware/hardware_pins.toml",
+      "kind": "documents",
+      "note": "toml opisuje to, co robi program; rozjazd znaczy, że opis jest nieaktualny."
+    },
+    {
+      "from": "pcb/panel9.kicad_sch",
+      "to": "pcb/panel9.kicad_pcb",
+      "kind": "netlist-parity",
+      "note": "Pin po pinie sprawdza RULE_SCH_PCB_NET_PARITY."
+    },
+    {
+      "from": "pcb/panel9.kicad_pcb",
+      "to": "drawings/panel-frame.scad",
+      "kind": "derives",
+      "note": "Obrys i pozycje przycisków muszą zgadzać się z płytką."
+    },
+    {
+      "from": "pcb/panel9.kicad_pcb",
+      "to": "drawings/*.svg",
+      "kind": "renders",
+      "note": "Rysunki poglądowe pokazują stan płytki i starzeją się razem z nią."
+    }
+  ]
+}

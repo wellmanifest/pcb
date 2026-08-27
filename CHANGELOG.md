@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0
+
+- Nowy schemat `wellmanifest.pcb/context/v1`: role plików, moment zmiany, tryb
+  zmiany, zależności i kolejność autorytetu przy sprzeczności — propose-only.
+- `RULE_TRACK_WIDTH_BY_NET`: minimalna szerokość zależna od klasy sieci
+  (pierwsza pasująca klasa rozstrzyga). Słownik reguł rośnie do 15.
+- Walidator sprawdza spójność manifestu i schematu kontekstu (rodzaje zależności,
+  role) oraz waliduje przykłady kontekstu osobnym schematem.
+
 ## 1.1.0
 
 - Słownik rozszerzony z 7 do 14 reguł: stackup warstw, górny limit szerokości

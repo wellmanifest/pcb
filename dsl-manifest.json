@@ -1,6 +1,6 @@
 {
   "id": "wellmanifest/pcb",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -22,7 +22,8 @@
       "<artifacts>/.wellmanifest/pcb.json",
       "<adopter>/profiles/wellmanifest-pcb.v1.json"
     ],
-    "merge": "per-field override on top of the default profile; unknown rule id is an error"
+    "merge": "per-field override on top of the default profile; unknown rule id is an error",
+    "context_schema": "wellmanifest.pcb/context/v1"
   },
   "severities": [
     "blocking",
@@ -59,6 +60,12 @@
       "scope": "pcb",
       "default_severity": "blocking",
       "measures": "segmenty szersze niż górny limit profilu"
+    },
+    {
+      "id": "RULE_TRACK_WIDTH_BY_NET",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "szerokość ścieżki wobec progu klasy sieci, do której należy"
     },
     {
       "id": "RULE_COORDINATE_GRID",
@@ -151,10 +158,12 @@
           "/api/eda/style-profile",
           "/api/eda/style-report/{rel}",
           "/api/eda/parity/{rel}",
-          "/api/eda/capabilities"
+          "/api/eda/capabilities",
+          "/api/project-context/manifest"
         ],
         "gate": "_refuse_if_gated → akceptacja, decyzja i promocja kandydata",
-        "local_extension": "<artifacts>/.wellmanifest/pcb.json"
+        "local_extension": "<artifacts>/.wellmanifest/pcb.json",
+        "local_context": "<artifacts>/.wellmanifest/context.json"
       }
     },
     {
@@ -172,5 +181,40 @@
     "pcb",
     "schematic",
     "project"
-  ]
+  ],
+  "context": {
+    "schema": "wellmanifest.pcb/context/v1",
+    "discovery": [
+      "$WELLMANIFEST_CONTEXT",
+      "<artifacts>/.wellmanifest/context.json"
+    ],
+    "answers": [
+      "co plik zawiera i kiedy go zmieniać (z trybem zmiany)",
+      "jakie są zależności między plikami",
+      "która strona ma pierwszeństwo przy sprzeczności i dlaczego"
+    ],
+    "roles": [
+      "firmware",
+      "eda",
+      "cad",
+      "render",
+      "documentation",
+      "source"
+    ],
+    "edit_modes": [
+      "manual",
+      "twinstudio-candidate",
+      "manual-or-twinstudio",
+      "generated"
+    ],
+    "dependency_kinds": [
+      "generates",
+      "documents",
+      "netlist-parity",
+      "renders",
+      "derives"
+    ],
+    "resolution": "propose-only: konflikt dostaje propozycję z uzasadnieniem, decyzję podejmuje człowiek; plik spoza kolejności daje decidable:false",
+    "validation": "zależność albo pozycja kolejności wskazująca plik nieopisany w files jest błędem manifestu"
+  }
 }

@@ -44,6 +44,7 @@ Kolejność wyszukiwania profilu u adoptera:
 | `RULE_ZONE_LAYER_ALLOWLIST` | pcb | blocking | strefy poza dopuszczonymi warstwami |
 | `RULE_TRACK_WIDTH_MIN` | pcb | blocking | ścieżki poniżej progu procesu |
 | `RULE_TRACK_WIDTH_MAX` | pcb | blocking | ścieżki powyżej górnego limitu |
+| `RULE_TRACK_WIDTH_BY_NET` | pcb | blocking | ścieżki poniżej progu swojej klasy sieci |
 | `RULE_COORDINATE_GRID` | pcb | blocking | raster minimalny — najdrobniejszy dopuszczalny krok |
 | `RULE_TRACK_GRID` | pcb | advisory | końce ścieżek poza rastrem trasowania |
 | `RULE_TRACK_ANGLE` | pcb | advisory | kąty prowadzenia spoza dozwolonego zbioru |
@@ -111,6 +112,46 @@ dziedziczy z profilu domyślnego pakietu. Przykład z `examples/panel9-local.jso
 
 Reguła spoza zamkniętego słownika kończy się błędem wczytania profilu, więc
 literówka w nazwie nigdy nie zamienia się w regułę po cichu nieaktywną.
+
+## Kontekst projektu — `wellmanifest.pcb/context/v1`
+
+Reguły mówią, jak projekt ma wyglądać. Kontekst mówi, **co jest w którym pliku,
+kiedy go zmieniać i kto ma rację**, gdy dwa pliki twierdzą co innego. Bez tego
+każdy nowy agent — i każdy człowiek po przerwie — zaczyna od zgadywania, bo tego
+nie widać z rozszerzeń plików: to są decyzje projektowe, nie własność formatu.
+
+Manifest leży w `<artefakty>/.wellmanifest/context.json` i odpowiada na trzy rzeczy:
+
+```json
+{
+  "schema_id": "wellmanifest.pcb/context/v1",
+  "files": [
+    {"path": "firmware/code.py", "role": "firmware", "edit": "manual",
+     "contains": "Aktywne mapowanie klawiszy na GPIO.",
+     "change_when": "Zmienia się przypisanie klawisza do pinu.",
+     "authoritative_for": ["gpio-mapping"]}
+  ],
+  "dependencies": [
+    {"from": "firmware/generator-layers.py", "to": "pcb/panel9.kicad_pcb",
+     "kind": "generates", "note": "Ponowne uruchomienie nadpisze ręczne trasowanie."}
+  ],
+  "authority": [
+    {"subject": "gpio-mapping",
+     "order": ["firmware/code.py", "pcb/panel9.kicad_sch", "pcb/panel9.kicad_pcb"],
+     "why": "Program jako jedyny realnie steruje pinami."}
+  ]
+}
+```
+
+Tryby zmiany: `manual`, `twinstudio-candidate`, `manual-or-twinstudio`, `generated`.
+Rodzaje zależności: `generates`, `documents`, `netlist-parity`, `renders`, `derives`.
+
+Manifest jest **propose-only**: sprzeczność dostaje propozycję z uzasadnieniem,
+a decyzję — przyjęcie, odrzucenie albo własną edycję — podejmuje człowiek. Plik
+spoza zadeklarowanej kolejności daje `decidable: false`, zamiast udawać wyrok.
+
+Walidacja jest ostra: zależność albo pozycja kolejności wskazująca plik nieopisany
+w `files` to błąd manifestu, żeby nie rozjechał się z projektem po cichu.
 
 ## Bramka zgodności sch↔PCB
 

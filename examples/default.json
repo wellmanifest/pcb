@@ -40,6 +40,24 @@
       "min_mm": 0.25,
       "description": "Minimalna szerokość ścieżki sygnałowej wynikająca z procesu producenta."
     },
+    "RULE_TRACK_WIDTH_BY_NET": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "classes": [
+        {
+          "name": "power",
+          "net_pattern": "^(GND|\\+[0-9]+V[0-9]*)$",
+          "min_mm": 0.5
+        },
+        {
+          "name": "signal",
+          "net_pattern": ".*",
+          "min_mm": 0.25
+        }
+      ],
+      "description": "Minimalna szerokość zależy od roli sieci; pierwsza pasująca klasa rozstrzyga."
+    },
     "RULE_TRACK_WIDTH_MAX": {
       "enabled": true,
       "severity": "blocking",
@@ -56,7 +74,7 @@
     },
     "RULE_TRACK_GRID": {
       "enabled": true,
-      "severity": "advisory",
+      "severity": "blocking",
       "scope": "pcb",
       "grid_mm": 0.05,
       "description": "Raster trasowania: końce ścieżek na wspólnej siatce."
@@ -67,10 +85,9 @@
       "scope": "pcb",
       "angles_deg": [
         0,
-        45,
         90
       ],
-      "description": "Zasada prowadzenia: tylko dozwolone kąty, bez przypadkowych skosów."
+      "description": "Zasada prowadzenia: tylko odcinki poziome i pionowe, bez skrótów po skosie."
     },
     "RULE_FOOTPRINT_GRID": {
       "enabled": true,

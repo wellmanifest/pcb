@@ -226,6 +226,42 @@
             }
           ],
           "properties": {}
+        },
+        "RULE_TRACK_WIDTH_BY_NET": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "classes": {
+              "type": "array",
+              "minItems": 1,
+              "description": "Klasy sieci od najbardziej szczegółowej; pierwsza pasująca rozstrzyga.",
+              "items": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "net_pattern",
+                  "min_mm"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "net_pattern": {
+                    "type": "string",
+                    "format": "regex"
+                  },
+                  "min_mm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
