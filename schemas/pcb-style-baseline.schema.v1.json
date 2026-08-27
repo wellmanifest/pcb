@@ -113,6 +113,7 @@
               "RULE_RAIL_LABEL_CANONICAL",
               "RULE_SIGNAL_LABEL_NAMING",
               "RULE_SCH_PCB_NET_PARITY",
+              "RULE_SCH_PCB_FOOTPRINT_PARITY",
               "RULE_POWER_DECOUPLING"
             ]
           },

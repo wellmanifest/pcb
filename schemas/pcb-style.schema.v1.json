@@ -303,6 +303,13 @@
               "exclusiveMinimum": 0
             }
           }
+        },
+        "RULE_SCH_PCB_FOOTPRINT_PARITY": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ]
         }
       }
     },

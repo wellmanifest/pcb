@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
   "rules": {
@@ -144,6 +144,12 @@
       "severity": "blocking",
       "scope": "project",
       "description": "Ten sam pin musi mieć tę samą sieć w schemacie i w PCB."
+    },
+    "RULE_SCH_PCB_FOOTPRINT_PARITY": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "project",
+      "description": "Schemat i płytka muszą mówić o tym samym footprincie — inaczej aktualizacja z schematu podmieni element."
     },
     "RULE_POWER_DECOUPLING": {
       "enabled": true,

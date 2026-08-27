@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -137,6 +137,12 @@
       "scope": "project",
       "default_severity": "blocking",
       "measures": "ten sam pin z różną siecią w schemacie i w PCB"
+    },
+    {
+      "id": "RULE_SCH_PCB_FOOTPRINT_PARITY",
+      "scope": "project",
+      "default_severity": "blocking",
+      "measures": "rozjazd między footprintem zadeklarowanym w schemacie a użytym na płytce"
     },
     {
       "id": "RULE_POWER_DECOUPLING",

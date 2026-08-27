@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.7.0
+
+- `RULE_SCH_PCB_FOOTPRINT_PARITY`: schemat i płytka muszą mówić o tym samym
+  footprincie. Zgodność sieci tego nie obejmuje — netlista może zgadzać się co do
+  pinu, a „Update PCB from Schematic" i tak podmieni element, bo pole `Footprint`
+  w schemacie żyje własnym życiem. Ani ERC, ani DRC tego nie widzą: to rozjazd
+  między dwoma plikami, więc nie należy do żadnego z nich z osobna.
+- Na referencyjnym panel9 reguła od razu pokazała trzy przypadki: kondensatory
+  C1 i C2 miały wpisany footprint rezystora, a złącze J1 nazwę-zaślepkę
+  `RJ45_SMD_PLACEHOLDER`, której nie ma w żadnej bibliotece.
+- Zakres `project`, waga domyślna `blocking` — konsekwencje są fizyczne
+  (podmieniony rozstaw padów), a nie estetyczne.
+- Który plik ma rację, rozstrzyga kontekst projektu przez podmiot
+  `footprint-assignment`, a nie sama reguła; tam, gdzie obie nazwy istnieją,
+  arbitrem jest biblioteka projektu.
+
 ## 1.6.0
 
 - `RULE_SILK_OVER_PAD`: linia sitodruku nie wchodzi na otwór w masce pada. Farba
