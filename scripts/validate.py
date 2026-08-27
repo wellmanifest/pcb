@@ -16,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "schemas" / "pcb-style.schema.v1.json"
 CONTEXT_SCHEMA = ROOT / "schemas" / "pcb-context.schema.v1.json"
+BASELINE_SCHEMA = ROOT / "schemas" / "pcb-style-baseline.schema.v1.json"
 MANIFEST = ROOT / "dsl-manifest.json"
 STANDARD = ROOT / "pcb-standard.json"
 DEFAULT = ROOT / "examples" / "default.json"
@@ -109,7 +110,7 @@ def main() -> int:
     for path in sorted((ROOT / "examples").glob("*.json")):
         # Przykłady kontekstu mają własny schemat, a negatywne mają się nie
         # walidować — obie grupy mają osobne kontrole niżej.
-        if "context" in path.name or path.name.startswith("invalid"):
+        if "context" in path.name or "baseline" in path.name or path.name.startswith("invalid"):
             continue
         document = _load(path)
         if validator is not None:
@@ -136,6 +137,24 @@ def main() -> int:
     if declared_roles != schema_roles:
         _fail(f"role rozjechane: {sorted(declared_roles ^ schema_roles)}")
     print(f"✔ kontekst: {len(schema_kinds)} rodzajów zależności, {len(schema_roles)} ról")
+
+    baseline_schema = _load(BASELINE_SCHEMA)
+    baseline_rules = set(
+        baseline_schema["$defs"]["file"]["properties"]["rules"]["propertyNames"]["enum"]
+    )
+    if baseline_rules != manifest_rules:
+        _fail(f"słownik baseline rozjechany z regułami: {sorted(baseline_rules ^ manifest_rules)}")
+    if manifest.get("grammar", {}).get("baseline_schema") != baseline_schema["properties"]["schema_id"]["const"]:
+        _fail("manifest i schemat baseline deklarują różne schema_id")
+    baseline_example = _load(ROOT / "examples" / "panel9-baseline.json")
+    if validator is not None:
+        errors = sorted(Draft202012Validator(baseline_schema).iter_errors(baseline_example), key=lambda item: list(item.path))
+        if errors:
+            _fail(f"panel9-baseline.json: {errors[0].message}")
+    paths = [entry["path"] for entry in baseline_example["files"]]
+    if len(paths) != len(set(paths)):
+        _fail("panel9-baseline.json zawiera tę samą ścieżkę więcej niż raz")
+    print(f"✔ baseline: {len(paths)} plik(i), zamknięty słownik {len(baseline_rules)} reguł")
 
     for path in sorted((ROOT / "examples").glob("*context*.json")):
         document = _load(path)

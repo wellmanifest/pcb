@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -24,7 +24,12 @@
       "<adopter>/profiles/wellmanifest-pcb.v1.json"
     ],
     "merge": "per-field override on top of the default profile; unknown rule id is an error",
-    "context_schema": "wellmanifest.pcb/context/v1"
+    "context_schema": "wellmanifest.pcb/context/v1",
+    "baseline_schema": "wellmanifest.pcb/style-baseline/v1",
+    "baseline_discovery": [
+      "$WELLMANIFEST_PCB_BASELINE",
+      "<artifacts>/.wellmanifest/pcb-baseline.json"
+    ]
   },
   "scopes": [
     "pcb",
@@ -142,6 +147,13 @@
         "EDA_STYLE_NOT_RUN"
       ],
       "inherited_debt": "naruszenie obecne po obu stronach nie blokuje decyzji"
+    },
+    "source_debt_baseline": {
+      "rule": "baseline nie zmienia profilu ani liczby naruszeń; CI blokuje wzrost reguły ponad jawnie zaakceptowany limit",
+      "profile_binding": "id, version, name i SHA-256 efektywnego profilu muszą się zgadzać; niezgodność lub nieczytelny baseline blokuje",
+      "identity": "pełna ścieżka względna pliku, nigdy sama nazwa",
+      "acceptance": "dokument wymaga accepted.by, accepted.at i accepted.reason",
+      "unknown_policy": "nieznany plik lub identyfikator reguły jest błędem, nie cichym pominięciem"
     },
     "ordering": [
       "profil wyglądu (ten pakiet)",

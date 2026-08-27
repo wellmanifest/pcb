@@ -1,0 +1,26 @@
+{
+  "schema_id": "wellmanifest.pcb/style-baseline/v1",
+  "profile": {
+    "id": "wellmanifest/pcb",
+    "version": "1.4.0",
+    "name": "panel9",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "accepted": {
+    "by": "hardware-reviewer@example.test",
+    "at": "2026-08-27T20:00:00Z",
+    "reason": "Istniejący dług zapisany po przeglądzie; każda dalsza regresja blokuje CI."
+  },
+  "files": [
+    {
+      "path": "pcb/panel9.kicad_pcb",
+      "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "rules": {
+        "RULE_TRACK_WIDTH_BY_NET": 52,
+        "RULE_TRACK_ANGLE": 2,
+        "RULE_TRACK_GRID": 45,
+        "RULE_FOOTPRINT_GRID": 1
+      }
+    }
+  ]
+}

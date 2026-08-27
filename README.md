@@ -79,6 +79,20 @@ płytka z długiem nadal daje się poprawiać. Brak możliwości policzenia prof
 
 Profil jest bramką **przed** DRC i ERC, nigdy zamiast nich.
 
+### Jawny baseline długu źródła
+
+Baseline służy wyłącznie CI dla już istniejącego źródła. Nie zmniejsza liczb w
+raporcie, nie zmienia `blocking` na `advisory` i nie zastępuje DRC. Dokument
+`wellmanifest.pcb/style-baseline/v1` mówi jedynie: ten konkretny limit długu
+został jawnie zaakceptowany, więc blokuj jego wzrost.
+
+Każdy baseline jest związany z `id`, wersją, nazwą i SHA-256 efektywnego profilu,
+pełną ścieżką względną oraz SHA-256 pliku w chwili akceptacji. Wymaga też
+`accepted.by`, `accepted.at` i uzasadnienia. Uszkodzony dokument, nieznana reguła,
+powtórzona ścieżka albo inny profil są błędem bramki — nigdy cichym pominięciem.
+Przykład: `examples/panel9-baseline.json`; schemat:
+`schemas/pcb-style-baseline.schema.v1.json`.
+
 ## Przyjęcie w projekcie (ADOPT)
 
 `maskservice/viewer` — walidator, CLI i bramka decyzji:
