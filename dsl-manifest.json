@@ -27,7 +27,7 @@
   ],
   "source": {
     "repository": "https://github.com/wellmanifest/pcb",
-    "revision": "40448c82f58c6b8ed62358e016eda7aac17c5ceb",
+    "revision": "ef82381de28de8f5a2439a803a8b065f15ec1928",
     "path": "pcb-standard.json",
     "declaredVersion": "1.5.0",
     "canonical": "json-ast",
