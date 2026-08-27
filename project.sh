@@ -11,6 +11,10 @@ case "$cmd" in
     echo "[wellmanifest/pcb] Checking rule vocabulary, schema and example profiles..."
     "$repo_root/scripts/validate.sh"
     ;;
+  digests)
+    echo "[wellmanifest/pcb] Refreshing artifact digests in dsl-manifest.json..."
+    python3 "$repo_root/scripts/validate.py" --refresh-digests
+    ;;
   test)
     echo "[wellmanifest/pcb] Running the adopter contract suite..."
     if [ -n "${ADOPTER_DIR:-}" ] && [ -d "$ADOPTER_DIR" ]; then
@@ -20,7 +24,7 @@ case "$cmd" in
     fi
     ;;
   *)
-    echo "Usage: $0 [check|test]"
+    echo "Usage: $0 [check|digests|test]"
     exit 1
     ;;
 esac

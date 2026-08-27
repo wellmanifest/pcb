@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "schemas" / "pcb-style.schema.v1.json"
 CONTEXT_SCHEMA = ROOT / "schemas" / "pcb-context.schema.v1.json"
 MANIFEST = ROOT / "dsl-manifest.json"
+STANDARD = ROOT / "pcb-standard.json"
 DEFAULT = ROOT / "examples" / "default.json"
 ADOPTER_DEFAULT = "app/profiles/wellmanifest-pcb.v1.json"
 
@@ -30,9 +31,57 @@ def _fail(message: str) -> None:
     raise SystemExit(1)
 
 
-def main() -> int:
-    schema = _load(SCHEMA)
+def _check_dsl_manifest() -> None:
+    """Manifest DSL wobec `wellmanifest.dsl/manifest/v1` i wobec plików na dysku.
+
+    Digesty artefaktów są jedynym miejscem, w którym manifest może po cichu
+    rozjechać się z zawartością repozytorium — więc liczymy je od nowa.
+    """
+    import hashlib
+
     manifest = _load(MANIFEST)
+    for artifact in manifest["artifacts"]:
+        path = ROOT / artifact["path"]
+        if not path.is_file():
+            _fail(f"manifest DSL wskazuje nieistniejący artefakt {artifact['path']}")
+        actual = "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != artifact["digest"]:
+            _fail(f"digest {artifact['path']} nieaktualny — uruchom ./project.sh digests")
+    print(f"✔ digesty {len(manifest['artifacts'])} artefaktów zgodne z plikami")
+
+    schema_path = Path.home() / "github" / "wellmanifest" / "dsl" / "schemas" / "dsl-manifest.schema.json"
+    if not schema_path.is_file():
+        print("… wellmanifest/dsl niedostępny lokalnie — pominięto walidację manifestu DSL")
+        return
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError:
+        print("… brak jsonschema — pominięto walidację manifestu DSL")
+        return
+    errors = list(Draft202012Validator(_load(schema_path)).iter_errors(manifest))
+    if errors:
+        where = "/".join(str(part) for part in errors[0].path) or "(root)"
+        _fail(f"manifest DSL {where}: {errors[0].message}")
+    print("✔ dsl-manifest.json zgodny z wellmanifest.dsl/manifest/v1")
+
+
+def refresh_digests() -> int:
+    import hashlib
+
+    manifest = _load(MANIFEST)
+    for artifact in manifest["artifacts"]:
+        path = ROOT / artifact["path"]
+        artifact["digest"] = "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"✔ odświeżono digesty {len(manifest['artifacts'])} artefaktów")
+    return 0
+
+
+def main() -> int:
+    if "--refresh-digests" in sys.argv:
+        return refresh_digests()
+    schema = _load(SCHEMA)
+    manifest = _load(STANDARD)
     schema_rules = set(schema["properties"]["rules"]["properties"])
     manifest_rules = {item["id"] for item in manifest["rules"]}
     if schema_rules != manifest_rules:
@@ -58,7 +107,9 @@ def main() -> int:
     # Profile stylu i manifesty kontekstu leżą w jednym katalogu, ale mają
     # osobne schematy — mieszanie ich dawało fałszywy błąd walidacji.
     for path in sorted((ROOT / "examples").glob("*.json")):
-        if "context" in path.name:
+        # Przykłady kontekstu mają własny schemat, a negatywne mają się nie
+        # walidować — obie grupy mają osobne kontrole niżej.
+        if "context" in path.name or path.name.startswith("invalid"):
             continue
         document = _load(path)
         if validator is not None:
@@ -103,6 +154,18 @@ def main() -> int:
                 if item not in known:
                     _fail(f"{path.name}: {rule['subject']} wskazuje nieopisany plik {item!r}")
         print(f"✔ {path.name} zgodny z {context_schema['title']}")
+
+    invalid = ROOT / "examples" / "invalid-unknown-rule.json"
+    if invalid.is_file():
+        document = _load(invalid)
+        unknown = [name for name in document.get("rules") or {} if name not in schema_rules]
+        if not unknown:
+            _fail("examples/invalid-unknown-rule.json nie zawiera już nieznanej reguły — przykład przestał być negatywny")
+        if validator is not None and not list(validator.iter_errors(document)):
+            _fail("examples/invalid-unknown-rule.json przechodzi walidację, a nie powinien")
+        print(f"✔ przykład negatywny odrzucony ({unknown[0]})")
+
+    _check_dsl_manifest()
 
     for item in manifest["adopters"]:
         directory = os.environ.get("ADOPTER_DIR") if item["id"].endswith("/viewer") else None

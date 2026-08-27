@@ -1,0 +1,8 @@
+{
+  "schema_id": "wellmanifest.pcb/style/v1",
+  "profile": "invalid-unknown-rule",
+  "title": "Przykład, który MUSI zostać odrzucony: literówka w nazwie reguły",
+  "rules": {
+    "RULE_TRACK_WITDH_MIN": {"min_mm": 0.3}
+  }
+}

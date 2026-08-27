@@ -170,6 +170,34 @@ w PCB. Wymaga `kicad-cli` do eksportu netlisty; jego brak daje
 strumienia zdarzeń i promocji źródła. Profil jest dziś czytany po stronie
 adoptera; natywne wiązanie w `kicad_dsl` jest planowane.
 
+## Manifest DSL i słownik domenowy
+
+Pakiet trzyma dwa dokumenty i to rozdzielenie jest celowe:
+
+- **`dsl-manifest.json`** — manifest w rozumieniu `wellmanifest.dsl/manifest/v1`:
+  własność, źródło kanoniczne, artefakty z digestami, przestrzenie nazw,
+  projekcje, cykl życia, semantyka, granica LLM, polityka ustaleń i publikacji,
+  poziomy zgodności oraz mapowania na inne standardy. To po nim `diff-dsl` potrafi
+  porównać ten pakiet z pozostałymi.
+- **`pcb-standard.json`** — słownik domenowy: 15 reguł, bramki, kontekst, adopterzy.
+  To jest źródło kanoniczne, na które manifest wskazuje.
+
+Wcześniej wszystko siedziało w `dsl-manifest.json`, przez co plik nie spełniał
+żadnego z dwóch zadań: nie był zgodny z manifestem DSL i mieszał politykę pakietu
+z jego zawartością.
+
+Digesty artefaktów są liczone z plików i sprawdzane przy każdej walidacji — to
+jedyne miejsce, w którym manifest mógłby po cichu rozjechać się z repozytorium.
+
+```bash
+./project.sh check      # słownik, schematy, przykłady, digesty, manifest DSL
+./project.sh digests    # przelicz digesty po zmianie artefaktu
+```
+
+Semantyka zadeklarowana wprost: `effectModel: propose-only`, `unknownPolicy: reject`,
+`llm.mode: none`. Pakiet niczego nie wykonuje i nie rozmawia z modelem — opisuje
+kontrakt, a decyzje podejmuje adopter.
+
 ## Walidacja pakietu
 
 ```bash

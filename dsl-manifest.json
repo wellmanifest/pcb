@@ -1,220 +1,203 @@
 {
-  "id": "wellmanifest/pcb",
-  "version": "1.2.0",
-  "title": "PCB & Schematic Style Contract Standard",
-  "status": "canonical",
-  "standardOwner": "wellmanifest",
-  "placement": {
-    "home": "wellmanifest",
-    "shape": "domain_pack",
-    "adopt": "wellmanifest/pcb"
-  },
-  "grammar": {
-    "profile_schema": "wellmanifest.pcb/style/v1",
-    "report_schema": "wellmanifest.pcb/style-report/v1",
-    "comparison_schema": "wellmanifest.pcb/style-comparison/v1",
-    "sources": [
-      ".kicad_pcb",
-      ".kicad_sch"
-    ],
-    "discovery": [
-      "$WELLMANIFEST_PCB_PROFILE",
-      "<artifacts>/.wellmanifest/pcb.json",
-      "<adopter>/profiles/wellmanifest-pcb.v1.json"
-    ],
-    "merge": "per-field override on top of the default profile; unknown rule id is an error",
-    "context_schema": "wellmanifest.pcb/context/v1"
-  },
-  "severities": [
-    "blocking",
-    "advisory",
-    "off"
-  ],
-  "rules": [
+  "$schema": "https://wellmanifest.dev/schemas/dsl-manifest/v1",
+  "schema": "wellmanifest.dsl/manifest/v1",
+  "id": "wellmanifest.pcb",
+  "name": "PCB & Schematic Style Contract Standard",
+  "version": "1.3.0",
+  "status": "stable",
+  "purpose": "Deklaratywny kontrakt wyglądu i kontekstu projektu PCB/schematu: zamknięty słownik reguł, bramka regresji oraz kolejność autorytetu przy sprzeczności między plikami.",
+  "domain": "electronic-design-automation",
+  "owners": [
     {
-      "id": "RULE_LAYER_STACKUP",
-      "scope": "pcb",
-      "default_severity": "blocking",
-      "measures": "liczbę i nazwy warstw miedzi wobec zamówionego procesu"
+      "kind": "organization",
+      "id": "wellmanifest",
+      "responsibilities": [
+        "semantics",
+        "validation",
+        "compatibility"
+      ]
     },
     {
-      "id": "RULE_NO_COPPER_UNDER_PART",
-      "scope": "pcb",
-      "default_severity": "blocking",
-      "measures": "obcą miedź pod obrysem elementu z metalem dociskanym do laminatu"
-    },
-    {
-      "id": "RULE_ZONE_LAYER_ALLOWLIST",
-      "scope": "pcb",
-      "default_severity": "blocking",
-      "measures": "strefy miedzi poza warstwami dopuszczonymi przez profil"
-    },
-    {
-      "id": "RULE_TRACK_WIDTH_MIN",
-      "scope": "pcb",
-      "default_severity": "blocking",
-      "measures": "segmenty węższe niż proces producenta"
-    },
-    {
-      "id": "RULE_TRACK_WIDTH_MAX",
-      "scope": "pcb",
-      "default_severity": "blocking",
-      "measures": "segmenty szersze niż górny limit profilu"
-    },
-    {
-      "id": "RULE_TRACK_WIDTH_BY_NET",
-      "scope": "pcb",
-      "default_severity": "blocking",
-      "measures": "szerokość ścieżki wobec progu klasy sieci, do której należy"
-    },
-    {
-      "id": "RULE_COORDINATE_GRID",
-      "scope": "pcb",
-      "default_severity": "blocking",
-      "measures": "raster minimalny — najdrobniejszy dopuszczalny krok współrzędnych"
-    },
-    {
-      "id": "RULE_TRACK_GRID",
-      "scope": "pcb",
-      "default_severity": "advisory",
-      "measures": "końce ścieżek poza rastrem trasowania"
-    },
-    {
-      "id": "RULE_TRACK_ANGLE",
-      "scope": "pcb",
-      "default_severity": "advisory",
-      "measures": "kąty prowadzenia ścieżek spoza dozwolonego zbioru"
-    },
-    {
-      "id": "RULE_FOOTPRINT_GRID",
-      "scope": "pcb",
-      "default_severity": "advisory",
-      "measures": "elementy poza rastrem montażowym i dozwolonymi obrotami"
-    },
-    {
-      "id": "RULE_REFERENCE_NAMING",
-      "scope": "pcb",
-      "default_severity": "advisory",
-      "measures": "oznaczenia elementów poza konwencją litera+numer"
-    },
-    {
-      "id": "RULE_PIN_WIRE_GAP",
-      "scope": "schematic",
-      "default_severity": "blocking",
-      "measures": "koniec przewodu mijający punkt połączenia pinu"
-    },
-    {
-      "id": "RULE_RAIL_LABEL_CANONICAL",
-      "scope": "schematic",
-      "default_severity": "blocking",
-      "measures": "szynę zasilania zapisaną pod kilkoma nazwami"
-    },
-    {
-      "id": "RULE_SIGNAL_LABEL_NAMING",
-      "scope": "schematic",
-      "default_severity": "advisory",
-      "measures": "etykiety sygnałów poza konwencją nazewniczą"
-    },
-    {
-      "id": "RULE_SCH_PCB_NET_PARITY",
-      "scope": "project",
-      "default_severity": "blocking",
-      "measures": "ten sam pin z różną siecią w schemacie i w PCB"
-    }
-  ],
-  "gates": {
-    "candidate_regression": {
-      "rule": "kandydat nie może zwiększyć liczby naruszeń reguły blocking wobec źródła",
-      "codes": [
-        "EDA_STYLE_REGRESSION",
-        "EDA_STYLE_NOT_RUN"
-      ],
-      "inherited_debt": "naruszenie obecne po obu stronach nie blokuje decyzji"
-    },
-    "ordering": [
-      "profil wyglądu (ten pakiet)",
-      "DRC KiCad",
-      "audyt łączności / ERC",
-      "decyzja człowieka",
-      "promocja źródła"
-    ],
-    "net_parity": {
-      "rule": "pin obecny po obu stronach musi mieć tę samą sieć; brak netlisty to brak kontroli",
-      "codes": [
-        "EDA_PARITY_MISMATCH",
-        "EDA_PARITY_NOT_RUN"
-      ],
-      "requires": "kicad-cli (eksport netlisty schematu)"
-    }
-  },
-  "adopters": [
-    {
+      "kind": "repository",
       "id": "maskservice/viewer",
-      "role": "walidator i bramka",
-      "bindings": {
-        "cli": "scripts/pcbctl.py {profile|check|diff|parity}",
-        "make": "make style",
-        "http": [
-          "/api/eda/style-profile",
-          "/api/eda/style-report/{rel}",
-          "/api/eda/parity/{rel}",
-          "/api/eda/capabilities",
-          "/api/project-context/manifest"
-        ],
-        "gate": "_refuse_if_gated → akceptacja, decyzja i promocja kandydata",
-        "local_extension": "<artifacts>/.wellmanifest/pcb.json",
-        "local_context": "<artifacts>/.wellmanifest/context.json"
-      }
-    },
-    {
-      "id": "digitaltwin-run/twinstudio",
-      "role": "właściciel zapisu i strumienia zdarzeń",
-      "bindings": {
-        "dsl": "twinstudio.eda-change/v1",
-        "cli": "twinstudio eda {inspect|plan|check|apply|shell}",
-        "status": "profil czytany przez adoptera; natywne wiązanie w kicad_dsl planowane"
-      }
+      "responsibilities": [
+        "runtime"
+      ]
     }
   ],
-  "propose_only": true,
-  "scopes": [
-    "pcb",
-    "schematic",
-    "project"
+  "source": {
+    "repository": "https://github.com/wellmanifest/pcb",
+    "revision": "40448c82f58c6b8ed62358e016eda7aac17c5ceb",
+    "path": "pcb-standard.json",
+    "declaredVersion": "1.3.0",
+    "canonical": "json-ast",
+    "mediaType": "application/json",
+    "selectors": [
+      "rules",
+      "gates",
+      "context",
+      "adopters"
+    ]
+  },
+  "ownedPaths": [
+    "pcb-standard.json",
+    "schemas",
+    "examples",
+    "docs"
   ],
-  "context": {
-    "schema": "wellmanifest.pcb/context/v1",
-    "discovery": [
-      "$WELLMANIFEST_CONTEXT",
-      "<artifacts>/.wellmanifest/context.json"
+  "artifacts": [
+    {
+      "path": "pcb-standard.json",
+      "role": "normative-source",
+      "digest": "sha256:43dd64b8ebc0158886b94fa522c1072b528091ea6d9b6a7f1b3e2f12735f069b"
+    },
+    {
+      "path": "schemas/pcb-style.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:fd90ae73b17ed63b1f304d785d4cfc253b1fe65db0e37ba8ec28a232fdab94f8"
+    },
+    {
+      "path": "schemas/pcb-context.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:2eb4dccffeca96ec4428f2e14e1b0abfd35dc0f74d9b22a0f1582f07f4fedf83"
+    },
+    {
+      "path": "examples/default.json",
+      "role": "profile",
+      "digest": "sha256:2b0f96a728cc1d8b92da39df177a1dd3d8e81fa7a501cbc6279b7316b19330be"
+    },
+    {
+      "path": "examples/panel9-local.json",
+      "role": "example",
+      "digest": "sha256:c87265906928d456cbd1d8c58e7752e3463fb7aa3901b9867c43ccd7c519d1f7"
+    },
+    {
+      "path": "examples/panel9-context.json",
+      "role": "example",
+      "digest": "sha256:f9ccb1277b3278b2f144c6e0977631929cac20b521a2b147cb22e5c5c77b11c5"
+    },
+    {
+      "path": "examples/invalid-unknown-rule.json",
+      "role": "example",
+      "digest": "sha256:149392a7fd79bb90fb088731d4bc5ba04294c514b9511d9253d1ede2b22c5175"
+    },
+    {
+      "path": "README.md",
+      "role": "documentation",
+      "digest": "sha256:e884b957e0a1f67ca4db34a1b002a906e46816e2c3761a629980d5f41ecf30e5"
+    }
+  ],
+  "namespaces": [
+    {
+      "prefix": "pcb",
+      "uri": "https://wellmanifest.com/schemas/pcb/"
+    },
+    {
+      "prefix": "dsl",
+      "uri": "https://wellmanifest.dev/schemas/"
+    }
+  ],
+  "projections": [
+    {
+      "name": "style-profile",
+      "mediaType": "application/json",
+      "direction": "bidirectional",
+      "lossless": true
+    },
+    {
+      "name": "style-report",
+      "mediaType": "application/json",
+      "direction": "from-canonical",
+      "lossless": false
+    },
+    {
+      "name": "context-manifest",
+      "mediaType": "application/json",
+      "direction": "bidirectional",
+      "lossless": true
+    }
+  ],
+  "lifecycle": {
+    "compatibility": "semver",
+    "stability": "stable",
+    "breaking": "major",
+    "additive": "minor",
+    "fix": "patch"
+  },
+  "semantics": {
+    "effectModel": "propose-only",
+    "unknownPolicy": "reject",
+    "authoritySchema": "wellmanifest.pcb/context/v1"
+  },
+  "llm": {
+    "mode": "none",
+    "requestSchemas": [],
+    "responseSchemas": [],
+    "naturalLanguage": "forbidden",
+    "sourceSchema": null,
+    "decisionProtocol": "none",
+    "modelAuthority": "none",
+    "strict": true
+  },
+  "documentation": {
+    "vocabularyKind": "documents",
+    "commandRoot": "docs",
+    "errorRoot": "docs/ERROR",
+    "criticalRoot": "docs/CRITICAL",
+    "commands": [],
+    "errorCodes": [],
+    "criticalCodes": []
+  },
+  "findingPolicy": {
+    "schema": "wellmanifest.dsl/findings/v1",
+    "requiredProducers": [
+      "wellmanifest.pcb-validator"
     ],
-    "answers": [
-      "co plik zawiera i kiedy go zmieniać (z trybem zmiany)",
-      "jakie są zależności między plikami",
-      "która strona ma pierwszeństwo przy sprzeczności i dlaczego"
+    "securityProducers": [
+      "wellmanifest.pcb-validator"
     ],
-    "roles": [
-      "firmware",
-      "eda",
-      "cad",
-      "render",
-      "documentation",
-      "source"
+    "blockingSeverities": [
+      "error",
+      "critical"
     ],
-    "edit_modes": [
-      "manual",
-      "twinstudio-candidate",
-      "manual-or-twinstudio",
-      "generated"
+    "requireEvaluable": true,
+    "blockUnresolvedSecurity": true
+  },
+  "publicationPolicy": {
+    "declaredTier": "review",
+    "deterministic": true,
+    "independentReview": true,
+    "externalAuthority": false,
+    "runtimeIsolation": false
+  },
+  "conformance": {
+    "levels": [
+      "manifest",
+      "contract"
     ],
-    "dependency_kinds": [
-      "generates",
-      "documents",
-      "netlist-parity",
-      "renders",
-      "derives"
+    "commands": [
+      "./project.sh check"
     ],
-    "resolution": "propose-only: konflikt dostaje propozycję z uzasadnieniem, decyzję podejmuje człowiek; plik spoza kolejności daje decidable:false",
-    "validation": "zależność albo pozycja kolejności wskazująca plik nieopisany w files jest błędem manifestu"
-  }
+    "validExamples": [
+      "examples/default.json",
+      "examples/panel9-local.json",
+      "examples/panel9-context.json"
+    ],
+    "invalidExamples": [
+      "examples/invalid-unknown-rule.json"
+    ]
+  },
+  "mappings": [
+    {
+      "standard": "wellmanifest.dsl/manifest/v1",
+      "version": "1",
+      "relation": "implements",
+      "uri": "https://wellmanifest.dev/schemas/dsl-manifest/v1"
+    },
+    {
+      "standard": "wellmanifest.pcb/style/v1",
+      "version": "1.3.0",
+      "relation": "extends"
+    }
+  ]
 }

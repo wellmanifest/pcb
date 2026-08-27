@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0
+
+- `dsl-manifest.json` jest teraz zgodny z `wellmanifest.dsl/manifest/v1` (0 błędów
+  walidacji). Słownik domenowy — reguły, bramki, kontekst, adopterzy — przeniesiony
+  do `pcb-standard.json`, na który manifest wskazuje jako źródło kanoniczne.
+- Artefakty mają digesty `sha256`, sprawdzane przy każdej walidacji;
+  `./project.sh digests` je przelicza.
+- Przykład negatywny `examples/invalid-unknown-rule.json`: walidator wymaga, żeby
+  został odrzucony — zamknięty słownik przestaje być deklaracją bez pokrycia.
+- `docs/` z wyjaśnieniem, dlaczego `vocabularyKind` to `documents`, a kody ustaleń
+  adoptera czekają na mapowanie razem z przyjęciem `wellmanifest/dsl`.
+
 ## 1.2.0
 
 - Nowy schemat `wellmanifest.pcb/context/v1`: role plików, moment zmiany, tryb
