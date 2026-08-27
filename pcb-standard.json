@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -53,6 +53,12 @@
       "scope": "pcb",
       "default_severity": "blocking",
       "measures": "obcą miedź pod obrysem elementu z metalem dociskanym do laminatu"
+    },
+    {
+      "id": "RULE_SILK_OVER_PAD",
+      "scope": "pcb",
+      "default_severity": "advisory",
+      "measures": "linie sitodruku wchodzące na otwór w masce pada"
     },
     {
       "id": "RULE_ZONE_LAYER_ALLOWLIST",

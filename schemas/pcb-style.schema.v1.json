@@ -286,6 +286,23 @@
               "minimum": 1
             }
           }
+        },
+        "RULE_SILK_OVER_PAD": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "mask_margin_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "min_segment_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
         }
       }
     },

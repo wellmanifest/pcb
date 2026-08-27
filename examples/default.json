@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
   "rules": {
@@ -22,6 +22,14 @@
       "scope": "pcb",
       "shielded_pattern": "SW|TACT|BUTTON|RJ45|SHIELD|USB|JACK",
       "description": "Obca miedź nie przechodzi tranzytem pod obrysem elementu dociskającego metal do laminatu."
+    },
+    "RULE_SILK_OVER_PAD": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "mask_margin_mm": 0.1,
+      "min_segment_mm": 0.2,
+      "description": "Sitodruk nie wchodzi na otwór w masce pada — farba na odsłoniętej miedzi nie zostaje."
     },
     "RULE_ZONE_LAYER_ALLOWLIST": {
       "enabled": true,

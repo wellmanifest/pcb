@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.6.0
+
+- `RULE_SILK_OVER_PAD`: linia sitodruku nie wchodzi na otwór w masce pada. Farba
+  na odsłoniętej miedzi nie zostaje po montażu, a jej resztki fałszują odczyt
+  oznaczeń. KiCad widzi to jako `silk_over_copper` w raporcie DRC; jako reguła
+  profilu ta sama rzecz daje się naprawić z powłoki i pilnować bramką regresji.
+- Na referencyjnym panel9 reguła trafia dokładnie w te same 45 przypadków co DRC,
+  a wzór jest pouczający: 24 to zamknięte prostokąty wokół elementów 0603,
+  których pady wystają poza korpus, 18 to obrysy przycisków, 3 to moduł.
+- Parametry `mask_margin_mm` i `min_segment_mm`: margines otworu w masce i próg,
+  poniżej którego ogonek linii nie ma sensu i znika zamiast zostać kreską.
+- Waga domyślna `advisory` — to defekt czytelności i montażu, nie łączności.
+- `VERSION` wyrównany do `pcb-standard.json`; przy 1.5.0 został na 1.4.0.
+
+## 1.5.0
+
+- Standaryzacja zaakceptowanego długu stylistycznego: `pcb-style-baseline`
+  z zamkniętym słownikiem reguł i ścisłą semantyką regresji wobec punktu
+  odniesienia (commit `ef82381`, dopisane wstecz przy 1.6.0).
+
 ## 1.4.0
 
 - `RULE_POWER_DECOUPLING`: szyna zasilania musi mieć co najmniej jeden kondensator

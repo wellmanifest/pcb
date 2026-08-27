@@ -4,41 +4,84 @@
   "title": "wellmanifest.pcb/style-baseline/v1",
   "description": "Jawnie zaakceptowany limit istniejącego długu stylu. Nie zmienia profilu ani raportu; bramka CI odrzuca wyłącznie wzrost ponad zapisane wartości.",
   "type": "object",
-  "required": ["schema_id", "profile", "accepted", "files"],
+  "required": [
+    "schema_id",
+    "profile",
+    "accepted",
+    "files"
+  ],
   "additionalProperties": false,
   "properties": {
-    "schema_id": {"const": "wellmanifest.pcb/style-baseline/v1"},
+    "schema_id": {
+      "const": "wellmanifest.pcb/style-baseline/v1"
+    },
     "profile": {
       "type": "object",
-      "required": ["id", "version", "name", "sha256"],
+      "required": [
+        "id",
+        "version",
+        "name",
+        "sha256"
+      ],
       "additionalProperties": false,
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
-        "name": {"type": "string", "minLength": 1},
-        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
       }
     },
     "accepted": {
       "type": "object",
-      "required": ["by", "at", "reason"],
+      "required": [
+        "by",
+        "at",
+        "reason"
+      ],
       "additionalProperties": false,
       "properties": {
-        "by": {"type": "string", "minLength": 1},
-        "at": {"type": "string", "format": "date-time"},
-        "reason": {"type": "string", "minLength": 8}
+        "by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 8
+        }
       }
     },
     "files": {
       "type": "array",
       "minItems": 1,
-      "items": {"$ref": "#/$defs/file"}
+      "items": {
+        "$ref": "#/$defs/file"
+      }
     }
   },
   "$defs": {
     "file": {
       "type": "object",
-      "required": ["path", "source_sha256", "rules"],
+      "required": [
+        "path",
+        "source_sha256",
+        "rules"
+      ],
       "additionalProperties": false,
       "properties": {
         "path": {
@@ -46,20 +89,37 @@
           "minLength": 1,
           "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+\\.kicad_(?:pcb|sch)$"
         },
-        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
         "rules": {
           "type": "object",
           "propertyNames": {
             "enum": [
-              "RULE_LAYER_STACKUP", "RULE_NO_COPPER_UNDER_PART", "RULE_ZONE_LAYER_ALLOWLIST",
-              "RULE_TRACK_WIDTH_MIN", "RULE_TRACK_WIDTH_BY_NET", "RULE_TRACK_WIDTH_MAX",
-              "RULE_COORDINATE_GRID", "RULE_TRACK_GRID", "RULE_TRACK_ANGLE",
-              "RULE_FOOTPRINT_GRID", "RULE_REFERENCE_NAMING", "RULE_PIN_WIRE_GAP",
-              "RULE_RAIL_LABEL_CANONICAL", "RULE_SIGNAL_LABEL_NAMING",
-              "RULE_SCH_PCB_NET_PARITY", "RULE_POWER_DECOUPLING"
+              "RULE_LAYER_STACKUP",
+              "RULE_NO_COPPER_UNDER_PART",
+              "RULE_SILK_OVER_PAD",
+              "RULE_ZONE_LAYER_ALLOWLIST",
+              "RULE_TRACK_WIDTH_MIN",
+              "RULE_TRACK_WIDTH_BY_NET",
+              "RULE_TRACK_WIDTH_MAX",
+              "RULE_COORDINATE_GRID",
+              "RULE_TRACK_GRID",
+              "RULE_TRACK_ANGLE",
+              "RULE_FOOTPRINT_GRID",
+              "RULE_REFERENCE_NAMING",
+              "RULE_PIN_WIRE_GAP",
+              "RULE_RAIL_LABEL_CANONICAL",
+              "RULE_SIGNAL_LABEL_NAMING",
+              "RULE_SCH_PCB_NET_PARITY",
+              "RULE_POWER_DECOUPLING"
             ]
           },
-          "additionalProperties": {"type": "integer", "minimum": 0}
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
         }
       }
     }
