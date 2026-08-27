@@ -262,6 +262,30 @@
               }
             }
           }
+        },
+        "RULE_POWER_DECOUPLING": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "rail_pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "ground_net": {
+              "type": "string"
+            },
+            "min_capacitors": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "min_rail_nodes": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
         }
       }
     },

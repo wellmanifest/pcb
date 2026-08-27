@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.1.0",
+  "version": "1.4.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
   "rules": {
@@ -136,6 +136,16 @@
       "severity": "blocking",
       "scope": "project",
       "description": "Ten sam pin musi mieć tę samą sieć w schemacie i w PCB."
+    },
+    "RULE_POWER_DECOUPLING": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "project",
+      "rail_pattern": "^\\+?[0-9]+V[0-9]*$",
+      "ground_net": "GND",
+      "min_capacitors": 1,
+      "min_rail_nodes": 2,
+      "description": "Szyna zasilania z co najmniej jednym kondensatorem do masy. Brak odsprzęgania widać dopiero na zasilanym układzie."
     }
   },
   "repairs": {

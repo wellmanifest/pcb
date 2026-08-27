@@ -54,6 +54,7 @@ Kolejność wyszukiwania profilu u adoptera:
 | `RULE_RAIL_LABEL_CANONICAL` | schematic | blocking | szynę zasilania pod kilkoma nazwami |
 | `RULE_SIGNAL_LABEL_NAMING` | schematic | advisory | etykiety sygnałów poza konwencją |
 | `RULE_SCH_PCB_NET_PARITY` | project | blocking | ten sam pin z różną siecią w sch i w PCB |
+| `RULE_POWER_DECOUPLING` | project | advisory | szynę zasilania bez kondensatora do masy |
 
 Zakres `project` obejmuje obie strony projektu naraz: reguły `pcb` i `schematic`
 liczy się z jednego pliku, `project` wymaga pary `.kicad_sch` + `.kicad_pcb`.

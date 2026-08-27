@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -126,6 +126,12 @@
       "scope": "project",
       "default_severity": "blocking",
       "measures": "ten sam pin z różną siecią w schemacie i w PCB"
+    },
+    {
+      "id": "RULE_POWER_DECOUPLING",
+      "scope": "project",
+      "default_severity": "advisory",
+      "measures": "szynę zasilania bez ani jednego kondensatora do masy"
     }
   ],
   "gates": {

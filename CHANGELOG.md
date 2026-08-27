@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0
+
+- `RULE_POWER_DECOUPLING`: szyna zasilania musi mieć co najmniej jeden kondensator
+  do masy. Brak odsprzęgania nie daje objawu ani w netliście, ani w DRC — widać go
+  dopiero na zasilanym układzie. Na referencyjnym panel9 reguła od razu pokazała,
+  że ani `+3V3`, ani `+5V` nie mają żadnego kondensatora: C1–C3 siedzą na liniach
+  enkodera jako filtr RC, nie jako odsprzęganie.
+- Zakres `project`, waga domyślna `advisory` — to zalecenie projektowe, a nie
+  defekt pliku, i nie da się go naprawić kandydatem bez dołożenia elementów.
+
 ## 1.3.0
 
 - `dsl-manifest.json` jest teraz zgodny z `wellmanifest.dsl/manifest/v1` (0 błędów

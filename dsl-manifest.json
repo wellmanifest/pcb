@@ -49,12 +49,12 @@
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:43dd64b8ebc0158886b94fa522c1072b528091ea6d9b6a7f1b3e2f12735f069b"
+      "digest": "sha256:eb48a4b5a604d50bdf98f9273c7df748ece673c3dfca6ab3f785ebe5c8d64e9b"
     },
     {
       "path": "schemas/pcb-style.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:fd90ae73b17ed63b1f304d785d4cfc253b1fe65db0e37ba8ec28a232fdab94f8"
+      "digest": "sha256:d3f6e3b7c32695ce17432e05550ccad248e2a3769a6b64a66754e8748a3f2fa9"
     },
     {
       "path": "schemas/pcb-context.schema.v1.json",
@@ -64,7 +64,7 @@
     {
       "path": "examples/default.json",
       "role": "profile",
-      "digest": "sha256:2b0f96a728cc1d8b92da39df177a1dd3d8e81fa7a501cbc6279b7316b19330be"
+      "digest": "sha256:70297187f39ffa80851e285c8159f907132272e3f16c4b2103ca45603bcabe37"
     },
     {
       "path": "examples/panel9-local.json",
@@ -84,7 +84,7 @@
     {
       "path": "README.md",
       "role": "documentation",
-      "digest": "sha256:e884b957e0a1f67ca4db34a1b002a906e46816e2c3761a629980d5f41ecf30e5"
+      "digest": "sha256:a271c0b3eced81d9a9686a44aad6d0ed52858f6f4f13d783968ec37e95052b0b"
     }
   ],
   "namespaces": [
