@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -37,6 +37,11 @@
     "component_catalog_schema": "wellmanifest.pcb/component-catalog/v1",
     "component_catalog_discovery": [
       "<kicad-project>/components/catalog.json"
+    ],
+    "design_intent_schema": "wellmanifest.pcb/design-intent/v1",
+    "design_intent_discovery": [
+      "$WELLMANIFEST_PCB_DESIGN_INTENT",
+      "<artifacts>/.wellmanifest/design-intent.json"
     ]
   },
   "scopes": [
@@ -258,6 +263,14 @@
     }
   ],
   "gates": {
+    "design_intent": {
+      "rule": "kandydat nie może zmienić parametru fixed, wyjść poza bounded ani użyć wartości spoza allowed",
+      "codes": [
+        "EDA_DESIGN_INTENT_VIOLATION"
+      ],
+      "authority": "decyzję zapisuje człowiek; LLM, generator i automatyczna naprawa są tylko wykonawcami",
+      "delegation": "parametr wskazujący regułę profilu podlega tej regule zamiast lokalnej, ukrytej stałej"
+    },
     "candidate_regression": {
       "rule": "kandydat nie może zwiększyć liczby naruszeń reguły blocking wobec źródła",
       "codes": [
@@ -347,11 +360,13 @@
           "/api/eda/style-report/{rel}",
           "/api/eda/parity/{rel}",
           "/api/eda/capabilities",
+          "/api/eda/design-intent/{rel}",
           "/api/project-context/manifest"
         ],
         "gate": "_refuse_if_gated → akceptacja, decyzja i promocja kandydata",
         "local_extension": "<artifacts>/.wellmanifest/pcb.json",
-        "local_context": "<artifacts>/.wellmanifest/context.json"
+        "local_context": "<artifacts>/.wellmanifest/context.json",
+        "local_design_intent": "<artifacts>/.wellmanifest/design-intent.json"
       }
     },
     {
@@ -688,9 +703,53 @@
     {
       "id": "connectivity_preserved",
       "why": "Netlista po zmianie jest identyczna co do węzła."
+    },
+    {
+      "id": "design_intent",
+      "why": "Pozycja, orientacja i footprint zachowują jawne decyzje człowieka."
+    },
+    {
+      "id": "component_qualification",
+      "why": "Nowy komponent pochodzi z kanonicznego katalogu i ma status qualified."
     }
   ],
   "diagnostics": [
+    {
+      "id": "EDA_DESIGN_INTENT_VIOLATION",
+      "severity": "ERROR",
+      "gate": "design_intent",
+      "means": "Kandydat zmienia parametr zamrożony przez człowieka albo wychodzi poza dozwolony zakres.",
+      "remedy_operations": [],
+      "remedy_note": "Przywróć zadeklarowaną pozycję, orientację lub footprint. Jeśli wymaganie naprawdę się zmieniło, człowiek najpierw aktualizuje manifest intencji z uzasadnieniem; automat nie może poluzować blokady własnego wyniku.",
+      "source": "gate"
+    },
+    {
+      "id": "EDA_DESIGN_INTENT_NOT_RUN",
+      "severity": "ERROR",
+      "gate": "design_intent",
+      "means": "Manifest intencji albo geometria kandydata nie dały się odczytać, więc decyzji człowieka nie sprawdzono.",
+      "remedy_operations": [],
+      "remedy_note": "Popraw manifest wobec `wellmanifest.pcb/design-intent/v1` albo plik PCB. Brak kontroli nie jest zgodą na akceptację.",
+      "source": "gate"
+    },
+    {
+      "id": "EDA_COMPONENT_CATALOG_INVALID",
+      "severity": "ERROR",
+      "gate": "component_qualification",
+      "means": "Kandydat wprowadza komponent bez kompletnego, kanonicznego wpisu qualified albo zmienia przypięty aktyw.",
+      "remedy_operations": [],
+      "remedy_note": "Uzupełnij źródło, licencję, mapę pinów, footprint, hashe i wymagane modele, następnie przeprowadź jawny przegląd kwalifikacyjny. LLM nie nadaje statusu qualified.",
+      "source": "gate"
+    },
+    {
+      "id": "EDA_COMPONENT_CATALOG_NOT_RUN",
+      "severity": "ERROR",
+      "gate": "component_qualification",
+      "means": "Nie udało się odczytać katalogu lub porównać użycia komponentów źródła i kandydata.",
+      "remedy_operations": [],
+      "remedy_note": "Napraw katalog i manifesty komponentów albo środowisko walidatora. Brak kontroli supply chain blokuje wprowadzenie nowej części.",
+      "source": "gate"
+    },
     {
       "id": "EDA_DRC_REGRESSION",
       "severity": "ERROR",

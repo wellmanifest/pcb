@@ -20,6 +20,7 @@ BASELINE_SCHEMA = ROOT / "schemas" / "pcb-style-baseline.schema.v1.json"
 COMPONENT_MANIFEST_SCHEMA = ROOT / "schemas" / "component-manifest.schema.v1.json"
 COMPONENT_SOURCES_SCHEMA = ROOT / "schemas" / "component-sources.schema.v1.json"
 COMPONENT_CATALOG_SCHEMA = ROOT / "schemas" / "component-catalog.schema.v1.json"
+DESIGN_INTENT_SCHEMA = ROOT / "schemas" / "design-intent.schema.v1.json"
 MANIFEST = ROOT / "dsl-manifest.json"
 STANDARD = ROOT / "pcb-standard.json"
 DEFAULT = ROOT / "examples" / "default.json"
@@ -255,6 +256,32 @@ def _check_component_supply_chain(manifest: dict, validator_type) -> None:
     print("✔ supply chain komponentów jest fail-closed dla nowych części")
 
 
+def _check_design_intent(manifest: dict, validator_type) -> None:
+    """Decyzje człowieka są walidowalnym wejściem, nie tekstem promptu."""
+    example_path = ROOT / "examples" / "panel9-design-intent.json"
+    if not DESIGN_INTENT_SCHEMA.is_file() or not example_path.is_file():
+        _fail("brak schematu albo przykładu intencji projektu")
+    schema = _load(DESIGN_INTENT_SCHEMA)
+    expected = schema["properties"]["schema_id"]["const"]
+    if manifest.get("grammar", {}).get("design_intent_schema") != expected:
+        _fail("standard i schemat intencji deklarują różne schema_id")
+    if validator_type is not None:
+        validator_type.check_schema(schema)
+        errors = sorted(
+            validator_type(schema).iter_errors(_load(example_path)),
+            key=lambda item: list(item.path),
+        )
+        if errors:
+            where = "/".join(str(part) for part in errors[0].path) or "(root)"
+            _fail(f"{example_path.name} {where}: {errors[0].message}")
+    delegated = _load(example_path).get("delegated_parameters") or []
+    rule_ids = {item["id"] for item in manifest["rules"]}
+    unknown = [item["rule"] for item in delegated if item["rule"] not in rule_ids]
+    if unknown:
+        _fail(f"intencja deleguje parametr do nieznanej reguły {unknown[0]}")
+    print(f"✔ {example_path.name} zgodny z {expected}")
+
+
 def main() -> int:
     if "--refresh-digests" in sys.argv:
         return refresh_digests()
@@ -288,6 +315,7 @@ def main() -> int:
         # Przykłady kontekstu mają własny schemat, a negatywne mają się nie
         # walidować — obie grupy mają osobne kontrole niżej.
         if ("context" in path.name or "baseline" in path.name or "component" in path.name
+                or "design-intent" in path.name
                 or "operations" in path.name or "diagnostics" in path.name
                 or path.name.startswith("invalid")):
             continue
@@ -368,6 +396,8 @@ def main() -> int:
     _check_diagnostics(manifest)
 
     _check_component_supply_chain(manifest, Draft202012Validator if validator is not None else None)
+
+    _check_design_intent(manifest, Draft202012Validator if validator is not None else None)
 
     _check_dsl_manifest()
 

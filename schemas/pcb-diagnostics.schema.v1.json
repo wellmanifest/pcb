@@ -36,6 +36,10 @@
       "properties": {
         "id": {
           "enum": [
+            "EDA_DESIGN_INTENT_VIOLATION",
+            "EDA_DESIGN_INTENT_NOT_RUN",
+            "EDA_COMPONENT_CATALOG_INVALID",
+            "EDA_COMPONENT_CATALOG_NOT_RUN",
             "EDA_DRC_REGRESSION",
             "EDA_DRC_CATEGORY_REGRESSION",
             "EDA_UNCONNECTED_REGRESSION",
@@ -73,6 +77,8 @@
         },
         "gate": {
           "enum": [
+            "design_intent",
+            "component_qualification",
             "drc_no_regression",
             "style_no_regression",
             "net_parity",

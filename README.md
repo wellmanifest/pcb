@@ -45,6 +45,30 @@ Kolejność wyszukiwania profilu u adoptera:
 2. `<katalog artefaktów>/.wellmanifest/pcb.json`
 3. profil domyślny wbudowany w adoptera
 
+## Intencja finalnego projektu
+
+Profil opisuje zasady dla całej klasy obiektów. Decyzje człowieka dotyczące
+konkretnego egzemplarza zapisuje osobny kontrakt
+`wellmanifest.pcb/design-intent/v1`, odkrywany domyślnie jako
+`<artefakty>/.wellmanifest/design-intent.json`.
+
+Każdy element może niezależnie deklarować:
+
+- pozycję `fixed`, `bounded` albo `editable`;
+- orientację `fixed`, `allowed` albo `editable`;
+- footprint `fixed` albo `editable`.
+
+Przykładowo switch związany z otworem panelu ma stałą pozycję, obrót i
+footprint. Kandydat, który go przesunie lub obróci, dostaje
+`EDA_DESIGN_INTENT_VIOLATION` i nie może zostać zaakceptowany. Szerokość ścieżek
+czy dozwolone kąty należy delegować do `RULE_TRACK_WIDTH_BY_NET` i
+`RULE_TRACK_ANGLE`, aby nie powielać profilu w decyzjach lokalnych. Dokument
+intencji jest wejściem dla planera, ale zmienić go może wyłącznie jawna decyzja
+użytkownika; automat nie może poluzować blokady, żeby zalegalizować własny wynik.
+
+Schemat: `schemas/design-intent.schema.v1.json`; przykład:
+`examples/panel9-design-intent.json`.
+
 ## Supply chain komponentów
 
 Generator nie wybiera footprintu bezpośrednio z GitHuba ani z katalogu

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.18.0
+
+- Dodano `wellmanifest.pcb/design-intent/v1`, w którym człowiek ustala dla
+  konkretnego elementu, czy pozycja, orientacja i footprint są `fixed`,
+  `bounded`/`allowed`, czy `editable`.
+- Bramka `design_intent` blokuje kandydata naruszającego te decyzje niezależnie
+  od tego, czy zmianę przygotował LLM, generator, CLI czy człowiek.
+- Parametry klasowe, takie jak szerokość i kąty ścieżek, można jawnie delegować
+  do reguł profilu PCB. Manifest intencji nie tworzy wtedy drugiego źródła prawdy.
+
 ## 1.17.0
 
 - Dodano wersjonowany kontrakt `component-manifest/v1`: źródło i licencja,

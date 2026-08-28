@@ -1,0 +1,61 @@
+{
+  "schema_id": "wellmanifest.pcb/design-intent/v1",
+  "version": "1.0.0",
+  "title": "Decyzje użytkownika o finalnym wyglądzie panel9",
+  "updated_at": "2026-08-28T00:00:00+00:00",
+  "updated_by": "human:operator",
+  "source_sha256_at_decision": "a4ea4b95be019d67746d2f1fe7b8cc98876300127c5cf2fe0bddd5c8fc869763",
+  "delegated_parameters": [
+    {
+      "parameter": "track.width",
+      "policy": "range",
+      "rule": "RULE_TRACK_WIDTH_BY_NET",
+      "description": "Szerokość może się zmieniać wyłącznie w granicach klasy sieci z profilu PCB."
+    },
+    {
+      "parameter": "track.angle",
+      "policy": "allowed",
+      "rule": "RULE_TRACK_ANGLE",
+      "description": "Trasy mogą używać wyłącznie kątów dopuszczonych przez profil PCB."
+    }
+  ],
+  "artifacts": {
+    "pcb/panel9.kicad_pcb": {
+      "components": {
+        "SW1": {
+          "position": {
+            "policy": "fixed",
+            "x_mm": 118.0,
+            "y_mm": 74.5,
+            "tolerance_mm": 0.01
+          },
+          "orientation": {
+            "policy": "fixed",
+            "deg": 0.0,
+            "tolerance_deg": 0.0
+          },
+          "footprint": {
+            "policy": "fixed",
+            "value": "local:SW_TACT_5.2x5.2"
+          },
+          "reason": "Pozycja i orientacja wynikają z otworu w panelu użytkownika."
+        },
+        "J1": {
+          "position": {
+            "policy": "bounded",
+            "x_min_mm": 220.0,
+            "x_max_mm": 230.0,
+            "y_min_mm": 85.0,
+            "y_max_mm": 100.0
+          },
+          "orientation": {
+            "policy": "allowed",
+            "values_deg": [0.0, 180.0]
+          },
+          "footprint": {"policy": "editable"},
+          "reason": "Złącze może przesuwać się tylko w obszarze dostępnym dla przewodu."
+        }
+      }
+    }
+  }
+}

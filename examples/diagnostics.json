@@ -2,6 +2,42 @@
   "schema_id": "wellmanifest.pcb/diagnostics/v1",
   "diagnostics": [
     {
+      "id": "EDA_DESIGN_INTENT_VIOLATION",
+      "severity": "ERROR",
+      "gate": "design_intent",
+      "means": "Kandydat zmienia parametr zamrożony przez człowieka albo wychodzi poza dozwolony zakres.",
+      "remedy_operations": [],
+      "remedy_note": "Przywróć zadeklarowaną pozycję, orientację lub footprint. Jeśli wymaganie naprawdę się zmieniło, człowiek najpierw aktualizuje manifest intencji z uzasadnieniem; automat nie może poluzować blokady własnego wyniku.",
+      "source": "gate"
+    },
+    {
+      "id": "EDA_DESIGN_INTENT_NOT_RUN",
+      "severity": "ERROR",
+      "gate": "design_intent",
+      "means": "Manifest intencji albo geometria kandydata nie dały się odczytać, więc decyzji człowieka nie sprawdzono.",
+      "remedy_operations": [],
+      "remedy_note": "Popraw manifest wobec `wellmanifest.pcb/design-intent/v1` albo plik PCB. Brak kontroli nie jest zgodą na akceptację.",
+      "source": "gate"
+    },
+    {
+      "id": "EDA_COMPONENT_CATALOG_INVALID",
+      "severity": "ERROR",
+      "gate": "component_qualification",
+      "means": "Kandydat wprowadza komponent bez kompletnego, kanonicznego wpisu qualified albo zmienia przypięty aktyw.",
+      "remedy_operations": [],
+      "remedy_note": "Uzupełnij źródło, licencję, mapę pinów, footprint, hashe i wymagane modele, następnie przeprowadź jawny przegląd kwalifikacyjny. LLM nie nadaje statusu qualified.",
+      "source": "gate"
+    },
+    {
+      "id": "EDA_COMPONENT_CATALOG_NOT_RUN",
+      "severity": "ERROR",
+      "gate": "component_qualification",
+      "means": "Nie udało się odczytać katalogu lub porównać użycia komponentów źródła i kandydata.",
+      "remedy_operations": [],
+      "remedy_note": "Napraw katalog i manifesty komponentów albo środowisko walidatora. Brak kontroli supply chain blokuje wprowadzenie nowej części.",
+      "source": "gate"
+    },
+    {
       "id": "EDA_DRC_REGRESSION",
       "severity": "ERROR",
       "gate": "drc_no_regression",
