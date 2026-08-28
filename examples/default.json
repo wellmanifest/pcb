@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.19.0",
+  "version": "1.20.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
   "routing": {
@@ -75,6 +75,20 @@
       "scope": "pcb",
       "min_mm": 2.54,
       "description": "Zewnętrzna krawędź pierścienia każdej przelotki pozostaje co najmniej 2,54 mm (1/10 cala) od Edge.Cuts."
+    },
+    "RULE_TRACK_NET_CLEARANCE": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "min_mm": 0.2,
+      "description": "Ścieżka zachowuje co najmniej 0,20 mm miedź–miedź od ścieżek, padów i przelotek obcych sieci; pady i via wielowarstwowe są przeszkodą na każdej warstwie miedzi."
+    },
+    "RULE_TRACK_COPPER_MARGIN": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "min_mm": 0.5,
+      "description": "Docelowy margines jakości do obcej miedzi wynosi 0,50 mm ponad sumę promienia via/pada i połowy szerokości ścieżki; większy próg nie udaje minimum procesu."
     },
     "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT": {
       "enabled": false,

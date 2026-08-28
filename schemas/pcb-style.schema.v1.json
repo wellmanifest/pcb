@@ -178,6 +178,22 @@
             "min_mm": {"type": "number", "exclusiveMinimum": 0}
           }
         },
+        "RULE_TRACK_NET_CLEARANCE": {
+          "allOf": [
+            {"$ref": "#/$defs/rule"}
+          ],
+          "properties": {
+            "min_mm": {"type": "number", "minimum": 0}
+          }
+        },
+        "RULE_TRACK_COPPER_MARGIN": {
+          "allOf": [
+            {"$ref": "#/$defs/rule"}
+          ],
+          "properties": {
+            "min_mm": {"type": "number", "minimum": 0}
+          }
+        },
         "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT": {
           "allOf": [
             {"$ref": "#/$defs/rule"}

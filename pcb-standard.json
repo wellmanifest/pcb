@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.19.0",
+  "version": "1.20.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -134,6 +134,18 @@
       "scope": "pcb",
       "default_severity": "blocking",
       "measures": "najmniejszą odległość zewnętrznej krawędzi pierścienia przelotki od Edge.Cuts"
+    },
+    {
+      "id": "RULE_TRACK_NET_CLEARANCE",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "minimalny odstęp miedź–miedź ścieżki od ścieżek, padów i przelotek obcych sieci na wspólnej warstwie"
+    },
+    {
+      "id": "RULE_TRACK_COPPER_MARGIN",
+      "scope": "pcb",
+      "default_severity": "advisory",
+      "measures": "docelowy, większy od minimum procesu margines ścieżki do obcej miedzi, z uwzględnieniem szerokości ścieżki i średnicy via/pada"
     },
     {
       "id": "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT",
