@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wellmanifest.dev/schemas/pcb/pcb-operations.schema.v1.json",
+  "title": "Zamknięty słownik zmian, które wolno zaproponować",
+  "description": "Reguły mówią, co jest defektem. Ten słownik mówi, co wolno z tym zrobić — i to jest ta sama różnica, co między diagnozą a receptą. Zamknięcie listy znaczy, że narzędzie nie może wymyślić własnego czasownika zmiany: jeśli operacji nie ma w standardzie, kandydat nie powstaje. Dzięki temu ta sama zmiana wygląda tak samo w powłoce, w REST, w MCP i w A2A, bo wszystkie czytają jeden słownik.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "operations"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "wellmanifest.pcb/operations/v1"
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    }
+  },
+  "$defs": {
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "scope",
+        "entity",
+        "changes",
+        "clears",
+        "verify",
+        "reversible",
+        "why"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "set_track_width",
+            "orthogonalize_track",
+            "reroute_component_nets",
+            "route_power_net",
+            "assign_pad_net",
+            "move",
+            "trim_silkscreen",
+            "fill_zones",
+            "remove_zones",
+            "add_decoupling_capacitor",
+            "set_property",
+            "set_footprint_field",
+            "mark_no_connect",
+            "merge_split_rails",
+            "split_wire_at_tap",
+            "synchronize_net_connectivity"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "pcb",
+            "project",
+            "schematic"
+          ]
+        },
+        "entity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "changes": {
+          "enum": [
+            "copper",
+            "placement",
+            "silkscreen",
+            "netlist",
+            "metadata",
+            "bom"
+          ]
+        },
+        "clears": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^RULE_[A-Z0-9_]+$"
+          },
+          "uniqueItems": true
+        },
+        "verify": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "drc_no_regression",
+              "style_no_regression",
+              "net_parity",
+              "footprint_parity",
+              "connectivity_preserved"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "reversible": {
+          "type": "boolean"
+        },
+        "why": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

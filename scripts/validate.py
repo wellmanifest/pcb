@@ -78,6 +78,70 @@ def refresh_digests() -> int:
     return 0
 
 
+def _check_operations(manifest: dict, rule_ids: set[str]) -> None:
+    """Zamknięty słownik zmian — druga połowa kontraktu obok słownika reguł.
+
+    Reguły mówią, co jest defektem; operacje mówią, co wolno z tym zrobić.
+    Bez zamknięcia tej listy każde narzędzie może wymyślić własny czasownik
+    zmiany, a wtedy „ta sama poprawka" znaczy co innego w powłoce, w REST
+    i w MCP.
+    """
+    schema_path = ROOT / "schemas" / "pcb-operations.schema.v1.json"
+    example_path = ROOT / "examples" / "operations.json"
+    if not (schema_path.is_file() and example_path.is_file()):
+        _fail("brak schematu albo przykładu słownika operacji")
+    schema = _load(schema_path)
+    declared = {item["id"] for item in manifest.get("operations") or []}
+    if not declared:
+        _fail("standard nie deklaruje żadnej operacji")
+    enum = set(schema["$defs"]["operation"]["properties"]["id"]["enum"])
+    if enum != declared:
+        _fail(
+            "słownik operacji rozjechany: schemat "
+            f"{sorted(enum - declared)} / manifest {sorted(declared - enum)}"
+        )
+    changes = {item["id"] for item in manifest.get("changes") or []}
+    verifications = {item["id"] for item in manifest.get("verifications") or []}
+    for operation in manifest["operations"]:
+        unknown = [name for name in operation["clears"] if name not in rule_ids]
+        if unknown:
+            _fail(f"operacja {operation['id']} zamyka nieznaną regułę {unknown[0]}")
+        if operation["changes"] not in changes:
+            _fail(f"operacja {operation['id']} deklaruje nieznany skutek {operation['changes']!r}")
+        outside = [name for name in operation["verify"] if name not in verifications]
+        if outside:
+            _fail(f"operacja {operation['id']} żąda nieznanej weryfikacji {outside[0]}")
+        if operation["changes"] in {"copper", "placement", "bom"} \
+                and "drc_no_regression" not in operation["verify"]:
+            _fail(
+                f"operacja {operation['id']} rusza miedź albo listę elementów, "
+                "a nie żąda sprawdzenia DRC"
+            )
+        if not operation["reversible"] and operation["changes"] != "bom":
+            _fail(f"operacja {operation['id']} jest nieodwracalna, a nie zmienia listy elementów")
+    print(f"✔ zamknięty słownik operacji zgodny ({len(declared)} operacji)")
+
+    document = _load(example_path)
+    if document.get("operations") != manifest["operations"]:
+        _fail("examples/operations.json rozjechany ze standardem")
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError:
+        return
+    validator = Draft202012Validator(schema)
+    errors = sorted(validator.iter_errors(document), key=lambda item: list(item.path))
+    if errors:
+        _fail(f"examples/operations.json: {errors[0].message}")
+    print("✔ examples/operations.json zgodny z wellmanifest.pcb/operations/v1")
+
+    negative = ROOT / "examples" / "invalid-unknown-operation.json"
+    if negative.is_file():
+        bad = _load(negative)
+        if not list(validator.iter_errors(bad)):
+            _fail("examples/invalid-unknown-operation.json przechodzi walidację, a nie powinien")
+        print("✔ nieznana operacja jest błędem, nie operacją nieaktywną")
+
+
 def main() -> int:
     if "--refresh-digests" in sys.argv:
         return refresh_digests()
@@ -110,7 +174,8 @@ def main() -> int:
     for path in sorted((ROOT / "examples").glob("*.json")):
         # Przykłady kontekstu mają własny schemat, a negatywne mają się nie
         # walidować — obie grupy mają osobne kontrole niżej.
-        if "context" in path.name or "baseline" in path.name or path.name.startswith("invalid"):
+        if ("context" in path.name or "baseline" in path.name
+                or "operations" in path.name or path.name.startswith("invalid")):
             continue
         document = _load(path)
         if validator is not None:
@@ -183,6 +248,8 @@ def main() -> int:
         if validator is not None and not list(validator.iter_errors(document)):
             _fail("examples/invalid-unknown-rule.json przechodzi walidację, a nie powinien")
         print(f"✔ przykład negatywny odrzucony ({unknown[0]})")
+
+    _check_operations(manifest, manifest_rules)
 
     _check_dsl_manifest()
 

@@ -1,0 +1,229 @@
+{
+  "schema_id": "wellmanifest.pcb/operations/v1",
+  "operations": [
+    {
+      "id": "set_track_width",
+      "scope": "pcb",
+      "entity": "segment",
+      "changes": "copper",
+      "clears": [
+        "RULE_TRACK_WIDTH_BY_NET",
+        "RULE_TRACK_WIDTH_MIN"
+      ],
+      "verify": [
+        "drc_no_regression",
+        "style_no_regression"
+      ],
+      "reversible": true,
+      "why": "Odcinek węższy niż klasa jego sieci nie uniesie prądu, dla którego klasa powstała."
+    },
+    {
+      "id": "orthogonalize_track",
+      "scope": "pcb",
+      "entity": "segment",
+      "changes": "copper",
+      "clears": [
+        "RULE_TRACK_ANGLE"
+      ],
+      "verify": [
+        "drc_no_regression",
+        "style_no_regression"
+      ],
+      "reversible": true,
+      "why": "Skos bez powodu utrudnia kontrolę wzrokową i produkcję szablonu."
+    },
+    {
+      "id": "reroute_component_nets",
+      "scope": "pcb",
+      "entity": "track",
+      "changes": "copper",
+      "clears": [
+        "RULE_TRACK_GRID",
+        "RULE_TRACK_ANGLE",
+        "RULE_TRACK_WIDTH_BY_NET",
+        "RULE_NO_COPPER_UNDER_PART"
+      ],
+      "verify": [
+        "drc_no_regression",
+        "style_no_regression",
+        "net_parity"
+      ],
+      "reversible": true,
+      "why": "Przestawiony element unieważnia każdą trasę, która do niego dochodziła; doklejanie mostków zamienia jedną zmianę w dług."
+    },
+    {
+      "id": "route_power_net",
+      "scope": "pcb",
+      "entity": "segment",
+      "changes": "copper",
+      "clears": [],
+      "verify": [
+        "drc_no_regression",
+        "net_parity"
+      ],
+      "reversible": true,
+      "why": "Szyna zasilania poprowadzona jawnie zamiast polegania na wylaniu strefy."
+    },
+    {
+      "id": "assign_pad_net",
+      "scope": "pcb",
+      "entity": "pad",
+      "changes": "netlist",
+      "clears": [
+        "RULE_SCH_PCB_NET_PARITY"
+      ],
+      "verify": [
+        "net_parity",
+        "drc_no_regression"
+      ],
+      "reversible": true,
+      "why": "Pad bez sieci albo z cudzą siecią to rozjazd wobec schematu."
+    },
+    {
+      "id": "move",
+      "scope": "pcb",
+      "entity": "footprint",
+      "changes": "placement",
+      "clears": [
+        "RULE_FOOTPRINT_GRID"
+      ],
+      "verify": [
+        "drc_no_regression",
+        "style_no_regression"
+      ],
+      "reversible": true,
+      "why": "Pozycja elementu jest wejściem dla trasowania i dla obudowy."
+    },
+    {
+      "id": "trim_silkscreen",
+      "scope": "pcb",
+      "entity": "fp_line",
+      "changes": "silkscreen",
+      "clears": [
+        "RULE_SILK_OVER_PAD"
+      ],
+      "verify": [
+        "drc_no_regression"
+      ],
+      "reversible": true,
+      "why": "Farba na odsłoniętej miedzi nie zostaje po montażu, a jej resztki fałszują odczyt."
+    },
+    {
+      "id": "fill_zones",
+      "scope": "pcb",
+      "entity": "zone",
+      "changes": "copper",
+      "clears": [],
+      "verify": [
+        "drc_no_regression"
+      ],
+      "reversible": true,
+      "why": "Strefa bez wyliczonej miedzi nie daje potwierdzonego połączenia."
+    },
+    {
+      "id": "remove_zones",
+      "scope": "pcb",
+      "entity": "zone",
+      "changes": "copper",
+      "clears": [],
+      "verify": [
+        "drc_no_regression",
+        "net_parity"
+      ],
+      "reversible": true,
+      "why": "Świadome usunięcie strefy porzuconej — decyzja, nie zaniechanie."
+    },
+    {
+      "id": "add_decoupling_capacitor",
+      "scope": "project",
+      "entity": "component",
+      "changes": "bom",
+      "clears": [
+        "RULE_POWER_DECOUPLING"
+      ],
+      "verify": [
+        "drc_no_regression",
+        "net_parity",
+        "footprint_parity"
+      ],
+      "reversible": false,
+      "why": "Szyna bez kondensatora do masy nie daje objawu ani w netliście, ani w DRC."
+    },
+    {
+      "id": "set_property",
+      "scope": "schematic",
+      "entity": "symbol",
+      "changes": "metadata",
+      "clears": [],
+      "verify": [],
+      "reversible": true,
+      "why": "Wartość, oznaczenie i opis to dane, nie geometria."
+    },
+    {
+      "id": "set_footprint_field",
+      "scope": "schematic",
+      "entity": "symbol",
+      "changes": "metadata",
+      "clears": [
+        "RULE_SCH_PCB_FOOTPRINT_PARITY"
+      ],
+      "verify": [
+        "footprint_parity"
+      ],
+      "reversible": true,
+      "why": "Pole Footprint w schemacie potrafi wskazywać inny element niż leży na płytce."
+    },
+    {
+      "id": "mark_no_connect",
+      "scope": "schematic",
+      "entity": "pin",
+      "changes": "netlist",
+      "clears": [],
+      "verify": [
+        "connectivity_preserved"
+      ],
+      "reversible": true,
+      "why": "Pin świadomie niepodłączony różni się od zapomnianego tylko tym znacznikiem."
+    },
+    {
+      "id": "merge_split_rails",
+      "scope": "schematic",
+      "entity": "label",
+      "changes": "netlist",
+      "clears": [],
+      "verify": [
+        "connectivity_preserved",
+        "net_parity"
+      ],
+      "reversible": true,
+      "why": "Dwie nazwy tej samej szyny dzielą ją na dwie sieci, których nikt nie zamawiał."
+    },
+    {
+      "id": "split_wire_at_tap",
+      "scope": "schematic",
+      "entity": "wire",
+      "changes": "netlist",
+      "clears": [],
+      "verify": [
+        "connectivity_preserved"
+      ],
+      "reversible": true,
+      "why": "Odgałęzienie w środku przewodu bez węzła nie łączy."
+    },
+    {
+      "id": "synchronize_net_connectivity",
+      "scope": "project",
+      "entity": "net",
+      "changes": "netlist",
+      "clears": [
+        "RULE_SCH_PCB_NET_PARITY"
+      ],
+      "verify": [
+        "net_parity",
+        "connectivity_preserved"
+      ],
+      "reversible": true,
+      "why": "Rozjazd sieci między schematem a płytką nie należy do żadnego z tych plików z osobna."
+    }
+  ]
+}

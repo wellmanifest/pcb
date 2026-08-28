@@ -1,0 +1,21 @@
+{
+  "schema_id": "wellmanifest.pcb/operations/v1",
+  "operations": [
+    {
+      "id": "rewrite_everything",
+      "scope": "pcb",
+      "entity": "segment",
+      "changes": "copper",
+      "clears": [
+        "RULE_TRACK_WIDTH_BY_NET",
+        "RULE_TRACK_WIDTH_MIN"
+      ],
+      "verify": [
+        "drc_no_regression",
+        "style_no_regression"
+      ],
+      "reversible": true,
+      "why": "Odcinek węższy niż klasa jego sieci nie uniesie prądu, dla którego klasa powstała."
+    }
+  ]
+}

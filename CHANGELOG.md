@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.8.0
+
+- **Zamknięty słownik operacji.** Reguły mówiły, co jest defektem; nic nie mówiło,
+  co wolno z tym zrobić. Szesnaście czasowników zmiany żyło dotąd wyłącznie
+  w kodzie adoptera, więc „ta sama poprawka" mogła znaczyć co innego w powłoce,
+  w REST i w MCP. `operations` zamyka tę listę tak samo, jak `rules` zamyka listę
+  reguł: operacji spoza słownika nie da się zaproponować.
+- Każda operacja deklaruje `changes` (co rusza: miedź, pozycję, sitodruk, netlistę,
+  metadane, listę elementów), `clears` (które reguły może zamknąć), `verify` (jakie
+  bramki musi przejść) i `reversible`.
+- Walidator wymusza spójność: operacja nie może zamykać nieznanej reguły, żądać
+  nieznanej weryfikacji, ruszać miedzi bez sprawdzenia DRC ani być nieodwracalna
+  inaczej niż przez zmianę listy elementów.
+- `schemas/pcb-operations.schema.v1.json`, `examples/operations.json` i przykład
+  negatywny `examples/invalid-unknown-operation.json`.
+
 ## 1.7.0
 
 - `RULE_SCH_PCB_FOOTPRINT_PARITY`: schemat i płytka muszą mówić o tym samym

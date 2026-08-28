@@ -47,44 +47,19 @@
   ],
   "artifacts": [
     {
-      "path": "pcb-standard.json",
-      "role": "normative-source",
-      "digest": "sha256:5b8243515083f6ee276b0864d29d40a925d18189bfb34ff497dcd4b0f4984b78"
-    },
-    {
-      "path": "schemas/pcb-style.schema.v1.json",
-      "role": "schema",
-      "digest": "sha256:7d3d1d97b7e48171ff7570e1de3da5cd66ffe8ad453b12fab593fdd69aa3405b"
-    },
-    {
-      "path": "schemas/pcb-context.schema.v1.json",
-      "role": "schema",
-      "digest": "sha256:2eb4dccffeca96ec4428f2e14e1b0abfd35dc0f74d9b22a0f1582f07f4fedf83"
-    },
-    {
-      "path": "schemas/pcb-style-baseline.schema.v1.json",
-      "role": "schema",
-      "digest": "sha256:63ee394afaf776e787cb3f8e934d695f40acec16739e7ed2e927e3f50534edb5"
+      "path": "README.md",
+      "role": "documentation",
+      "digest": "sha256:bfc2c18fdd78fb9f3ddf7f78eb9e5f478b987d068a06e853b7bc441d6705f442"
     },
     {
       "path": "examples/default.json",
-      "role": "profile",
+      "role": "example",
       "digest": "sha256:3f38cd0498d2e86874ee2f8654e26b677fc3964e36c67685a04ef45e1901cc64"
     },
     {
-      "path": "examples/panel9-local.json",
+      "path": "examples/invalid-unknown-operation.json",
       "role": "example",
-      "digest": "sha256:c87265906928d456cbd1d8c58e7752e3463fb7aa3901b9867c43ccd7c519d1f7"
-    },
-    {
-      "path": "examples/panel9-context.json",
-      "role": "example",
-      "digest": "sha256:f9ccb1277b3278b2f144c6e0977631929cac20b521a2b147cb22e5c5c77b11c5"
-    },
-    {
-      "path": "examples/panel9-baseline.json",
-      "role": "example",
-      "digest": "sha256:cf86e3d1ed92022bcb482c7e10838d6fd5bc80f37358ba61556bb741549d4858"
+      "digest": "sha256:d167b416bf5e59df7a9a15f1c2fdc05c9e480f43a20203610122edd41257d41a"
     },
     {
       "path": "examples/invalid-unknown-rule.json",
@@ -92,9 +67,49 @@
       "digest": "sha256:149392a7fd79bb90fb088731d4bc5ba04294c514b9511d9253d1ede2b22c5175"
     },
     {
-      "path": "README.md",
-      "role": "documentation",
-      "digest": "sha256:bfc2c18fdd78fb9f3ddf7f78eb9e5f478b987d068a06e853b7bc441d6705f442"
+      "path": "examples/operations.json",
+      "role": "example",
+      "digest": "sha256:031df1424be766ba08bb2f7cfca329d4c0d62c6c2f8f28aa7b4b561435e7ecbd"
+    },
+    {
+      "path": "examples/panel9-baseline.json",
+      "role": "example",
+      "digest": "sha256:cf86e3d1ed92022bcb482c7e10838d6fd5bc80f37358ba61556bb741549d4858"
+    },
+    {
+      "path": "examples/panel9-context.json",
+      "role": "example",
+      "digest": "sha256:f9ccb1277b3278b2f144c6e0977631929cac20b521a2b147cb22e5c5c77b11c5"
+    },
+    {
+      "path": "examples/panel9-local.json",
+      "role": "example",
+      "digest": "sha256:c87265906928d456cbd1d8c58e7752e3463fb7aa3901b9867c43ccd7c519d1f7"
+    },
+    {
+      "path": "pcb-standard.json",
+      "role": "normative-source",
+      "digest": "sha256:efafb279c8484eeece1ef128e7ce792d04ef40ac361e0fa5eabb95431f5f7826"
+    },
+    {
+      "path": "schemas/pcb-context.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:2eb4dccffeca96ec4428f2e14e1b0abfd35dc0f74d9b22a0f1582f07f4fedf83"
+    },
+    {
+      "path": "schemas/pcb-operations.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:57da29a6c19731036c9af19b12fb02adddb9f98f6c7defe50d868032352740d2"
+    },
+    {
+      "path": "schemas/pcb-style-baseline.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:63ee394afaf776e787cb3f8e934d695f40acec16739e7ed2e927e3f50534edb5"
+    },
+    {
+      "path": "schemas/pcb-style.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:7d3d1d97b7e48171ff7570e1de3da5cd66ffe8ad453b12fab593fdd69aa3405b"
     }
   ],
   "namespaces": [
