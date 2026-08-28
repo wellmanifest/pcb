@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -55,6 +55,12 @@
       "scope": "pcb",
       "default_severity": "blocking",
       "measures": "obcą miedź pod obrysem elementu z metalem dociskanym do laminatu"
+    },
+    {
+      "id": "RULE_CONNECTOR_COURTYARD_MARGIN",
+      "scope": "pcb",
+      "default_severity": "advisory",
+      "measures": "obce ścieżki i przelotki w powiększonym obrysie złącza; miedź sieci obecnej na padach złącza pozostaje dozwolona i podlega DRC"
     },
     {
       "id": "RULE_BUS_TRANSIT",
@@ -303,7 +309,8 @@
         "RULE_TRACK_GRID",
         "RULE_TRACK_ANGLE",
         "RULE_TRACK_WIDTH_BY_NET",
-        "RULE_NO_COPPER_UNDER_PART"
+        "RULE_NO_COPPER_UNDER_PART",
+        "RULE_CONNECTOR_COURTYARD_MARGIN"
       ],
       "verify": [
         "drc_no_regression",

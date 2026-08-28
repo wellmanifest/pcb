@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.13.0
+
+- `RULE_CONNECTOR_COURTYARD_MARGIN` mierzy obce ścieżki i przelotki w obrysie
+  złącza powiększonym o jawny `margin_mm`. Reguła jest doradcza: courtyard to
+  polityka układu, a nie zamiennik clearance elektrycznego producenta.
+- Sieci obecne na padach złącza są wyłączone z tej reguły, bo fanout musi dojść
+  do własnego pada. Ich wzajemne odstępy nadal rozstrzyga DRC/netclass, więc
+  profil nie może „naprawić” zwarcia samym opisem stylu.
+- `reroute_component_nets` może zamknąć nową regułę, ale nadal wymaga DRC, braku
+  regresji stylu i zgodności netlisty.
+
 ## 1.12.0
 
 - `RULE_BUS_TRANSIT` odróżnia krótką odnogę kończącą się na własnym padzie od

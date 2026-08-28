@@ -42,6 +42,23 @@
             }
           }
         },
+        "RULE_CONNECTOR_COURTYARD_MARGIN": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "connector_pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "margin_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
         "RULE_BUS_TRANSIT": {
           "allOf": [
             {

@@ -99,6 +99,7 @@
             "enum": [
               "RULE_LAYER_STACKUP",
               "RULE_NO_COPPER_UNDER_PART",
+              "RULE_CONNECTOR_COURTYARD_MARGIN",
               "RULE_BUS_TRANSIT",
               "RULE_VIA_BUDGET",
               "RULE_SILK_OVER_PAD",

@@ -3,7 +3,7 @@
   "schema": "wellmanifest.dsl/manifest/v1",
   "id": "wellmanifest.pcb",
   "name": "PCB & Schematic Style Contract Standard",
-  "version": "1.5.0",
+  "version": "1.13.0",
   "status": "stable",
   "purpose": "Deklaratywny kontrakt wyglądu i kontekstu projektu PCB/schematu: zamknięty słownik reguł, bramka regresji oraz kolejność autorytetu przy sprzeczności między plikami.",
   "domain": "electronic-design-automation",
@@ -49,12 +49,12 @@
     {
       "path": "README.md",
       "role": "documentation",
-      "digest": "sha256:c8122a746847bcfffde772d77776cbea9f97532a56eef7983bca478dd41c5a43"
+      "digest": "sha256:9206bf2ee90485ca60094da4c76bf7a3cf3e508ad5d1adb2cce4e992621214a3"
     },
     {
       "path": "examples/default.json",
       "role": "example",
-      "digest": "sha256:fd40c590d9974f34baf384ab7695f675346a1946d67b91f65a68882864103559"
+      "digest": "sha256:a6175db18d381efd2ab115269ebccd7c0057b628c52b0e81278746e8b60c14f7"
     },
     {
       "path": "examples/diagnostics.json",
@@ -79,7 +79,7 @@
     {
       "path": "examples/operations.json",
       "role": "example",
-      "digest": "sha256:6fbed682b907f9c96e607077f51458414ca358bf466c854d1249bb0f7b45991c"
+      "digest": "sha256:5283124883e5be9366a5a5afa9025c71f54c51aacc94b887ce2340dc3038a952"
     },
     {
       "path": "examples/panel9-baseline.json",
@@ -94,12 +94,12 @@
     {
       "path": "examples/panel9-local.json",
       "role": "example",
-      "digest": "sha256:c87265906928d456cbd1d8c58e7752e3463fb7aa3901b9867c43ccd7c519d1f7"
+      "digest": "sha256:58fdcea52999155862719c1038b7a214c0334ad324959e4024a71a29b5cb9cf4"
     },
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:a58ee2f47e3cbbbd2695df2b240cdbfda7479727887e8ad62292245b7b0100da"
+      "digest": "sha256:f14a06cc96643cc1732be08a5789c4e5a93aedc83877d48c92a05a02e559b4f7"
     },
     {
       "path": "schemas/pcb-context.schema.v1.json",
@@ -119,12 +119,12 @@
     {
       "path": "schemas/pcb-style-baseline.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:fa15aa2d577ee7ce3574dd139627266a39fa03d79b56f27788746019862c0783"
+      "digest": "sha256:b60c91aaf577a3f5ebc9b604589f01139d0ca1bc1d142a45036ebd44cf780039"
     },
     {
       "path": "schemas/pcb-style.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:14a5174c00dc9962043769e338deba2355442899f0fe5b09e3265716c9b783e7"
+      "digest": "sha256:591937945b13e8ea11a1f83d5f4c55b5d8634928be46c745c209dbdfb25d6ae0"
     }
   ],
   "namespaces": [

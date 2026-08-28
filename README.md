@@ -41,6 +41,7 @@ Kolejność wyszukiwania profilu u adoptera:
 |---|---|---|---|
 | `RULE_LAYER_STACKUP` | pcb | blocking | liczbę i nazwy warstw miedzi |
 | `RULE_NO_COPPER_UNDER_PART` | pcb | blocking | obcą miedź pod obrysem elementu z metalem |
+| `RULE_CONNECTOR_COURTYARD_MARGIN` | pcb | advisory | obcą miedź w powiększonym obrysie złącza |
 | `RULE_BUS_TRANSIT` | pcb | advisory | wspólną szynę przechodzącą przez element bez zakończenia na jego padzie |
 | `RULE_VIA_BUDGET` | pcb | advisory | całkowity budżet przelotek i budżet zmian warstwy na sieć |
 | `RULE_SILK_OVER_PAD` | pcb | advisory | sitodruk wchodzący na otwór w masce pada |
@@ -83,6 +84,15 @@ wspólna szyna prowadzona przez środek pola elementów przecina drogi sygnałow
 
 Algorytm diagnozy, graf wpływów i kontrakt wyniku symulatora opisuje
 [`docs/ROUTING-OPTIMIZATION.md`](docs/ROUTING-OPTIMIZATION.md).
+
+### Margines przy złączu nie jest odstępem od własnego pada
+
+`RULE_CONNECTOR_COURTYARD_MARGIN` powiększa obrys złącza o `margin_mm` i
+raportuje w tej strefie obce ścieżki oraz przelotki. Nie odsuwa miedzi sieci,
+która występuje na padach złącza — taka ścieżka musi fizycznie dojść do własnego
+pada. Jej szerokość i odstęp od sąsiedniej sieci rozstrzyga DRC oraz netclass.
+Rozdzielenie jest celowe: większy courtyard poprawia przestrzeń montażową i
+czytelność fanoutu, ale nie może udawać elektrycznego clearance.
 
 ## Bramka regresji
 

@@ -9,7 +9,8 @@ jak porównywać poprawne warianty oraz jak odróżnić obserwację od przyczyny
 2. Zgodność firmware, schematu i PCB oraz kompletna łączność.
 3. Zero blokujących DRC/ERC i brak regresji reguł blokujących.
 4. Dopiero potem cele: mniej przelotek, mniej tranzytów wspólnych szyn, krótsze
-   trasy, mniejsza kongestia i mniej naruszeń doradczych.
+   trasy, większa rezerwa courtyardu przy złączach, mniejsza kongestia i mniej
+   naruszeń doradczych.
 
 Nie wolno sumować tych klas jedną wagą. Krótsza trasa nie kompensuje zwarcia,
 rozpiętej sieci ani rozjazdu schematu z PCB.
@@ -30,6 +31,12 @@ Reguły są doradcze. Przelotka może być poprawnym rozwiązaniem, a wspólna s
 może wymagać przejścia przez dany region. Profil projektu ustala budżety i wzorce
 sieci/elementów; adopter raportuje pełne znaleziska zamiast wydawać wyrok z nazwy.
 
+`RULE_CONNECTOR_COURTYARD_MARGIN` opisuje inny zasób: wolny korytarz wokół
+złącza. Liczy wyłącznie obcą miedź, bo fanout sieci obecnej na padzie musi wejść
+do własnego złącza. Zwiększenie `margin_mm` nie zmienia reguł elektrycznych i nie
+zastępuje DRC; może za to ujawnić, że korytarz sygnałowy wybrano zbyt blisko
+obudowy albo strefy montażowej.
+
 ## Kontrfakty
 
 Optymalizator powinien porównać ograniczony zbiór spójnych zmian:
@@ -37,6 +44,7 @@ Optymalizator powinien porównać ograniczony zbiór spójnych zmian:
 * przypisanie funkcji do innego zgodnego elektrycznie pinu,
 * przesunięcie albo obrót elementu wraz z pełnym przetrasowaniem jego sieci,
 * przeniesienie wspólnej szyny do korytarza obrzeżnego,
+* odsunięcie obcego korytarza od courtyardu złącza bez zmiany jego fanoutu,
 * zmianę kolejności trasowania w tym samym modelu ograniczeń.
 
 Każdy wariant przechowuje wejściowe hashe, operacje, wynik wszystkich bramek,

@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.8.0",
+  "version": "1.13.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
   "rules": {
@@ -22,6 +22,14 @@
       "scope": "pcb",
       "shielded_pattern": "SW|TACT|BUTTON|RJ45|SHIELD|USB|JACK",
       "description": "Obca miedź nie przechodzi tranzytem pod obrysem elementu dociskającego metal do laminatu."
+    },
+    "RULE_CONNECTOR_COURTYARD_MARGIN": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "connector_pattern": "(?:^|:)(?:CONN|CONNECTOR|HEADER|RJ|USB|JACK)",
+      "margin_mm": 1.0,
+      "description": "Obca ścieżka ani przelotka nie wchodzi w obrys złącza powiększony o margines; własne sieci padów pozostają dozwolone i nadal podlegają DRC."
     },
     "RULE_BUS_TRANSIT": {
       "enabled": true,

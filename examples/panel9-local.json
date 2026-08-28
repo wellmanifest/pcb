@@ -54,6 +54,10 @@
       "shielded_pattern": "SW|TACT|BUTTON|RJ45|SHIELD|USB|JACK",
       "description": "Przyciski tact mają metalową kopułkę dociskaną do laminatu."
     },
+    "RULE_CONNECTOR_COURTYARD_MARGIN": {
+      "margin_mm": 2.54,
+      "description": "Przy RJ45 obce korytarze miedzi pozostają co najmniej jeden raster 2,54 mm poza obrysem złącza."
+    },
     "RULE_PIN_WIRE_GAP": {
       "max_gap_mm": 1.0,
       "description": "C3 stał tak z luką 0,63 mm i wyglądał na podłączony."

@@ -41,7 +41,8 @@
         "RULE_TRACK_GRID",
         "RULE_TRACK_ANGLE",
         "RULE_TRACK_WIDTH_BY_NET",
-        "RULE_NO_COPPER_UNDER_PART"
+        "RULE_NO_COPPER_UNDER_PART",
+        "RULE_CONNECTOR_COURTYARD_MARGIN"
       ],
       "verify": [
         "drc_no_regression",
