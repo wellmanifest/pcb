@@ -42,6 +42,9 @@ Kolejność wyszukiwania profilu u adoptera:
 | `RULE_LAYER_STACKUP` | pcb | blocking | liczbę i nazwy warstw miedzi |
 | `RULE_NO_COPPER_UNDER_PART` | pcb | blocking | obcą miedź pod obrysem elementu z metalem |
 | `RULE_CONNECTOR_COURTYARD_MARGIN` | pcb | advisory | obcą miedź w powiększonym obrysie złącza |
+| `RULE_CONNECTOR_EDGE_CLEARANCE` | pcb | blocking | odległość obrysu złącza od `Edge.Cuts` (minimum 2,54 mm) |
+| `RULE_CONNECTOR_PAD_EDGE_CLEARANCE` | pcb | blocking | odległość padów złącza od `Edge.Cuts` (minimum 2,54 mm) |
+| `RULE_TRACK_EDGE_CLEARANCE` | pcb | blocking | odległość ścieżek i przelotek od `Edge.Cuts` (minimum 2,54 mm) |
 | `RULE_BUS_TRANSIT` | pcb | advisory | wspólną szynę przechodzącą przez element bez zakończenia na jego padzie |
 | `RULE_VIA_BUDGET` | pcb | advisory | całkowity budżet przelotek i budżet zmian warstwy na sieć |
 | `RULE_SILK_OVER_PAD` | pcb | advisory | sitodruk wchodzący na otwór w masce pada |
@@ -93,6 +96,22 @@ która występuje na padach złącza — taka ścieżka musi fizycznie dojść d
 pada. Jej szerokość i odstęp od sąsiedniej sieci rozstrzyga DRC oraz netclass.
 Rozdzielenie jest celowe: większy courtyard poprawia przestrzeń montażową i
 czytelność fanoutu, ale nie może udawać elektrycznego clearance.
+
+### Złącze pozostaje 1/10 cala wewnątrz płytki
+
+`RULE_CONNECTOR_EDGE_CLEARANCE` jest niezależna od miedzi i courtyardu. Mierzy
+najkrótszą odległość pomiędzy obrysem footprintu złącza a liniami `Edge.Cuts`.
+Wartość `min_mm` nie może być mniejsza niż `2.54`, czyli dokładnie 1/10 cala.
+Punkt kotwiczący footprintu nie jest miarą: cały obrys złącza musi zmieścić się
+po wewnętrznej stronie wymaganego marginesu. Brak mierzalnego `Edge.Cuts` jest
+naruszeniem, a nie cichym pominięciem kontroli.
+
+Reguła mechaniczna nie zastępuje kontroli miedzi. Osobna
+`RULE_CONNECTOR_PAD_EDGE_CLEARANCE` mierzy krawędzie padów złącza, a
+`RULE_TRACK_EDGE_CLEARANCE` — krawędzie segmentów ścieżek i przelotek po
+uwzględnieniu ich szerokości lub średnicy. Wszystkie trzy progi są liczone od
+najbliższego rzeczywistego obiektu, nigdy od jego środka. DRC producenta nadal
+pozostaje wymaganą bramką dla stref miedzi i pełnych reguł procesu.
 
 ## Bramka regresji
 

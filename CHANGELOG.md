@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.14.0
+
+- `RULE_CONNECTOR_EDGE_CLEARANCE` wymaga co najmniej 2,54 mm (1/10 cala)
+  pomiędzy całym obrysem footprintu złącza a najbliższą linią `Edge.Cuts`.
+- `RULE_CONNECTOR_PAD_EDGE_CLEARANCE` stosuje to samo minimum do zewnętrznej
+  krawędzi każdego pada złącza, a `RULE_TRACK_EDGE_CLEARANCE` do zewnętrznych
+  krawędzi ścieżek i przelotek.
+- Reguła jest blokująca i nie używa punktu kotwiczącego footprintu jako
+  przybliżenia. Brak mierzalnego obrysu płytki również daje naruszenie.
+- Operacja `move` może zamknąć naruszenie, ale nadal wymaga bramek DRC i braku
+  regresji stylu.
+
 ## 1.13.0
 
 - `RULE_CONNECTOR_COURTYARD_MARGIN` mierzy obce ścieżki i przelotki w obrysie

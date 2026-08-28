@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -61,6 +61,24 @@
       "scope": "pcb",
       "default_severity": "advisory",
       "measures": "obce ścieżki i przelotki w powiększonym obrysie złącza; miedź sieci obecnej na padach złącza pozostaje dozwolona i podlega DRC"
+    },
+    {
+      "id": "RULE_CONNECTOR_EDGE_CLEARANCE",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "najmniejszą odległość obrysu footprintu złącza od rzeczywistej krawędzi Edge.Cuts"
+    },
+    {
+      "id": "RULE_CONNECTOR_PAD_EDGE_CLEARANCE",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "najmniejszą odległość zewnętrznej krawędzi każdego pada złącza od Edge.Cuts"
+    },
+    {
+      "id": "RULE_TRACK_EDGE_CLEARANCE",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "najmniejszą odległość zewnętrznej krawędzi ścieżek i przelotek od Edge.Cuts"
     },
     {
       "id": "RULE_BUS_TRANSIT",
@@ -310,7 +328,8 @@
         "RULE_TRACK_ANGLE",
         "RULE_TRACK_WIDTH_BY_NET",
         "RULE_NO_COPPER_UNDER_PART",
-        "RULE_CONNECTOR_COURTYARD_MARGIN"
+        "RULE_CONNECTOR_COURTYARD_MARGIN",
+        "RULE_TRACK_EDGE_CLEARANCE"
       ],
       "verify": [
         "drc_no_regression",
@@ -354,7 +373,9 @@
       "entity": "footprint",
       "changes": "placement",
       "clears": [
-        "RULE_FOOTPRINT_GRID"
+        "RULE_FOOTPRINT_GRID",
+        "RULE_CONNECTOR_EDGE_CLEARANCE",
+        "RULE_CONNECTOR_PAD_EDGE_CLEARANCE"
       ],
       "verify": [
         "drc_no_regression",

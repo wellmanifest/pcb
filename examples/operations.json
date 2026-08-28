@@ -42,7 +42,8 @@
         "RULE_TRACK_ANGLE",
         "RULE_TRACK_WIDTH_BY_NET",
         "RULE_NO_COPPER_UNDER_PART",
-        "RULE_CONNECTOR_COURTYARD_MARGIN"
+        "RULE_CONNECTOR_COURTYARD_MARGIN",
+        "RULE_TRACK_EDGE_CLEARANCE"
       ],
       "verify": [
         "drc_no_regression",
@@ -86,7 +87,9 @@
       "entity": "footprint",
       "changes": "placement",
       "clears": [
-        "RULE_FOOTPRINT_GRID"
+        "RULE_FOOTPRINT_GRID",
+        "RULE_CONNECTOR_EDGE_CLEARANCE",
+        "RULE_CONNECTOR_PAD_EDGE_CLEARANCE"
       ],
       "verify": [
         "drc_no_regression",

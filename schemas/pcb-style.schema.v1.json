@@ -59,6 +59,53 @@
             }
           }
         },
+        "RULE_CONNECTOR_EDGE_CLEARANCE": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "connector_pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "min_mm": {
+              "type": "number",
+              "minimum": 2.54
+            }
+          }
+        },
+        "RULE_CONNECTOR_PAD_EDGE_CLEARANCE": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "connector_pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "min_mm": {
+              "type": "number",
+              "minimum": 2.54
+            }
+          }
+        },
+        "RULE_TRACK_EDGE_CLEARANCE": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "min_mm": {
+              "type": "number",
+              "minimum": 2.54
+            }
+          }
+        },
         "RULE_BUS_TRANSIT": {
           "allOf": [
             {

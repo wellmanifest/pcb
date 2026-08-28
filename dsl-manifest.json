@@ -3,7 +3,7 @@
   "schema": "wellmanifest.dsl/manifest/v1",
   "id": "wellmanifest.pcb",
   "name": "PCB & Schematic Style Contract Standard",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "status": "stable",
   "purpose": "Deklaratywny kontrakt wyglądu i kontekstu projektu PCB/schematu: zamknięty słownik reguł, bramka regresji oraz kolejność autorytetu przy sprzeczności między plikami.",
   "domain": "electronic-design-automation",
@@ -49,12 +49,12 @@
     {
       "path": "README.md",
       "role": "documentation",
-      "digest": "sha256:9206bf2ee90485ca60094da4c76bf7a3cf3e508ad5d1adb2cce4e992621214a3"
+      "digest": "sha256:6d244e0e63334fe3ccd65256e41828bcbbd1b5e135f8026c5e7f41f9d3f4822e"
     },
     {
       "path": "examples/default.json",
       "role": "example",
-      "digest": "sha256:a6175db18d381efd2ab115269ebccd7c0057b628c52b0e81278746e8b60c14f7"
+      "digest": "sha256:e8be8c0ebbce688885b8105cca361e64690ba2a59e92a9d4f5069cc280e7460b"
     },
     {
       "path": "examples/diagnostics.json",
@@ -79,7 +79,7 @@
     {
       "path": "examples/operations.json",
       "role": "example",
-      "digest": "sha256:5283124883e5be9366a5a5afa9025c71f54c51aacc94b887ce2340dc3038a952"
+      "digest": "sha256:84f8e48621443c0c4d44cb415a9eb989ae9437ddccf0ba276f4862923f09c6e8"
     },
     {
       "path": "examples/panel9-baseline.json",
@@ -94,12 +94,12 @@
     {
       "path": "examples/panel9-local.json",
       "role": "example",
-      "digest": "sha256:58fdcea52999155862719c1038b7a214c0334ad324959e4024a71a29b5cb9cf4"
+      "digest": "sha256:a77179b302cc1f4a750962f8ceb5aeb1cae14cf844be19a4ed37b03e95b0de9c"
     },
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:f14a06cc96643cc1732be08a5789c4e5a93aedc83877d48c92a05a02e559b4f7"
+      "digest": "sha256:149eb7e3a384f28826a06a2fcc0a04c9e82e9f2221f6f9b9d00727a086eb008c"
     },
     {
       "path": "schemas/pcb-context.schema.v1.json",
@@ -119,12 +119,12 @@
     {
       "path": "schemas/pcb-style-baseline.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:b60c91aaf577a3f5ebc9b604589f01139d0ca1bc1d142a45036ebd44cf780039"
+      "digest": "sha256:f30aae1a86c78ed2ff9b25377f57ab45b6d09be1002b91ef17d5c6a3cf781175"
     },
     {
       "path": "schemas/pcb-style.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:591937945b13e8ea11a1f83d5f4c55b5d8634928be46c745c209dbdfb25d6ae0"
+      "digest": "sha256:b29c9a10d7345cbb6e2dd5ed580ce8c7f530f3c06f24736504be6fcf80ffdddb"
     }
   ],
   "namespaces": [

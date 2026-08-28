@@ -3,6 +3,24 @@
 Standard nie wybiera jednej „najlepszej” płytki i nie zastępuje DRC. Definiuje,
 jak porównywać poprawne warianty oraz jak odróżnić obserwację od przyczyny.
 
+## Placement przed routingiem
+
+Generator najpierw ustala mechanikę i funkcjonalne bloki, a dopiero potem
+prowadzi miedź. Minimalna kolejność decyzji jest następująca:
+
+1. `Edge.Cuts`, otwory, obudowa i strefy obsługi użytkownika.
+2. Złącza oraz elementy naciskane lub wkładane ręcznie.
+3. Moduł sterujący, z dostępem do USB, padów i otworów montażowych.
+4. Regularna grupa przycisków oraz pozostałe bloki funkcjonalne.
+5. Kondensatory odsprzęgające przy pinach zasilania, z krótką pętlą powrotną.
+6. Dopiero po przejściu reguł placementu: fanout, szyny, sygnały i strefy.
+
+Schemat i PCB powinny używać tych samych nazw bloków i podobnej kolejności:
+zasilanie/złącze → sterownik → wejścia/przyciski → interfejs. Nie oznacza to
+kopiowania współrzędnych pomiędzy SCH i PCB; oznacza zachowanie tej samej
+struktury funkcjonalnej, żeby NL→DSL mogło planować blok, a nie przypadkową listę
+referencji.
+
 ## Kolejność rozstrzygania
 
 1. Kandydat zgodny z kontraktem operacji i zakresem zgody.
@@ -36,6 +54,16 @@ złącza. Liczy wyłącznie obcą miedź, bo fanout sieci obecnej na padzie musi
 do własnego złącza. Zwiększenie `margin_mm` nie zmienia reguł elektrycznych i nie
 zastępuje DRC; może za to ujawnić, że korytarz sygnałowy wybrano zbyt blisko
 obudowy albo strefy montażowej.
+
+Położenie złącza przechodzi trzy niezależne pomiary przed routingiem:
+
+* `RULE_CONNECTOR_EDGE_CLEARANCE` — obrys mechaniczny złącza względem krawędzi,
+* `RULE_CONNECTOR_PAD_EDGE_CLEARANCE` — zewnętrzne krawędzie jego padów,
+* `RULE_TRACK_EDGE_CLEARANCE` — zewnętrzne krawędzie ścieżek i przelotek.
+
+Każdy ma twarde minimum 2,54 mm. Courtyard/keepout 3–5 mm może być dodatkowym
+celem projektu dla złącza obciążanego mechanicznie, ale nie może obniżyć żadnego
+z trzech minimów ani zastąpić DRC producenta.
 
 ## Kontrfakty
 

@@ -58,6 +58,18 @@
       "margin_mm": 2.54,
       "description": "Przy RJ45 obce korytarze miedzi pozostają co najmniej jeden raster 2,54 mm poza obrysem złącza."
     },
+    "RULE_CONNECTOR_EDGE_CLEARANCE": {
+      "min_mm": 2.54,
+      "description": "Cały obrys RJ45 pozostaje co najmniej 2,54 mm (1/10 cala) wewnątrz Edge.Cuts."
+    },
+    "RULE_CONNECTOR_PAD_EDGE_CLEARANCE": {
+      "min_mm": 2.54,
+      "description": "Każdy pad RJ45, łącznie z padami ekranu, pozostaje co najmniej 2,54 mm od Edge.Cuts."
+    },
+    "RULE_TRACK_EDGE_CLEARANCE": {
+      "min_mm": 2.54,
+      "description": "Ścieżki i przelotki pozostają co najmniej 2,54 mm od Edge.Cuts."
+    },
     "RULE_PIN_WIRE_GAP": {
       "max_gap_mm": 1.0,
       "description": "C3 stał tak z luką 0,63 mm i wyglądał na podłączony."
