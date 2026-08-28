@@ -1,0 +1,10 @@
+{
+  "schema_id": "wellmanifest.pcb/component-catalog/v1",
+  "version": "1.0.0",
+  "sources": "component-sources.json",
+  "manifests": ["component-manifest.json"],
+  "policy": {
+    "new_component_min_status": "qualified",
+    "legacy_statuses": ["quarantined", "provisional", "deprecated"]
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -31,7 +31,13 @@
       "<artifacts>/.wellmanifest/pcb-baseline.json"
     ],
     "operations_schema": "wellmanifest.pcb/operations/v1",
-    "diagnostics_schema": "wellmanifest.pcb/diagnostics/v1"
+    "diagnostics_schema": "wellmanifest.pcb/diagnostics/v1",
+    "component_manifest_schema": "wellmanifest.pcb/component-manifest/v1",
+    "component_sources_schema": "wellmanifest.pcb/component-sources/v1",
+    "component_catalog_schema": "wellmanifest.pcb/component-catalog/v1",
+    "component_catalog_discovery": [
+      "<kicad-project>/components/catalog.json"
+    ]
   },
   "scopes": [
     "pcb",
@@ -43,6 +49,38 @@
     "advisory",
     "off"
   ],
+  "componentSupplyChain": {
+    "stages": [
+      "vendor",
+      "verified",
+      "canonical"
+    ],
+    "statuses": [
+      "quarantined",
+      "provisional",
+      "qualified",
+      "deprecated"
+    ],
+    "source_rule": "Źródło zewnętrzne jest niezmiennym wejściem przypiętym do rewizji. Projekt zależy wyłącznie od własnego manifestu i zahashowanych aktywów kanonicznych.",
+    "selection_rule": "Nowy komponent może wejść do SCH/PCB wyłącznie ze statusem qualified. Provisional i quarantined są jawnym długiem istniejącego źródła, nie pulą wyboru generatora.",
+    "qualification_requires": [
+      "pinned_source_and_license",
+      "symbol_pinmap_verified",
+      "footprint_geometry_verified",
+      "all_footprint_pads_mapped_once",
+      "asset_sha256_verified",
+      "required_3d_models_bound_and_verified",
+      "mechanical_envelope_declared",
+      "human_review_identity_and_time"
+    ],
+    "projections": [
+      "symbol",
+      "footprint",
+      "step_or_wrl",
+      "mechanical_envelope",
+      "supplier_identity"
+    ]
+  },
   "rules": [
     {
       "id": "RULE_LAYER_STACKUP",
@@ -249,6 +287,17 @@
         "EDA_PARITY_NOT_RUN"
       ],
       "requires": "kicad-cli (eksport netlisty schematu)"
+    },
+    "component_qualification": {
+      "rule": "kandydat nie może wprowadzić footprintu bez manifestu qualified ani zmienić zahashowanego aktywu bez nowej wersji manifestu",
+      "inherited_debt": "provisional lub quarantined obecny w źródle pozostaje widoczny, ale nie blokuje niepowiązanej zmiany, dopóki kandydat nie zwiększa jego użycia",
+      "requires": [
+        "component manifest",
+        "source lock",
+        "footprint asset",
+        "pin map",
+        "required 3D models"
+      ]
     }
   },
   "context": {

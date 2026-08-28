@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wellmanifest.com/schemas/pcb/component-sources.schema.v1.json",
+  "title": "wellmanifest.pcb/component-sources/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "sources"],
+  "properties": {
+    "schema_id": {"const": "wellmanifest.pcb/component-sources/v1"},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id", "uri", "revision", "trust", "license", "mutable",
+          "promotion"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+          "uri": {"type": "string", "format": "uri", "pattern": "^https://"},
+          "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "trust": {
+            "enum": ["official", "manufacturer", "distributor", "community", "project-local"]
+          },
+          "license": {"type": "string", "minLength": 1},
+          "mutable": {"const": false},
+          "promotion": {"const": "manual-after-validation"},
+          "purpose": {"enum": ["reference", "import-source", "canonical-origin"]},
+          "notes": {"type": "string"}
+        }
+      }
+    }
+  }
+}

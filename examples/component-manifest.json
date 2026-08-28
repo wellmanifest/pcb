@@ -1,0 +1,50 @@
+{
+  "schema_id": "wellmanifest.pcb/component-manifest/v1",
+  "component_id": "example-switch",
+  "version": "1.0.0",
+  "status": "provisional",
+  "kind": "switch",
+  "source": {
+    "source_id": "kicad-footprints",
+    "path": "Button_Switch_SMD.pretty/example.kicad_mod"
+  },
+  "electrical": {
+    "symbol": "canonical:SW_TACT",
+    "pin_map": [
+      {"symbol_pin": "1", "name": "A", "type": "passive", "pads": ["1", "3"]},
+      {"symbol_pin": "2", "name": "B", "type": "passive", "pads": ["2", "4"]}
+    ]
+  },
+  "eda": {
+    "footprint": "canonical:SW_TACT_5.2x5.2",
+    "footprint_revision": 1,
+    "pin_map_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "assets": {
+      "footprint": {
+        "path": "canonical.pretty/SW_TACT_5.2x5.2.kicad_mod",
+        "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    }
+  },
+  "mechanical": {
+    "length_mm": 5.2,
+    "width_mm": 5.2,
+    "height_mm": 1.5,
+    "assembly_side": "top",
+    "board_edge_clearance_mm": 2.54,
+    "mating_direction": "top",
+    "cable_exit_direction": "none"
+  },
+  "models": [],
+  "verification": {
+    "datasheet_reviewed": false,
+    "symbol_pinmap_verified": true,
+    "footprint_verified": true,
+    "mechanical_envelope_verified": false,
+    "step_model_required": true,
+    "step_model_verified": false,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "notes": "Przykład pozostaje provisional, dopóki model 3D i obwiednia nie zostaną zweryfikowane."
+  }
+}

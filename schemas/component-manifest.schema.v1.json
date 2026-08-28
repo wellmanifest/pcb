@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wellmanifest.com/schemas/pcb/component-manifest.schema.v1.json",
+  "title": "wellmanifest.pcb/component-manifest/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "component_id", "version", "status", "kind", "source",
+    "electrical", "eda", "mechanical", "models", "verification"
+  ],
+  "properties": {
+    "schema_id": {"const": "wellmanifest.pcb/component-manifest/v1"},
+    "component_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "status": {"enum": ["quarantined", "provisional", "qualified", "deprecated"]},
+    "kind": {
+      "enum": ["passive", "semiconductor", "module", "connector", "switch", "mechanical"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id"],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+        "path": {"type": "string", "minLength": 1},
+        "manufacturer": {"type": "string"},
+        "mpn": {"type": "string"},
+        "datasheet_url": {"type": "string", "format": "uri"}
+      }
+    },
+    "electrical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["symbol", "pin_map"],
+      "properties": {
+        "symbol": {"type": "string", "pattern": "^[^:]+:[^:]+$"},
+        "voltage_domains": {
+          "type": "array", "items": {"type": "string"}, "uniqueItems": true
+        },
+        "interfaces": {
+          "type": "array", "items": {"type": "string"}, "uniqueItems": true
+        },
+        "pin_map": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["symbol_pin", "pads"],
+            "properties": {
+              "symbol_pin": {"type": "string", "minLength": 1},
+              "name": {"type": "string"},
+              "type": {
+                "enum": [
+                  "input", "output", "bidirectional", "passive", "power_in",
+                  "power_out", "power", "no_connect"
+                ]
+              },
+              "pads": {
+                "type": "array", "minItems": 1,
+                "items": {"type": "string", "minLength": 1},
+                "uniqueItems": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "eda": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["footprint", "footprint_revision", "pin_map_hash", "assets"],
+      "properties": {
+        "footprint": {"type": "string", "pattern": "^[^:]+:[^:]+$"},
+        "footprint_revision": {"type": "integer", "minimum": 1},
+        "pin_map_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "assets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["footprint"],
+          "properties": {
+            "symbol": {"$ref": "#/$defs/asset"},
+            "footprint": {"$ref": "#/$defs/asset"}
+          }
+        }
+      }
+    },
+    "mechanical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "length_mm", "width_mm", "height_mm", "assembly_side",
+        "board_edge_clearance_mm"
+      ],
+      "properties": {
+        "length_mm": {"type": "number", "exclusiveMinimum": 0},
+        "width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "height_mm": {"type": "number", "exclusiveMinimum": 0},
+        "assembly_side": {"enum": ["top", "bottom", "either"]},
+        "board_edge_clearance_mm": {"type": "number", "minimum": 0},
+        "keepout_top_mm": {"type": "number", "minimum": 0},
+        "keepout_bottom_mm": {"type": "number", "minimum": 0},
+        "mating_direction": {"enum": ["none", "top", "bottom", "side"]},
+        "cable_exit_direction": {"enum": ["none", "top", "bottom", "side"]},
+        "service_access": {
+          "type": "array", "items": {"type": "string"}, "uniqueItems": true
+        }
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["format", "path", "sha256", "required", "binding"],
+        "properties": {
+          "format": {"enum": ["step", "wrl", "stl", "obj", "3mf"]},
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "required": {"type": "boolean"},
+          "binding": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "datasheet_reviewed", "symbol_pinmap_verified", "footprint_verified",
+        "mechanical_envelope_verified", "step_model_required",
+        "step_model_verified", "reviewed_by", "reviewed_at"
+      ],
+      "properties": {
+        "datasheet_reviewed": {"type": "boolean"},
+        "symbol_pinmap_verified": {"type": "boolean"},
+        "footprint_verified": {"type": "boolean"},
+        "mechanical_envelope_verified": {"type": "boolean"},
+        "step_model_required": {"type": "boolean"},
+        "step_model_verified": {"type": "boolean"},
+        "reviewed_by": {"type": "string"},
+        "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+        "notes": {"type": "string"}
+      }
+    }
+  },
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"kind": {"const": "connector"}}},
+      "then": {
+        "properties": {
+          "mechanical": {
+            "properties": {"board_edge_clearance_mm": {"minimum": 2.54}}
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "qualified"}}},
+      "then": {
+        "properties": {
+          "verification": {
+            "properties": {
+              "datasheet_reviewed": {"const": true},
+              "symbol_pinmap_verified": {"const": true},
+              "footprint_verified": {"const": true},
+              "mechanical_envelope_verified": {"const": true},
+              "reviewed_by": {"type": "string", "minLength": 1},
+              "reviewed_at": {"type": "string", "format": "date-time"}
+            },
+            "required": ["reviewed_by", "reviewed_at"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"const": "qualified"},
+          "verification": {"properties": {"step_model_required": {"const": true}}}
+        },
+        "required": ["status", "verification"]
+      },
+      "then": {
+        "properties": {
+          "models": {"minItems": 1},
+          "verification": {"properties": {"step_model_verified": {"const": true}}}
+        }
+      }
+    }
+  ]
+}

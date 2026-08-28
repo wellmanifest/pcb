@@ -17,6 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "schemas" / "pcb-style.schema.v1.json"
 CONTEXT_SCHEMA = ROOT / "schemas" / "pcb-context.schema.v1.json"
 BASELINE_SCHEMA = ROOT / "schemas" / "pcb-style-baseline.schema.v1.json"
+COMPONENT_MANIFEST_SCHEMA = ROOT / "schemas" / "component-manifest.schema.v1.json"
+COMPONENT_SOURCES_SCHEMA = ROOT / "schemas" / "component-sources.schema.v1.json"
+COMPONENT_CATALOG_SCHEMA = ROOT / "schemas" / "component-catalog.schema.v1.json"
 MANIFEST = ROOT / "dsl-manifest.json"
 STANDARD = ROOT / "pcb-standard.json"
 DEFAULT = ROOT / "examples" / "default.json"
@@ -202,6 +205,56 @@ def _check_diagnostics(manifest: dict) -> None:
     print("✔ nieznany kod jest błędem, nie kodem nieopisanym")
 
 
+def _check_component_supply_chain(manifest: dict, validator_type) -> None:
+    """Supply chain is a closed, versioned contract rather than README advice."""
+    schemas = {
+        "component_manifest_schema": (
+            COMPONENT_MANIFEST_SCHEMA,
+            ROOT / "examples" / "component-manifest.json",
+        ),
+        "component_sources_schema": (
+            COMPONENT_SOURCES_SCHEMA,
+            ROOT / "examples" / "component-sources.json",
+        ),
+        "component_catalog_schema": (
+            COMPONENT_CATALOG_SCHEMA,
+            ROOT / "examples" / "component-catalog.json",
+        ),
+    }
+    for grammar_name, (schema_path, example_path) in schemas.items():
+        if not schema_path.is_file() or not example_path.is_file():
+            _fail(f"brak {schema_path.name} albo {example_path.name}")
+        schema = _load(schema_path)
+        declared = manifest.get("grammar", {}).get(grammar_name)
+        expected = schema["properties"]["schema_id"]["const"]
+        if declared != expected:
+            _fail(f"standard i {schema_path.name} deklarują różne schema_id")
+        if validator_type is not None:
+            errors = sorted(
+                validator_type(schema).iter_errors(_load(example_path)),
+                key=lambda item: list(item.path),
+            )
+            if errors:
+                where = "/".join(str(part) for part in errors[0].path) or "(root)"
+                _fail(f"{example_path.name} {where}: {errors[0].message}")
+        print(f"✔ {example_path.name} zgodny z {expected}")
+
+    supply = manifest.get("componentSupplyChain") or {}
+    if supply.get("selection_rule") is None or "qualified" not in supply.get("statuses", []):
+        _fail("standard nie zamyka polityki wyboru komponentów qualified")
+    required = set(supply.get("qualification_requires") or [])
+    for name in (
+        "pinned_source_and_license",
+        "symbol_pinmap_verified",
+        "footprint_geometry_verified",
+        "asset_sha256_verified",
+        "required_3d_models_bound_and_verified",
+    ):
+        if name not in required:
+            _fail(f"kwalifikacja komponentu nie wymaga {name}")
+    print("✔ supply chain komponentów jest fail-closed dla nowych części")
+
+
 def main() -> int:
     if "--refresh-digests" in sys.argv:
         return refresh_digests()
@@ -234,7 +287,7 @@ def main() -> int:
     for path in sorted((ROOT / "examples").glob("*.json")):
         # Przykłady kontekstu mają własny schemat, a negatywne mają się nie
         # walidować — obie grupy mają osobne kontrole niżej.
-        if ("context" in path.name or "baseline" in path.name
+        if ("context" in path.name or "baseline" in path.name or "component" in path.name
                 or "operations" in path.name or "diagnostics" in path.name
                 or path.name.startswith("invalid")):
             continue
@@ -313,6 +366,8 @@ def main() -> int:
     _check_operations(manifest, manifest_rules)
 
     _check_diagnostics(manifest)
+
+    _check_component_supply_chain(manifest, Draft202012Validator if validator is not None else None)
 
     _check_dsl_manifest()
 

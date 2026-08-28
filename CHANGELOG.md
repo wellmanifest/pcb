@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.17.0
+
+- Dodano wersjonowany kontrakt `component-manifest/v1`: źródło i licencja,
+  symbol, footprint, pełne mapowanie pinów na pady, hashe aktywów, obwiednia
+  mechaniczna, modele STEP/WRL oraz tożsamość przeglądu.
+- `component-sources/v1` przypina biblioteki producentów i dostawców do
+  konkretnych rewizji. Ruchoma gałąź ani URL bez rewizji nie jest dowodem
+  pochodzenia.
+- Supply chain rozróżnia `quarantined`, `provisional`, `qualified` i
+  `deprecated`. Generator może dodać wyłącznie komponent `qualified`; dług
+  odziedziczony pozostaje mierzalny, ale nie blokuje niepowiązanej zmiany.
+- Bramka `component_qualification` wiąże symbol → pin map → footprint → model
+  3D → obwiednię mechaniczną. Brak kontroli nie może zostać policzony jako
+  zaliczenie.
+
 ## 1.16.0
 
 - Profil `style/v1` przenosi `routing.via_cost` i `routing.net_order` do danych;

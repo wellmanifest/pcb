@@ -45,6 +45,36 @@ Kolejność wyszukiwania profilu u adoptera:
 2. `<katalog artefaktów>/.wellmanifest/pcb.json`
 3. profil domyślny wbudowany w adoptera
 
+## Supply chain komponentów
+
+Generator nie wybiera footprintu bezpośrednio z GitHuba ani z katalogu
+dostawcy. `component-sources/v1` przypina zewnętrzne źródło do pełnego commita,
+a `component-manifest/v1` wiąże własną rewizję symbolu, footprintu, mapy pinów,
+modelu 3D i obwiedni mechanicznej. Projekty wskazują wyłącznie manifesty z
+`component-catalog/v1`.
+
+```text
+vendor (read-only, pinned) → verified → canonical → SCH/PCB/assembly
+                                  │
+                                  └─ schema + hash + pin map + 3D/mechanics
+```
+
+Statusy mają znaczenie wykonawcze:
+
+- `quarantined` — materiał znaleziony, ale nie jest wejściem generatora;
+- `provisional` — istniejący projekt może jawnie nieść ten dług, lecz nowa
+  operacja nie może zwiększyć użycia komponentu;
+- `qualified` — jedyny status dopuszczony do nowego SCH/PCB;
+- `deprecated` — zachowuje odtwarzalność, ale nie wolno go wybierać ponownie.
+
+Kwalifikacja `qualified` wymaga przypiętego źródła i licencji, pełnego
+mapowania każdego pada dokładnie raz, zgodnych SHA-256 aktywów, zweryfikowanej
+obwiedni mechanicznej oraz wszystkich wymaganych modeli STEP/WRL. Model językowy
+może zaproponować część, ale nie może podnieść jej statusu ani ominąć bramki.
+
+Normatywne schematy znajdują się w `schemas/component-*.schema.v1.json`, a
+minimalny komplet w `examples/component-*.json`.
+
 ## Słownik reguł
 
 | Reguła | Zakres | Domyślnie | Mierzy |

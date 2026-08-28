@@ -3,7 +3,7 @@
   "schema": "wellmanifest.dsl/manifest/v1",
   "id": "wellmanifest.pcb",
   "name": "PCB & Schematic Style Contract Standard",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "status": "stable",
   "purpose": "Deklaratywny kontrakt wyglądu i kontekstu projektu PCB/schematu: zamknięty słownik reguł, bramka regresji oraz kolejność autorytetu przy sprzeczności między plikami.",
   "domain": "electronic-design-automation",
@@ -49,7 +49,27 @@
     {
       "path": "README.md",
       "role": "documentation",
-      "digest": "sha256:5b48dc68da7d37ce78b5b5f99efc9d2eba410a51f790679b26609ace8fcc8b39"
+      "digest": "sha256:80a85c2e017e9f1b9931ab79a1a2645e478d0a422888465958d6d47618e74ff6"
+    },
+    {
+      "path": "docs/COMPONENT-SUPPLY-CHAIN.md",
+      "role": "documentation",
+      "digest": "sha256:cf7ff14c013829546deb91d14df3e8baa0ad2cfe92e41a0991abd12d7d3bcf21"
+    },
+    {
+      "path": "examples/component-catalog.json",
+      "role": "example",
+      "digest": "sha256:dc128667de863988adf00f5af22a4bf5302db18b91b92f8cf7c6a15c5b9cfc77"
+    },
+    {
+      "path": "examples/component-manifest.json",
+      "role": "example",
+      "digest": "sha256:c85d46b09549bee4e257d0543eef6f80b43aa09ba74e94c01849c6e670cd0e27"
+    },
+    {
+      "path": "examples/component-sources.json",
+      "role": "example",
+      "digest": "sha256:f8fd3846df1d0c21d27bac562c2009bf5dce027c97b12d4a885197773637a8b5"
     },
     {
       "path": "examples/default.json",
@@ -99,7 +119,22 @@
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:d96d5742318ddf26246345fd273c8dccffd1b187ec1d26f78f2afd1c01ec7bd1"
+      "digest": "sha256:b78aa02ed7589b6df4e34e38569ccfe5f4d97f91897a61e90f2f4a5ab5956e32"
+    },
+    {
+      "path": "schemas/component-catalog.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:63e4cc34d26a4c37b2628cd0e5e8e87e6b392d76aaeadadfb0b36ee69fc5a4c1"
+    },
+    {
+      "path": "schemas/component-manifest.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:6daae7ca8bd527adf699ba9e286177965865c9ccbe6b0bb156ba34c93ab13233"
+    },
+    {
+      "path": "schemas/component-sources.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:b6114150caffc4e60952f2ef649166aa5a0b1f41212493105e5b170a522d591c"
     },
     {
       "path": "schemas/pcb-context.schema.v1.json",
@@ -158,6 +193,12 @@
     },
     {
       "name": "style-baseline",
+      "mediaType": "application/json",
+      "direction": "bidirectional",
+      "lossless": true
+    },
+    {
+      "name": "component-catalog",
       "mediaType": "application/json",
       "direction": "bidirectional",
       "lossless": true

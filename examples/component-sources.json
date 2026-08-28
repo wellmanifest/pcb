@@ -1,0 +1,15 @@
+{
+  "schema_id": "wellmanifest.pcb/component-sources/v1",
+  "sources": [
+    {
+      "id": "kicad-footprints",
+      "uri": "https://gitlab.com/kicad/libraries/kicad-footprints.git",
+      "revision": "819223b66f96508feaeaa305301b5e6bb5c1038b",
+      "trust": "official",
+      "license": "CC-BY-SA-4.0",
+      "mutable": false,
+      "promotion": "manual-after-validation",
+      "purpose": "import-source"
+    }
+  ]
+}
