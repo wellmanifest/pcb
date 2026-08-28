@@ -18,6 +18,10 @@ naprawa deterministyczna i bramka decyzji.
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "profile": "panel9-strict",
+  "routing": {
+    "via_cost": 320,
+    "net_order": ["GP4", "GP1", "GND"]
+  },
   "rules": {
     "RULE_ZONE_LAYER_ALLOWLIST": {"layers": ["F.Cu"]},
     "RULE_FOOTPRINT_GRID": {"severity": "blocking", "grid_mm": 0.025}
@@ -28,6 +32,12 @@ naprawa deterministyczna i bramka decyzji.
 Nadpisanie zmienia **pojedyncze pola** reguły; reszta zostaje z profilu
 domyślnego (`examples/default.json`). Reguła spoza zamkniętego słownika to
 błąd profilu — nigdy cicho nieaktywna reguła.
+
+Sekcja `routing` jest wejściem optymalizatora, nie ukrytą stałą implementacji.
+`via_cost` określa względny koszt zmiany warstwy (wartość `0` jest dozwolonym
+kontrfaktem bez preferencji), a `net_order` jawnie rezerwuje
+korytarze najpierw dla sieci o najmniejszej swobodzie. CLI, DSL i handler muszą
+raportować, czy użyły profilu, czy świadomego nadpisania symulacji.
 
 Kolejność wyszukiwania profilu u adoptera:
 
@@ -41,12 +51,17 @@ Kolejność wyszukiwania profilu u adoptera:
 |---|---|---|---|
 | `RULE_LAYER_STACKUP` | pcb | blocking | liczbę i nazwy warstw miedzi |
 | `RULE_NO_COPPER_UNDER_PART` | pcb | blocking | obcą miedź pod obrysem elementu z metalem |
+| `RULE_COMPONENT_EDGE_CLEARANCE` | pcb | blocking | odległość obrysu zwykłego elementu od `Edge.Cuts`; wyjątek musi mieć reference i uzasadnienie |
 | `RULE_CONNECTOR_COURTYARD_MARGIN` | pcb | advisory | obcą miedź w powiększonym obrysie złącza |
 | `RULE_CONNECTOR_EDGE_CLEARANCE` | pcb | blocking | odległość obrysu złącza od `Edge.Cuts` (minimum 2,54 mm) |
 | `RULE_CONNECTOR_PAD_EDGE_CLEARANCE` | pcb | blocking | odległość padów złącza od `Edge.Cuts` (minimum 2,54 mm) |
-| `RULE_TRACK_EDGE_CLEARANCE` | pcb | blocking | odległość ścieżek i przelotek od `Edge.Cuts` (minimum 2,54 mm) |
+| `RULE_TRACK_EDGE_CLEARANCE` | pcb | blocking | odległość ścieżek od `Edge.Cuts` (minimum 2,54 mm) |
+| `RULE_VIA_EDGE_CLEARANCE` | pcb | blocking | odległość pierścieni przelotek od `Edge.Cuts` |
+| `RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT` | pcb | blocking | wyrównanie jawnych złączy krawędziowych i ich osobny próg miedzi |
 | `RULE_BUS_TRANSIT` | pcb | advisory | wspólną szynę przechodzącą przez element bez zakończenia na jego padzie |
+| `RULE_FOOTPRINT_INTERNAL_CONNECTIVITY` | pcb | blocking | zgodność sieci w zadeklarowanych grupach terminali zwartych wewnątrz elementu |
 | `RULE_VIA_BUDGET` | pcb | advisory | całkowity budżet przelotek i budżet zmian warstwy na sieć |
+| `RULE_VIA_IN_PAD` | pcb | advisory | via w padzie SMD lub nachodząca na pad bez jawnego procesu produkcyjnego |
 | `RULE_SILK_OVER_PAD` | pcb | advisory | sitodruk wchodzący na otwór w masce pada |
 | `RULE_ZONE_LAYER_ALLOWLIST` | pcb | blocking | strefy poza dopuszczonymi warstwami |
 | `RULE_TRACK_WIDTH_MIN` | pcb | blocking | ścieżki poniżej progu procesu |
@@ -88,6 +103,18 @@ wspólna szyna prowadzona przez środek pola elementów przecina drogi sygnałow
 Algorytm diagnozy, graf wpływów i kontrakt wyniku symulatora opisuje
 [`docs/ROUTING-OPTIMIZATION.md`](docs/ROUTING-OPTIMIZATION.md).
 
+### Parity nie zna wnętrza elementu
+
+`RULE_SCH_PCB_NET_PARITY` porównuje nazwę sieci dla tego samego numeru pinu,
+ale nie wie, które terminale są zwarte wewnątrz rzeczywistego elementu.
+`RULE_FOOTPRINT_INTERNAL_CONNECTIVITY` uzupełnia ten brak. Profil projektu
+deklaruje `part_pattern` oraz `terminal_groups`, na przykład poziome pary
+`[["1", "3"], ["2", "4"]]` czteropadowego przycisku. Wszystkie pady grupy
+muszą nieść jedną niepustą sieć; przy `require_distinct_groups: true`
+dwie grupy nie mogą nieść tej samej sieci. Domyślny profil nie zgaduje
+topologii części: regułę włącza się dopiero na podstawie karty katalogowej
+albo udokumentowanego pomiaru.
+
 ### Margines przy złączu nie jest odstępem od własnego pada
 
 `RULE_CONNECTOR_COURTYARD_MARGIN` powiększa obrys złącza o `margin_mm` i
@@ -97,7 +124,7 @@ pada. Jej szerokość i odstęp od sąsiedniej sieci rozstrzyga DRC oraz netclas
 Rozdzielenie jest celowe: większy courtyard poprawia przestrzeń montażową i
 czytelność fanoutu, ale nie może udawać elektrycznego clearance.
 
-### Złącze pozostaje 1/10 cala wewnątrz płytki
+### Zwykłe złącze pozostaje 1/10 cala wewnątrz płytki
 
 `RULE_CONNECTOR_EDGE_CLEARANCE` jest niezależna od miedzi i courtyardu. Mierzy
 najkrótszą odległość pomiędzy obrysem footprintu złącza a liniami `Edge.Cuts`.
@@ -106,12 +133,28 @@ Punkt kotwiczący footprintu nie jest miarą: cały obrys złącza musi zmieści
 po wewnętrznej stronie wymaganego marginesu. Brak mierzalnego `Edge.Cuts` jest
 naruszeniem, a nie cichym pominięciem kontroli.
 
+Złącze przeznaczone do montażu na krawędzi nie może udawać zwykłego wyjątku.
+Jego reference występuje w `edge_mount_references` obu ogólnych reguł złącza,
+a `RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT` przejmuje odpowiedzialność: sprawdza
+wskazaną stronę płytki, maksymalną szczelinę obudowy i niezależne minimum
+miedzi. Dzięki temu wyjątek od 2,54 mm dla korpusu nie wyłącza DFM padów.
+
 Reguła mechaniczna nie zastępuje kontroli miedzi. Osobna
 `RULE_CONNECTOR_PAD_EDGE_CLEARANCE` mierzy krawędzie padów złącza, a
-`RULE_TRACK_EDGE_CLEARANCE` — krawędzie segmentów ścieżek i przelotek po
-uwzględnieniu ich szerokości lub średnicy. Wszystkie trzy progi są liczone od
+`RULE_TRACK_EDGE_CLEARANCE` — krawędzie segmentów ścieżek, a
+`RULE_VIA_EDGE_CLEARANCE` — pierścienie przelotek po uwzględnieniu ich średnicy.
+Wszystkie progi są liczone od
 najbliższego rzeczywistego obiektu, nigdy od jego środka. DRC producenta nadal
 pozostaje wymaganą bramką dla stref miedzi i pełnych reguł procesu.
+
+### Via w padzie jest decyzją produkcyjną
+
+`RULE_VIA_IN_PAD` odróżnia `center-in-pad` od `annulus-overlap`. Oba przypadki
+są widoczne, ale profil może zdecydować, czy nachodzenie samego pierścienia ma
+być raportowane. Wyjątek wymaga reference, opcjonalnego numeru pada i nazwanego
+procesu `filled-and-capped` albo `via-in-pad-plated-over`; samo wpisanie
+`allow: true` nie jest dowodem technologii. Domyślnie reguła jest doradcza,
+natomiast projekt może ją podnieść do blokującej.
 
 ## Bramka regresji
 
@@ -228,6 +271,16 @@ w PCB. Wymaga `kicad-cli` do eksportu netlisty; jego brak daje
 `digitaltwin-run/twinstudio` — właściciel zapisu (`twinstudio.eda-change/v1`),
 strumienia zdarzeń i promocji źródła. Profil jest dziś czytany po stronie
 adoptera; natywne wiązanie w `kicad_dsl` jest planowane.
+
+## Słownik operacji
+
+Operacje są zamkniętym słownikiem czasowników zmiany. Adopter może wykonać
+tylko operację obecną w `pcb-standard.json`; sam wpis nadal nie daje zgody na
+zmianę źródła.
+
+`resize_footprint_pads` zmienia miedź oraz geometrię produkcyjną pada, dlatego
+wymaga bramek DRC i stylu oraz zgodności instancji PCB z kanoniczną biblioteką
+footprintu.
 
 ## Manifest DSL i słownik domenowy
 

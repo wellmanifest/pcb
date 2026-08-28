@@ -43,7 +43,9 @@
         "RULE_TRACK_WIDTH_BY_NET",
         "RULE_NO_COPPER_UNDER_PART",
         "RULE_CONNECTOR_COURTYARD_MARGIN",
-        "RULE_TRACK_EDGE_CLEARANCE"
+        "RULE_TRACK_EDGE_CLEARANCE",
+        "RULE_VIA_EDGE_CLEARANCE",
+        "RULE_VIA_IN_PAD"
       ],
       "verify": [
         "drc_no_regression",
@@ -52,6 +54,20 @@
       ],
       "reversible": true,
       "why": "Przestawiony element unieważnia każdą trasę, która do niego dochodziła; doklejanie mostków zamienia jedną zmianę w dług."
+    },
+    {
+      "id": "resize_footprint_pads",
+      "scope": "pcb",
+      "entity": "pad",
+      "changes": "copper",
+      "clears": [],
+      "verify": [
+        "drc_no_regression",
+        "style_no_regression",
+        "footprint_parity"
+      ],
+      "reversible": true,
+      "why": "Geometria pola lutowniczego jest częścią procesu produkcyjnego; zmiana rozmiaru musi objąć instancję PCB i kanoniczną bibliotekę footprintu."
     },
     {
       "id": "route_power_net",
@@ -72,7 +88,8 @@
       "entity": "pad",
       "changes": "netlist",
       "clears": [
-        "RULE_SCH_PCB_NET_PARITY"
+        "RULE_SCH_PCB_NET_PARITY",
+        "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY"
       ],
       "verify": [
         "net_parity",
@@ -88,8 +105,10 @@
       "changes": "placement",
       "clears": [
         "RULE_FOOTPRINT_GRID",
+        "RULE_COMPONENT_EDGE_CLEARANCE",
         "RULE_CONNECTOR_EDGE_CLEARANCE",
-        "RULE_CONNECTOR_PAD_EDGE_CLEARANCE"
+        "RULE_CONNECTOR_PAD_EDGE_CLEARANCE",
+        "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT"
       ],
       "verify": [
         "drc_no_regression",
@@ -220,7 +239,8 @@
       "entity": "net",
       "changes": "netlist",
       "clears": [
-        "RULE_SCH_PCB_NET_PARITY"
+        "RULE_SCH_PCB_NET_PARITY",
+        "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY"
       ],
       "verify": [
         "net_parity",

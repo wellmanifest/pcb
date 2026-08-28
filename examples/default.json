@@ -1,9 +1,13 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.14.0",
+  "version": "1.16.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
+  "routing": {
+    "via_cost": 60,
+    "net_order": []
+  },
   "rules": {
     "RULE_LAYER_STACKUP": {
       "enabled": true,
@@ -23,6 +27,14 @@
       "shielded_pattern": "SW|TACT|BUTTON|RJ45|SHIELD|USB|JACK",
       "description": "Obca miedź nie przechodzi tranzytem pod obrysem elementu dociskającego metal do laminatu."
     },
+    "RULE_COMPONENT_EDGE_CLEARANCE": {
+      "enabled": false,
+      "severity": "blocking",
+      "scope": "pcb",
+      "min_mm": 2.54,
+      "exceptions": [],
+      "description": "Obrys zwykłego elementu pozostaje co najmniej 2,54 mm (1/10 cala) od Edge.Cuts; element dochodzący funkcjonalnie do krawędzi wymaga jawnego wyjątku i osobnego kontraktu."
+    },
     "RULE_CONNECTOR_COURTYARD_MARGIN": {
       "enabled": true,
       "severity": "advisory",
@@ -36,6 +48,7 @@
       "severity": "blocking",
       "scope": "pcb",
       "connector_pattern": "(?:^|:)(?:CONN|CONNECTOR|HEADER|RJ|USB|JACK)",
+      "edge_mount_references": [],
       "min_mm": 2.54,
       "description": "Obrys footprintu złącza pozostaje co najmniej 2,54 mm (1/10 cala) od najbliższej krawędzi Edge.Cuts."
     },
@@ -44,6 +57,7 @@
       "severity": "blocking",
       "scope": "pcb",
       "connector_pattern": "(?:^|:)(?:CONN|CONNECTOR|HEADER|RJ|USB|JACK)",
+      "edge_mount_references": [],
       "min_mm": 2.54,
       "description": "Zewnętrzna krawędź każdego pada złącza pozostaje co najmniej 2,54 mm (1/10 cala) od Edge.Cuts."
     },
@@ -52,7 +66,21 @@
       "severity": "blocking",
       "scope": "pcb",
       "min_mm": 2.54,
-      "description": "Zewnętrzna krawędź każdej ścieżki i przelotki pozostaje co najmniej 2,54 mm (1/10 cala) od Edge.Cuts."
+      "description": "Zewnętrzna krawędź każdej ścieżki pozostaje co najmniej 2,54 mm (1/10 cala) od Edge.Cuts."
+    },
+    "RULE_VIA_EDGE_CLEARANCE": {
+      "enabled": true,
+      "severity": "blocking",
+      "scope": "pcb",
+      "min_mm": 2.54,
+      "description": "Zewnętrzna krawędź pierścienia każdej przelotki pozostaje co najmniej 2,54 mm (1/10 cala) od Edge.Cuts."
+    },
+    "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT": {
+      "enabled": false,
+      "severity": "blocking",
+      "scope": "pcb",
+      "connectors": [],
+      "description": "Złącze montowane na krawędzi jest jawnym kontraktem: obudowa dochodzi do wskazanej krawędzi, a jego miedź zachowuje osobny próg technologiczny."
     },
     "RULE_BUS_TRANSIT": {
       "enabled": true,
@@ -64,6 +92,13 @@
       "endpoint_tolerance_mm": 0.2,
       "description": "Wspólna szyna może wejść w obrys elementu, żeby skończyć na jego padzie, ale nie przechodzi przez element tranzytem."
     },
+    "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY": {
+      "enabled": false,
+      "severity": "blocking",
+      "scope": "pcb",
+      "components": [],
+      "description": "Wewnętrznie zwarte terminale są kontraktem konkretnego footprintu; regułę włącza profil projektu dopiero z rzeczywistymi grupami z karty katalogowej lub pomiaru."
+    },
     "RULE_VIA_BUDGET": {
       "enabled": true,
       "severity": "advisory",
@@ -72,6 +107,14 @@
       "max_total": 24,
       "max_per_net": 4,
       "description": "Budżet zmian warstwy po przejściu DRC i parity; przekroczenie wskazuje złą topologię, przypisanie pinów albo zajęty korytarz."
+    },
+    "RULE_VIA_IN_PAD": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "include_annulus_overlap": true,
+      "exceptions": [],
+      "description": "Przelotka w padzie SMD lub nachodząca pierścieniem na pad wymaga jawnej technologii wypełnienia i zakrycia; bez wyjątku pozostaje długiem DFM."
     },
     "RULE_SILK_OVER_PAD": {
       "enabled": true,

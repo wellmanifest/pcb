@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.16.0
+
+- Profil `style/v1` przenosi `routing.via_cost` i `routing.net_order` do danych;
+  ten sam wybór ma obowiązywać w DSL, CLI i routerze zamiast w stałej adoptera.
+  Koszt `0` pozostaje legalnym kontrfaktem, a raport przypisuje odcinki, via i
+  długość do każdej sieci zamiast pokazywać wyłącznie sumę.
+- `RULE_COMPONENT_EDGE_CLEARANCE` mierzy mechaniczny obrys każdego zwykłego
+  elementu; funkcjonalny kontakt z krawędzią wymaga wyjątku z `reference` i
+  uzasadnieniem, a złącze edge-mount nadal przechodzi osobny kontrakt miedzi.
+- Rozdzielono odległość ścieżek i przelotek na
+  `RULE_TRACK_EDGE_CLEARANCE` oraz `RULE_VIA_EDGE_CLEARANCE`.
+- `RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT` zastępuje fałszywe zwolnienie złącza
+  krawędziowego kontraktem strony, maksymalnej szczeliny obudowy i minimum miedzi.
+- `RULE_VIA_IN_PAD` raportuje osobno środek via w padzie i nachodzenie
+  pierścienia; wyjątek musi nazywać proces wypełnienia i zakrycia.
+- `resize_footprint_pads` jest jawną operacją słownika z bramkami DRC, stylu i
+  zgodności footprintu; proces adoptera nie musi już wyprzedzać standardu.
+- Profil panel9 deklaruje J1 jako prawe złącze krawędziowe i blokuje via-in-pad,
+  ponieważ nie zadeklarowano procesu `filled-and-capped`.
+
+## 1.15.0
+
+- `RULE_FOOTPRINT_INTERNAL_CONNECTIVITY` opisuje grupy padów zwarte wewnątrz
+  rzeczywistego elementu i blokuje różne sieci w jednej grupie.
+- Opcjonalne `require_distinct_groups` wykrywa również zwarcie odrębnych grup.
+  Reguła jest domyślnie wyłączona, bo topologii części nie wolno zgadywać;
+  profil projektu włącza ją na podstawie karty katalogowej lub pomiaru.
+- Profil panel9 deklaruje poziome pary switcha `1+3` oraz `2+4`, co ujawnia
+  błędne pionowe przypisanie GPIO/GND niewidoczne dla parity SCH↔PCB.
+
 ## 1.14.0
 
 - `RULE_CONNECTOR_EDGE_CLEARANCE` wymaga co najmniej 2,54 mm (1/10 cala)

@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.14.0",
+  "version": "1.16.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -57,6 +57,12 @@
       "measures": "obcą miedź pod obrysem elementu z metalem dociskanym do laminatu"
     },
     {
+      "id": "RULE_COMPONENT_EDGE_CLEARANCE",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "najmniejszą odległość obrysu zwykłego elementu od Edge.Cuts; wyjątek wymaga reference i uzasadnienia"
+    },
+    {
       "id": "RULE_CONNECTOR_COURTYARD_MARGIN",
       "scope": "pcb",
       "default_severity": "advisory",
@@ -78,7 +84,19 @@
       "id": "RULE_TRACK_EDGE_CLEARANCE",
       "scope": "pcb",
       "default_severity": "blocking",
-      "measures": "najmniejszą odległość zewnętrznej krawędzi ścieżek i przelotek od Edge.Cuts"
+      "measures": "najmniejszą odległość zewnętrznej krawędzi ścieżek od Edge.Cuts"
+    },
+    {
+      "id": "RULE_VIA_EDGE_CLEARANCE",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "najmniejszą odległość zewnętrznej krawędzi pierścienia przelotki od Edge.Cuts"
+    },
+    {
+      "id": "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "czy jawne złącze edge_mount dochodzi do zadeklarowanej krawędzi i zachowuje osobny próg miedzi"
     },
     {
       "id": "RULE_BUS_TRANSIT",
@@ -87,10 +105,22 @@
       "measures": "wspólną szynę przechodzącą tranzytem przez obrys elementu zamiast kończyć się na jego własnym padzie"
     },
     {
+      "id": "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY",
+      "scope": "pcb",
+      "default_severity": "blocking",
+      "measures": "czy pady należące do zadeklarowanej wewnętrznie zwartej grupy footprintu niosą jedną sieć, a odrębne grupy nie zostały zwarte ze sobą"
+    },
+    {
       "id": "RULE_VIA_BUDGET",
       "scope": "pcb",
       "default_severity": "advisory",
       "measures": "całkowitą liczbę przelotek i budżet zmian warstwy na pojedynczą sieć"
+    },
+    {
+      "id": "RULE_VIA_IN_PAD",
+      "scope": "pcb",
+      "default_severity": "advisory",
+      "measures": "środek via w padzie SMD oraz nachodzenie pierścienia via na pad bez jawnego wyjątku technologicznego"
     },
     {
       "id": "RULE_SILK_OVER_PAD",
@@ -329,7 +359,9 @@
         "RULE_TRACK_WIDTH_BY_NET",
         "RULE_NO_COPPER_UNDER_PART",
         "RULE_CONNECTOR_COURTYARD_MARGIN",
-        "RULE_TRACK_EDGE_CLEARANCE"
+        "RULE_TRACK_EDGE_CLEARANCE",
+        "RULE_VIA_EDGE_CLEARANCE",
+        "RULE_VIA_IN_PAD"
       ],
       "verify": [
         "drc_no_regression",
@@ -338,6 +370,20 @@
       ],
       "reversible": true,
       "why": "Przestawiony element unieważnia każdą trasę, która do niego dochodziła; doklejanie mostków zamienia jedną zmianę w dług."
+    },
+    {
+      "id": "resize_footprint_pads",
+      "scope": "pcb",
+      "entity": "pad",
+      "changes": "copper",
+      "clears": [],
+      "verify": [
+        "drc_no_regression",
+        "style_no_regression",
+        "footprint_parity"
+      ],
+      "reversible": true,
+      "why": "Geometria pola lutowniczego jest częścią procesu produkcyjnego; zmiana rozmiaru musi objąć instancję PCB i kanoniczną bibliotekę footprintu."
     },
     {
       "id": "route_power_net",
@@ -358,7 +404,8 @@
       "entity": "pad",
       "changes": "netlist",
       "clears": [
-        "RULE_SCH_PCB_NET_PARITY"
+        "RULE_SCH_PCB_NET_PARITY",
+        "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY"
       ],
       "verify": [
         "net_parity",
@@ -374,8 +421,10 @@
       "changes": "placement",
       "clears": [
         "RULE_FOOTPRINT_GRID",
+        "RULE_COMPONENT_EDGE_CLEARANCE",
         "RULE_CONNECTOR_EDGE_CLEARANCE",
-        "RULE_CONNECTOR_PAD_EDGE_CLEARANCE"
+        "RULE_CONNECTOR_PAD_EDGE_CLEARANCE",
+        "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT"
       ],
       "verify": [
         "drc_no_regression",
@@ -506,7 +555,8 @@
       "entity": "net",
       "changes": "netlist",
       "clears": [
-        "RULE_SCH_PCB_NET_PARITY"
+        "RULE_SCH_PCB_NET_PARITY",
+        "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY"
       ],
       "verify": [
         "net_parity",
@@ -669,6 +719,14 @@
       "remedy_operations": [],
       "remedy_note": "Bez netlisty nie wolno orzec „zgodne\": to jest brak kontroli, nie zaliczenie. Potrzebne `kicad-cli`.",
       "source": "gate"
+    },
+    {
+      "id": "EDA_ERC_NOT_RUN",
+      "severity": "WARNING",
+      "means": "ERC schematu nie zostało wykonane dla kandydata.",
+      "remedy_operations": [],
+      "remedy_note": "To stan oczekujący, nie wynik pozytywny. Przed promocją uruchom ERC w środowisku z kicad-cli i dołącz wynik do dowodu kandydata.",
+      "source": "backend"
     },
     {
       "id": "EDA_FOOTPRINT_MISMATCH",

@@ -80,6 +80,14 @@
       "source": "gate"
     },
     {
+      "id": "EDA_ERC_NOT_RUN",
+      "severity": "WARNING",
+      "means": "ERC schematu nie zostało wykonane dla kandydata.",
+      "remedy_operations": [],
+      "remedy_note": "To stan oczekujący, nie wynik pozytywny. Przed promocją uruchom ERC w środowisku z kicad-cli i dołącz wynik do dowodu kandydata.",
+      "source": "backend"
+    },
+    {
       "id": "EDA_FOOTPRINT_MISMATCH",
       "severity": "ERROR",
       "gate": "footprint_parity",

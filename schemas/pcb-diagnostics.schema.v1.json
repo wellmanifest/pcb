@@ -44,6 +44,7 @@
             "EDA_STYLE_NOT_RUN",
             "EDA_PARITY_MISMATCH",
             "EDA_PARITY_NOT_RUN",
+            "EDA_ERC_NOT_RUN",
             "EDA_FOOTPRINT_MISMATCH",
             "EDA_FOOTPRINT_PARITY_NOT_RUN",
             "EDA_CONNECTIVITY_REGRESSION",

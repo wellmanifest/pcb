@@ -55,6 +55,19 @@ do własnego złącza. Zwiększenie `margin_mm` nie zmienia reguł elektrycznych
 zastępuje DRC; może za to ujawnić, że korytarz sygnałowy wybrano zbyt blisko
 obudowy albo strefy montażowej.
 
+## Wejście sterujące i dowód per sieć
+
+`routing.via_cost` oraz `routing.net_order` należą do profilu `style/v1`, a nie
+do stałych konkretnego adoptera. Koszt jest liczbą nieujemną: `0` tworzy ważny
+wariant kontrolny bez kary za zmianę warstwy, ale nie wyłącza DRC, parity ani
+reguł blokujących. Operacja DSL albo CLI może jawnie nadpisać profil dla jednej
+symulacji; wynik musi wtedy odróżnić źródło `explicit` od `profile`.
+
+Poza sumą odcinków i via raport wariantu powinien zwracać `per_net`: liczbę
+odcinków, liczbę zmian warstwy, długość miedzi i brak trasy dla każdej sieci.
+To minimalny dowód pozwalający przejść od obserwacji „przybyły cztery via” do
+diagnozy, która decyzja i która sieć spowodowały koszt.
+
 Położenie złącza przechodzi trzy niezależne pomiary przed routingiem:
 
 * `RULE_CONNECTOR_EDGE_CLEARANCE` — obrys mechaniczny złącza względem krawędzi,

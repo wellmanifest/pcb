@@ -4,6 +4,10 @@
   "version": "1.1.0",
   "profile": "panel9",
   "title": "Lokalne rozszerzenie standardu wellmanifest/pcb dla projektu panel9",
+  "routing": {
+    "via_cost": 320,
+    "net_order": ["GP4", "GP1", "GP14", "GP8", "ENC_B", "GND"]
+  },
   "rules": {
     "RULE_LAYER_STACKUP": {
       "layers": ["F.Cu", "B.Cu"],
@@ -54,21 +58,74 @@
       "shielded_pattern": "SW|TACT|BUTTON|RJ45|SHIELD|USB|JACK",
       "description": "Przyciski tact mają metalową kopułkę dociskaną do laminatu."
     },
+    "RULE_COMPONENT_EDGE_CLEARANCE": {
+      "enabled": true,
+      "severity": "blocking",
+      "min_mm": 2.54,
+      "exceptions": [
+        {
+          "reference": "U1",
+          "reason": "moduł RP2040-Zero wystawia USB na lewą krawędź"
+        },
+        {
+          "reference": "J1",
+          "reason": "RJ45 jest złączem edge-mount kontrolowanym przez RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT"
+        }
+      ],
+      "description": "Zwykłe elementy panel9 zachowują 2,54 mm od Edge.Cuts; U1 i J1 mają funkcjonalny kontakt z krawędzią i osobne kontrakty mechaniczne."
+    },
+    "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY": {
+      "enabled": true,
+      "severity": "blocking",
+      "components": [
+        {
+          "part_pattern": "(?:^|:)SW_TACT_5\\.2x5\\.2$",
+          "terminal_groups": [["1", "3"], ["2", "4"]],
+          "require_distinct_groups": true
+        }
+      ],
+      "description": "Rzeczywisty TACT panel9 ma poziome pary zwarte wewnętrznie: pady 1+3 oraz 2+4; pionowe przypisanie zwierałoby GPIO z GND bez naciskania."
+    },
     "RULE_CONNECTOR_COURTYARD_MARGIN": {
       "margin_mm": 2.54,
       "description": "Przy RJ45 obce korytarze miedzi pozostają co najmniej jeden raster 2,54 mm poza obrysem złącza."
     },
     "RULE_CONNECTOR_EDGE_CLEARANCE": {
       "min_mm": 2.54,
-      "description": "Cały obrys RJ45 pozostaje co najmniej 2,54 mm (1/10 cala) wewnątrz Edge.Cuts."
+      "edge_mount_references": ["J1"],
+      "description": "Zwykłe złącza pozostają 2,54 mm wewnątrz Edge.Cuts; J1 jest jawnie kontrolowany osobną regułą edge_mount."
     },
     "RULE_CONNECTOR_PAD_EDGE_CLEARANCE": {
       "min_mm": 2.54,
-      "description": "Każdy pad RJ45, łącznie z padami ekranu, pozostaje co najmniej 2,54 mm od Edge.Cuts."
+      "edge_mount_references": ["J1"],
+      "description": "Pady zwykłych złączy pozostają 2,54 mm od Edge.Cuts; pady J1 sprawdza osobny kontrakt edge_mount."
     },
     "RULE_TRACK_EDGE_CLEARANCE": {
       "min_mm": 2.54,
-      "description": "Ścieżki i przelotki pozostają co najmniej 2,54 mm od Edge.Cuts."
+      "description": "Ścieżki pozostają co najmniej 2,54 mm od Edge.Cuts."
+    },
+    "RULE_VIA_EDGE_CLEARANCE": {
+      "min_mm": 2.54,
+      "description": "Odległość jest liczona od zewnętrznej krawędzi pierścienia via, nie od środka."
+    },
+    "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT": {
+      "enabled": true,
+      "severity": "blocking",
+      "connectors": [
+        {
+          "reference": "J1",
+          "edge": "right",
+          "max_body_gap_mm": 0.2,
+          "min_copper_edge_mm": 1.5
+        }
+      ],
+      "description": "RJ45 J1 jest złączem krawędziowym: obudowa dochodzi do prawej krawędzi, a najbliższy pad ekranu zachowuje co najmniej 1,5 mm miedzi do Edge.Cuts."
+    },
+    "RULE_VIA_IN_PAD": {
+      "severity": "blocking",
+      "include_annulus_overlap": false,
+      "exceptions": [],
+      "description": "Panel9 nie deklaruje procesu filled-and-capped, dlatego środek via w padzie SMD jest blokadą. Nachodzenie samego tentowanego pierścienia można włączyć osobno jako audyt doradczy."
     },
     "RULE_PIN_WIRE_GAP": {
       "max_gap_mm": 1.0,

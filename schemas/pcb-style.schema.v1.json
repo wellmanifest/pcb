@@ -25,6 +25,24 @@
     "title": {
       "type": "string"
     },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "via_cost": {
+          "type": "number",
+          "minimum": 0
+        },
+        "net_order": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
     "rules": {
       "type": "object",
       "additionalProperties": false,
@@ -39,6 +57,32 @@
             "shielded_pattern": {
               "type": "string",
               "format": "regex"
+            }
+          }
+        },
+        "RULE_COMPONENT_EDGE_CLEARANCE": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "min_mm": {
+              "type": "number",
+              "minimum": 2.54
+            },
+            "exceptions": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["reference", "reason"],
+                "properties": {
+                  "reference": {"type": "string", "minLength": 1},
+                  "reason": {"type": "string", "minLength": 1}
+                }
+              }
             }
           }
         },
@@ -70,6 +114,11 @@
               "type": "string",
               "format": "regex"
             },
+            "edge_mount_references": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
             "min_mm": {
               "type": "number",
               "minimum": 2.54
@@ -87,6 +136,11 @@
               "type": "string",
               "format": "regex"
             },
+            "edge_mount_references": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
             "min_mm": {
               "type": "number",
               "minimum": 2.54
@@ -103,6 +157,35 @@
             "min_mm": {
               "type": "number",
               "minimum": 2.54
+            }
+          }
+        },
+        "RULE_VIA_EDGE_CLEARANCE": {
+          "allOf": [
+            {"$ref": "#/$defs/rule"}
+          ],
+          "properties": {
+            "min_mm": {"type": "number", "exclusiveMinimum": 0}
+          }
+        },
+        "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT": {
+          "allOf": [
+            {"$ref": "#/$defs/rule"}
+          ],
+          "properties": {
+            "connectors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["reference", "edge", "max_body_gap_mm", "min_copper_edge_mm"],
+                "additionalProperties": false,
+                "properties": {
+                  "reference": {"type": "string", "minLength": 1},
+                  "edge": {"enum": ["left", "right", "top", "bottom"]},
+                  "max_body_gap_mm": {"type": "number", "minimum": 0},
+                  "min_copper_edge_mm": {"type": "number", "minimum": 0}
+                }
+              }
             }
           }
         },
@@ -131,6 +214,48 @@
             }
           }
         },
+        "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "components": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "part_pattern",
+                  "terminal_groups"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "part_pattern": {
+                    "type": "string",
+                    "format": "regex"
+                  },
+                  "terminal_groups": {
+                    "type": "array",
+                    "minItems": 2,
+                    "items": {
+                      "type": "array",
+                      "minItems": 2,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "require_distinct_groups": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
         "RULE_VIA_BUDGET": {
           "allOf": [
             {
@@ -149,6 +274,28 @@
             "max_per_net": {
               "type": "integer",
               "minimum": 0
+            }
+          }
+        },
+        "RULE_VIA_IN_PAD": {
+          "allOf": [
+            {"$ref": "#/$defs/rule"}
+          ],
+          "properties": {
+            "include_annulus_overlap": {"type": "boolean"},
+            "exceptions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["reference", "process"],
+                "additionalProperties": false,
+                "properties": {
+                  "reference": {"type": "string", "minLength": 1},
+                  "pad": {"type": "string", "minLength": 1},
+                  "process": {"enum": ["filled-and-capped", "via-in-pad-plated-over"]},
+                  "reason": {"type": "string", "minLength": 1}
+                }
+              }
             }
           }
         },
