@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wellmanifest.dev/schemas/pcb/pcb-diagnostics.schema.v1.json",
+  "title": "Zamknięty słownik kodów odmowy i tego, co po nich zrobić",
+  "description": "Bramka, która mówi tylko `EDA_DRC_CATEGORY_REGRESSION`, kończy rozmowę zamiast ją zacząć. Ten słownik dokłada trzecią nogę kontraktu: reguły mówią, co jest defektem, operacje — co wolno z tym zrobić, a diagnostyka — co znaczy odmowa i którą operacją się ją zdejmuje. Adopter musi mieć runbook `errors/{ID}.md` dla każdego kodu, który emituje; kod bez runbooka jest kodem, którego nikt nie umie użyć.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "wellmanifest.pcb/diagnostics/v1"
+    },
+    "diagnostics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/diagnostic"
+      }
+    }
+  },
+  "$defs": {
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "severity",
+        "gate",
+        "means",
+        "remedy_operations",
+        "remedy_note"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "EDA_DRC_REGRESSION",
+            "EDA_DRC_CATEGORY_REGRESSION",
+            "EDA_UNCONNECTED_REGRESSION",
+            "EDA_DRC_NOT_RUN",
+            "EDA_STYLE_REGRESSION",
+            "EDA_STYLE_NOT_RUN",
+            "EDA_PARITY_MISMATCH",
+            "EDA_PARITY_NOT_RUN",
+            "EDA_FOOTPRINT_MISMATCH",
+            "EDA_FOOTPRINT_PARITY_NOT_RUN",
+            "EDA_CONNECTIVITY_REGRESSION",
+            "EDA_DANGLING_NET_REGRESSION",
+            "EDA_CONNECTIVITY_NOT_RUN",
+            "EDA_DECOUPLING_MISSING",
+            "EDA_DECOUPLING_NOT_RUN"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "WARNING",
+            "ERROR",
+            "CRITICAL"
+          ]
+        },
+        "gate": {
+          "enum": [
+            "drc_no_regression",
+            "style_no_regression",
+            "net_parity",
+            "footprint_parity",
+            "connectivity_preserved"
+          ]
+        },
+        "means": {
+          "type": "string",
+          "minLength": 1
+        },
+        "remedy_operations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "set_track_width",
+              "orthogonalize_track",
+              "reroute_component_nets",
+              "route_power_net",
+              "assign_pad_net",
+              "move",
+              "trim_silkscreen",
+              "fill_zones",
+              "remove_zones",
+              "add_decoupling_capacitor",
+              "set_property",
+              "set_footprint_field",
+              "mark_no_connect",
+              "merge_split_rails",
+              "split_wire_at_tap",
+              "synchronize_net_connectivity"
+            ]
+          }
+        },
+        "remedy_note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

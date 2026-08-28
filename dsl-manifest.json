@@ -57,6 +57,16 @@
       "digest": "sha256:3f38cd0498d2e86874ee2f8654e26b677fc3964e36c67685a04ef45e1901cc64"
     },
     {
+      "path": "examples/diagnostics.json",
+      "role": "example",
+      "digest": "sha256:4bc32ae9f1b2d85ea1a9c47424fed46a21e453ca58a8b51d0d66469ad2c12fff"
+    },
+    {
+      "path": "examples/invalid-unknown-diagnostic.json",
+      "role": "example",
+      "digest": "sha256:48e3ea0f78e2f96fb9ceff8738d3ec6a7d5c44b3b852d328c1a91546590b51d5"
+    },
+    {
       "path": "examples/invalid-unknown-operation.json",
       "role": "example",
       "digest": "sha256:d167b416bf5e59df7a9a15f1c2fdc05c9e480f43a20203610122edd41257d41a"
@@ -89,12 +99,17 @@
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:efafb279c8484eeece1ef128e7ce792d04ef40ac361e0fa5eabb95431f5f7826"
+      "digest": "sha256:39e3d214c44c8c9377464db0911a6605d37f9c5570dfdab1f54e21ed570fefaf"
     },
     {
       "path": "schemas/pcb-context.schema.v1.json",
       "role": "schema",
       "digest": "sha256:2eb4dccffeca96ec4428f2e14e1b0abfd35dc0f74d9b22a0f1582f07f4fedf83"
+    },
+    {
+      "path": "schemas/pcb-diagnostics.schema.v1.json",
+      "role": "schema",
+      "digest": "sha256:54018b03edcfa8a2a5d540f2eab2c996f83b1c82f2096182b1dee72fe6e953f2"
     },
     {
       "path": "schemas/pcb-operations.schema.v1.json",

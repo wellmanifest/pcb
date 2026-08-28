@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.9.0
+
+- **Zamknięty słownik diagnostyk** — trzecia noga kontraktu. Reguły mówiły, co
+  jest defektem; operacje — co wolno z tym zrobić; nic nie mówiło, co znaczy
+  odmowa bramki i którą operacją się ją zdejmuje. Adopter emitował piętnaście
+  kodów i nie opisywał żadnego, więc `EDA_DRC_CATEGORY_REGRESSION` było ścianą,
+  a nie wskazówką.
+- Każda diagnostyka wiąże się z bramką (`gate`), tłumaczy, co znaczy (`means`),
+  i mówi, co dalej — wskazując operacje ze słownika (`remedy_operations`) albo
+  wyjaśniając, dlaczego żadna nie wystarczy (`remedy_note`).
+- Walidator wymusza dwie rzeczy, których żaden opis nie pilnuje sam:
+  diagnostyka nie może polecać nieznanej operacji ani wskazywać nieznanej bramki,
+  a **każda bramka musi mieć co najmniej jedną diagnostykę** — bramka milcząca
+  przy braku kontroli wygląda jak bramka zaliczona.
+- `schemas/pcb-diagnostics.schema.v1.json`, `examples/diagnostics.json` i przykład
+  negatywny.
+
 ## 1.8.0
 
 - **Zamknięty słownik operacji.** Reguły mówiły, co jest defektem; nic nie mówiło,

@@ -1,0 +1,13 @@
+{
+  "schema_id": "wellmanifest.pcb/diagnostics/v1",
+  "diagnostics": [
+    {
+      "id": "EDA_SOMETHING_ELSE",
+      "severity": "ERROR",
+      "gate": "drc_no_regression",
+      "means": "Kandydat ma więcej naruszeń DRC niż źródło — łącznie.",
+      "remedy_operations": [],
+      "remedy_note": "Porównaj kategorie, nie sumę: wzrost bywa w innej kategorii niż ta, którą naprawiasz. Jeśli wzrost jest w kategorii niezwiązanej ze zmianą, sprawdź najpierw, czy kandydat mierzony jest w tych samych warunkach, co projekt — brak biblioteki footprintów w katalogu kandydata dokłada ostrzeżenie na każdy element."
+    }
+  ]
+}

@@ -142,6 +142,59 @@ def _check_operations(manifest: dict, rule_ids: set[str]) -> None:
         print("✔ nieznana operacja jest błędem, nie operacją nieaktywną")
 
 
+def _check_diagnostics(manifest: dict) -> None:
+    """Trzecia noga kontraktu: co znaczy odmowa i którą operacją się ją zdejmuje.
+
+    Bramka, która mówi tylko `EDA_DRC_CATEGORY_REGRESSION`, kończy rozmowę
+    zamiast ją zacząć. Kod bez wyjaśnienia i bez wskazania naprawy jest kodem,
+    którego nikt nie umie użyć.
+    """
+    schema_path = ROOT / "schemas" / "pcb-diagnostics.schema.v1.json"
+    example_path = ROOT / "examples" / "diagnostics.json"
+    if not (schema_path.is_file() and example_path.is_file()):
+        _fail("brak schematu albo przykładu słownika diagnostyk")
+    schema = _load(schema_path)
+    declared = {item["id"] for item in manifest.get("diagnostics") or []}
+    if not declared:
+        _fail("standard nie deklaruje żadnej diagnostyki")
+    enum = set(schema["$defs"]["diagnostic"]["properties"]["id"]["enum"])
+    if enum != declared:
+        _fail(f"słownik diagnostyk rozjechany: {sorted(enum ^ declared)}")
+    gates = {item["id"] for item in manifest.get("verifications") or []}
+    operations = {item["id"] for item in manifest.get("operations") or []}
+    for diagnostic in manifest["diagnostics"]:
+        if diagnostic["gate"] not in gates:
+            _fail(f"diagnostyka {diagnostic['id']} wskazuje nieznaną bramkę "
+                  f"{diagnostic['gate']!r}")
+        unknown = [name for name in diagnostic["remedy_operations"] if name not in operations]
+        if unknown:
+            _fail(f"diagnostyka {diagnostic['id']} poleca nieznaną operację {unknown[0]}")
+        if diagnostic["severity"] == "ERROR" and not diagnostic["remedy_note"]:
+            _fail(f"diagnostyka {diagnostic['id']} blokuje, a nie mówi, co dalej")
+    # Każda bramka musi mieć kod na wypadek, gdy się nie wykona. Bramka, która
+    # milczy przy braku kontroli, wygląda jak bramka, która przeszła.
+    silent = sorted(gates - {item["gate"] for item in manifest["diagnostics"]})
+    if silent:
+        _fail(f"bramka {silent[0]} nie ma żadnej diagnostyki — odmowa byłaby bez nazwy")
+    print(f"✔ zamknięty słownik diagnostyk zgodny ({len(declared)} kodów)")
+
+    document = _load(example_path)
+    if document.get("diagnostics") != manifest["diagnostics"]:
+        _fail("examples/diagnostics.json rozjechany ze standardem")
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError:
+        return
+    validator = Draft202012Validator(schema)
+    errors = sorted(validator.iter_errors(document), key=lambda item: list(item.path))
+    if errors:
+        _fail(f"examples/diagnostics.json: {errors[0].message}")
+    negative = ROOT / "examples" / "invalid-unknown-diagnostic.json"
+    if negative.is_file() and not list(validator.iter_errors(_load(negative))):
+        _fail("examples/invalid-unknown-diagnostic.json przechodzi walidację, a nie powinien")
+    print("✔ nieznany kod jest błędem, nie kodem nieopisanym")
+
+
 def main() -> int:
     if "--refresh-digests" in sys.argv:
         return refresh_digests()
@@ -175,7 +228,8 @@ def main() -> int:
         # Przykłady kontekstu mają własny schemat, a negatywne mają się nie
         # walidować — obie grupy mają osobne kontrole niżej.
         if ("context" in path.name or "baseline" in path.name
-                or "operations" in path.name or path.name.startswith("invalid")):
+                or "operations" in path.name or "diagnostics" in path.name
+                or path.name.startswith("invalid")):
             continue
         document = _load(path)
         if validator is not None:
@@ -250,6 +304,8 @@ def main() -> int:
         print(f"✔ przykład negatywny odrzucony ({unknown[0]})")
 
     _check_operations(manifest, manifest_rules)
+
+    _check_diagnostics(manifest)
 
     _check_dsl_manifest()
 

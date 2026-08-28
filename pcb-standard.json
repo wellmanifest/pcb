@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -30,7 +30,8 @@
       "$WELLMANIFEST_PCB_BASELINE",
       "<artifacts>/.wellmanifest/pcb-baseline.json"
     ],
-    "operations_schema": "wellmanifest.pcb/operations/v1"
+    "operations_schema": "wellmanifest.pcb/operations/v1",
+    "diagnostics_schema": "wellmanifest.pcb/diagnostics/v1"
   },
   "scopes": [
     "pcb",
@@ -521,6 +522,141 @@
     {
       "id": "connectivity_preserved",
       "why": "Netlista po zmianie jest identyczna co do węzła."
+    }
+  ],
+  "diagnostics": [
+    {
+      "id": "EDA_DRC_REGRESSION",
+      "severity": "ERROR",
+      "gate": "drc_no_regression",
+      "means": "Kandydat ma więcej naruszeń DRC niż źródło — łącznie.",
+      "remedy_operations": [],
+      "remedy_note": "Porównaj kategorie, nie sumę: wzrost bywa w innej kategorii niż ta, którą naprawiasz. Jeśli wzrost jest w kategorii niezwiązanej ze zmianą, sprawdź najpierw, czy kandydat mierzony jest w tych samych warunkach, co projekt — brak biblioteki footprintów w katalogu kandydata dokłada ostrzeżenie na każdy element."
+    },
+    {
+      "id": "EDA_DRC_CATEGORY_REGRESSION",
+      "severity": "ERROR",
+      "gate": "drc_no_regression",
+      "means": "Kandydat ma więcej naruszeń w konkretnej kategorii DRC niż źródło.",
+      "remedy_operations": [],
+      "remedy_note": "Nazwa kategorii wskazuje przyczynę wprost: `clearance` to za mały odstęp, `copper_edge_clearance` to miedź przy krawędzi laminatu, `lib_footprint_mismatch` to element niezgodny z biblioteką."
+    },
+    {
+      "id": "EDA_UNCONNECTED_REGRESSION",
+      "severity": "ERROR",
+      "gate": "drc_no_regression",
+      "means": "Kandydat rozpina połączenia, które w źródle były domknięte.",
+      "remedy_operations": [
+        "reroute_component_nets",
+        "route_power_net"
+      ],
+      "remedy_note": "Najczęstsza przyczyna to trasa kończąca się w klirensie zamiast na miedzi: cel trasowania musi być prostokątem pada albo istniejącą ścieżką."
+    },
+    {
+      "id": "EDA_DRC_NOT_RUN",
+      "severity": "ERROR",
+      "gate": "drc_no_regression",
+      "means": "DRC się nie wykonało, więc nie wiadomo, czy kandydat coś psuje.",
+      "remedy_operations": [],
+      "remedy_note": "To jest brak kontroli, nie zaliczenie. Uruchom Viewer w obrazie z KiCadem; `pcbnew` musi być importowalne."
+    },
+    {
+      "id": "EDA_STYLE_REGRESSION",
+      "severity": "ERROR",
+      "gate": "style_no_regression",
+      "means": "Kandydat zwiększa liczbę naruszeń reguły o wadze blocking.",
+      "remedy_operations": [],
+      "remedy_note": "Bramka blokuje wzrost, nie sam dług: płytka z długiem nadal ma się dać poprawiać. Zobacz, która reguła urosła — bywa, że naprawa jednej rzeczy łamie inną i wtedy trzeba obie w jednym kandydacie."
+    },
+    {
+      "id": "EDA_STYLE_NOT_RUN",
+      "severity": "ERROR",
+      "gate": "style_no_regression",
+      "means": "Nie udało się policzyć raportu stylu dla kandydata albo źródła.",
+      "remedy_operations": [],
+      "remedy_note": "Sprawdź profil: nieznana reguła w profilu jest błędem, nie regułą nieaktywną."
+    },
+    {
+      "id": "EDA_PARITY_MISMATCH",
+      "severity": "ERROR",
+      "gate": "net_parity",
+      "means": "Sieci schematu i płytki różnią się na co najmniej jednym pinie.",
+      "remedy_operations": [
+        "assign_pad_net",
+        "synchronize_net_connectivity"
+      ],
+      "remedy_note": "Kontekst projektu rozstrzyga, która strona ma rację — podmiot `net-connectivity` stawia schemat przed płytką."
+    },
+    {
+      "id": "EDA_PARITY_NOT_RUN",
+      "severity": "ERROR",
+      "gate": "net_parity",
+      "means": "Nie policzono netlisty, więc zgodności sieci nie sprawdzono.",
+      "remedy_operations": [],
+      "remedy_note": "Bez netlisty nie wolno orzec „zgodne\": to jest brak kontroli, nie zaliczenie. Potrzebne `kicad-cli`."
+    },
+    {
+      "id": "EDA_FOOTPRINT_MISMATCH",
+      "severity": "ERROR",
+      "gate": "footprint_parity",
+      "means": "Schemat deklaruje inny footprint niż ten, który leży na płytce.",
+      "remedy_operations": [
+        "set_footprint_field"
+      ],
+      "remedy_note": "Rozstrzyga biblioteka projektu: nazwa, której nie ma na dysku, nie może być tą właściwą. Kierunek naprawy bierze się z podmiotu `footprint-assignment` w kontekście projektu."
+    },
+    {
+      "id": "EDA_FOOTPRINT_PARITY_NOT_RUN",
+      "severity": "WARNING",
+      "gate": "footprint_parity",
+      "means": "Nie udało się porównać przypisania footprintów.",
+      "remedy_operations": [],
+      "remedy_note": "Ta kontrola nie potrzebuje netlisty; jeśli nie działa, brakuje jednego z dwóch plików pary albo biblioteki projektu."
+    },
+    {
+      "id": "EDA_CONNECTIVITY_REGRESSION",
+      "severity": "ERROR",
+      "gate": "connectivity_preserved",
+      "means": "Netlista po zmianie nie jest identyczna z netlistą przed zmianą.",
+      "remedy_operations": [],
+      "remedy_note": "Dla operacji rysunkowych to jest warunek konieczny: poprawa czytelności, która zmienia netlistę, jest przerysowaniem układu. Uwaga na scalanie współliniowych przewodów — w KiCadzie one nie łączą, więc scalenie tworzy zwarcie."
+    },
+    {
+      "id": "EDA_DANGLING_NET_REGRESSION",
+      "severity": "ERROR",
+      "gate": "connectivity_preserved",
+      "means": "Po zmianie pojawiła się sieć z jednym węzłem albo zamknięta w sobie.",
+      "remedy_operations": [
+        "merge_split_rails",
+        "mark_no_connect"
+      ],
+      "remedy_note": "Sieć jednowęzłowa to albo literówka w nazwie, albo pin świadomie niepodłączony — i te dwa przypadki różni tylko znacznik."
+    },
+    {
+      "id": "EDA_CONNECTIVITY_NOT_RUN",
+      "severity": "ERROR",
+      "gate": "connectivity_preserved",
+      "means": "Nie policzono netlisty przed albo po zmianie.",
+      "remedy_operations": [],
+      "remedy_note": "Brak kontroli, nie zaliczenie."
+    },
+    {
+      "id": "EDA_DECOUPLING_MISSING",
+      "severity": "WARNING",
+      "gate": "net_parity",
+      "means": "Szyna zasilania nie ma ani jednego kondensatora do masy.",
+      "remedy_operations": [
+        "add_decoupling_capacitor"
+      ],
+      "remedy_note": "Defekt bez objawu w plikach: netlista spójna, DRC czyste, a układ potrafi się zawiesić przy szybkim przełączaniu. Naprawa dokłada elementy, więc zmienia BOM i wymaga zgody człowieka."
+    },
+    {
+      "id": "EDA_DECOUPLING_NOT_RUN",
+      "severity": "WARNING",
+      "gate": "net_parity",
+      "means": "Nie sprawdzono odsprzęgania szyn.",
+      "remedy_operations": [],
+      "remedy_note": "Potrzebna netlista schematu."
     }
   ]
 }
