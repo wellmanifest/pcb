@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.21.0
+
+- `RULE_FOOTPRINT_COURTYARD` sprawdza, czy footprint rysuje obrys montażowy na
+  `F.CrtYd` albo `B.CrtYd`. Bez niego test kolizji elementów **nie ma czego
+  porównać** i przechodzi zawsze — to nie jest brak naruszeń, tylko wyłączona
+  kontrola.
+- Zmierzone na panel9: stos warstw deklarował obie warstwy, a ani jeden
+  z czterech footprintów nie rysował na nich niczego. Kondensator przeniesiony
+  w całości pod moduł (0,344 mm² wspólnego pola) nie dawał ani jednego
+  naruszenia kolizji; po dodaniu obrysów ta sama płytka daje
+  `courtyards_overlap`.
+- Reguła jest doradcza: brak obrysu nie psuje płytki, tylko odbiera możliwość
+  sprawdzenia. Profil projektu może ją podnieść.
+- **Uwaga dla adoptera:** obrys montażowy to nie korpus. Reguły pytające „co
+  jest pod elementem" muszą mierzyć korpus, bo rezerwa montażowa jest z definicji
+  większa; wliczenie jej podnosiło na panel9 `RULE_NO_COPPER_UNDER_PART` z 0 na 6
+  naruszeń blokujących i `RULE_BUS_TRANSIT` z 0 na 33, bez ani jednej zmiany na
+  miedzi.
+- Walidator paczki porównuje teraz `VERSION` z `pcb-standard.json`
+  i `dsl-manifest.json`. Trzy pliki deklarowały wersję niezależnie i nic ich nie
+  zestawiało — stąd 1.19.0 obok 1.20.0 w wydanej paczce.
+
 ## 1.19.0
 
 - `routing.via_cost_by_net` przechowuje zmierzony koszt zmiany warstwy dla

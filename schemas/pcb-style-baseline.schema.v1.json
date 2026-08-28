@@ -109,6 +109,7 @@
               "RULE_TRACK_COPPER_MARGIN",
               "RULE_EDGE_MOUNT_CONNECTOR_ALIGNMENT",
               "RULE_BUS_TRANSIT",
+              "RULE_FOOTPRINT_COURTYARD",
               "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY",
               "RULE_VIA_BUDGET",
               "RULE_VIA_IN_PAD",

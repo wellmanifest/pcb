@@ -282,11 +282,32 @@ def _check_design_intent(manifest: dict, validator_type) -> None:
     print(f"✔ {example_path.name} zgodny z {expected}")
 
 
+def _check_version(manifest: dict) -> None:
+    """Paczka ma jedną wersję, nie dwie.
+
+    `VERSION` i `pcb-standard.json` deklarowały ją niezależnie i nic ich nie
+    porównywało — zmierzone: 1.19.0 obok 1.20.0. Adopter czytający jeden plik
+    i adopter czytający drugi wyciągali różne wnioski o tym, co przyjęli,
+    a drift wykrywany po numerze wersji mierzył wtedy nie to, co trzeba.
+    """
+    declared = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    places = {
+        "pcb-standard.json": str(manifest.get("version") or ""),
+        "dsl-manifest.json": str(_load(ROOT / "dsl-manifest.json").get("version") or ""),
+    }
+    wrong = {name: value for name, value in places.items() if value != declared}
+    if wrong:
+        _fail("VERSION mówi " + declared + ", a "
+              + "; ".join(f"{name} {value}" for name, value in sorted(wrong.items())))
+    print(f"✔ jedna wersja paczki w VERSION i {len(places)} manifestach ({declared})")
+
+
 def main() -> int:
     if "--refresh-digests" in sys.argv:
         return refresh_digests()
     schema = _load(SCHEMA)
     manifest = _load(STANDARD)
+    _check_version(manifest)
     schema_rules = set(schema["properties"]["rules"]["properties"])
     manifest_rules = {item["id"] for item in manifest["rules"]}
     if schema_rules != manifest_rules:

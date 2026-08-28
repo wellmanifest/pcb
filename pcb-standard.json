@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.20.0",
+  "version": "1.21.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -158,6 +158,12 @@
       "scope": "pcb",
       "default_severity": "advisory",
       "measures": "wspólną szynę przechodzącą tranzytem przez obrys elementu zamiast kończyć się na jego własnym padzie"
+    },
+    {
+      "id": "RULE_FOOTPRINT_COURTYARD",
+      "scope": "pcb",
+      "default_severity": "advisory",
+      "measures": "czy footprint rysuje obrys montażowy na F.CrtYd albo B.CrtYd — bez niego test kolizji elementów nie ma czego porównać i przechodzi zawsze"
     },
     {
       "id": "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY",

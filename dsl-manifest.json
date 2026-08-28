@@ -3,7 +3,7 @@
   "schema": "wellmanifest.dsl/manifest/v1",
   "id": "wellmanifest.pcb",
   "name": "PCB & Schematic Style Contract Standard",
-  "version": "1.19.0",
+  "version": "1.21.0",
   "status": "stable",
   "purpose": "Deklaratywny kontrakt wyglądu i kontekstu projektu PCB/schematu: zamknięty słownik reguł, bramka regresji oraz kolejność autorytetu przy sprzeczności między plikami.",
   "domain": "electronic-design-automation",
@@ -74,7 +74,7 @@
     {
       "path": "examples/default.json",
       "role": "example",
-      "digest": "sha256:c3f7c0c21b392ee1265a583460cf187dd124bb0d8d765dddf55ef6da7f50f7cc"
+      "digest": "sha256:a35eec1a249535c0cae4cf055246e59146e8af17e39621976f9de9d4f4334d8a"
     },
     {
       "path": "examples/panel9-design-intent.json",
@@ -124,7 +124,7 @@
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:fee1bc48301879a3b04f5aa3bd5c3e439d73cc0d7fad86c78999e2f6da520eb0"
+      "digest": "sha256:05a7c05890a7e53db523143d8f508523fed42fd7929bd2962786a4c11cc87f30"
     },
     {
       "path": "schemas/component-catalog.schema.v1.json",
@@ -164,12 +164,12 @@
     {
       "path": "schemas/pcb-style-baseline.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:b6d27e108fc03335f6a589278f3f0642546a7c4c4f3a23389dd9559417c59981"
+      "digest": "sha256:51731426cf640798033b518ff4c6e40c55bcbfaf4a481039d34d720d37835037"
     },
     {
       "path": "schemas/pcb-style.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:2eac48dd6b199787b6f966230fd32306a5c317ab692bdcc63f247a5766714ea3"
+      "digest": "sha256:ed77470bc39af51f802f007e6f9a7e4565c765ffe999f1a9245db99893360c22"
     }
   ],
   "namespaces": [
