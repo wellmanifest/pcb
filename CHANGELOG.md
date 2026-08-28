@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.19.0
+
+- `routing.via_cost_by_net` przechowuje zmierzony koszt zmiany warstwy dla
+  pojedynczej nazwanej sieci. Nadpisanie nie działa w pełnym reroute, więc
+  lokalne optimum nie może po cichu pogorszyć albo rozpiąć innej sieci.
+- Raport adoptera rozróżnia źródło `profile-net-override` od globalnego
+  `profile` i jawnego kontrfaktu `explicit`.
+- Przykład panel9 zapisuje wynik pomiaru: globalnie 320, GND 640, `+3V3` 800.
+
 ## 1.18.0
 
 - Dodano `wellmanifest.pcb/design-intent/v1`, w którym człowiek ustala dla

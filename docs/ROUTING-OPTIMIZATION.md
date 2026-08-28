@@ -57,11 +57,18 @@ obudowy albo strefy montażowej.
 
 ## Wejście sterujące i dowód per sieć
 
-`routing.via_cost` oraz `routing.net_order` należą do profilu `style/v1`, a nie
-do stałych konkretnego adoptera. Koszt jest liczbą nieujemną: `0` tworzy ważny
+`routing.via_cost`, `routing.via_cost_by_net` oraz `routing.net_order` należą
+do profilu `style/v1`, a nie do stałych konkretnego adoptera. Koszt jest liczbą
+nieujemną: `0` tworzy ważny
 wariant kontrolny bez kary za zmianę warstwy, ale nie wyłącza DRC, parity ani
 reguł blokujących. Operacja DSL albo CLI może jawnie nadpisać profil dla jednej
 symulacji; wynik musi wtedy odróżnić źródło `explicit` od `profile`.
+
+Nadpisanie `via_cost_by_net` obowiązuje wyłącznie wtedy, gdy operacja wskazuje
+dokładnie jedną sieć. Pełny reroute używa kosztu globalnego. Jest to istotne,
+gdy wysoki koszt daje lepszy GND, ale w przebiegu całej płytki zamyka korytarz
+innej sieci. Raport nazywa użycie mapy `profile-net-override` i podaje nazwę
+sieci, więc wynik pozostaje odtwarzalny.
 
 Poza sumą odcinków i via raport wariantu powinien zwracać `per_net`: liczbę
 odcinków, liczbę zmian warstwy, długość miedzi i brak trasy dla każdej sieci.

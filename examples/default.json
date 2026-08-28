@@ -1,11 +1,12 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.16.0",
+  "version": "1.19.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
   "routing": {
     "via_cost": 60,
+    "via_cost_by_net": {},
     "net_order": []
   },
   "rules": {

@@ -20,6 +20,7 @@ naprawa deterministyczna i bramka decyzji.
   "profile": "panel9-strict",
   "routing": {
     "via_cost": 320,
+    "via_cost_by_net": {"GND": 640, "+3V3": 800},
     "net_order": ["GP4", "GP1", "GND"]
   },
   "rules": {
@@ -35,9 +36,13 @@ błąd profilu — nigdy cicho nieaktywna reguła.
 
 Sekcja `routing` jest wejściem optymalizatora, nie ukrytą stałą implementacji.
 `via_cost` określa względny koszt zmiany warstwy (wartość `0` jest dozwolonym
-kontrfaktem bez preferencji), a `net_order` jawnie rezerwuje
+kontrfaktem bez preferencji). `via_cost_by_net` może nadpisać koszt tylko dla
+operacji jawnie ograniczonej do jednej nazwanej sieci; pełny reroute nadal
+używa `via_cost`. Dzięki temu lokalne optimum nie staje się niebezpiecznym
+globalnym domyślnym. `net_order` jawnie rezerwuje
 korytarze najpierw dla sieci o najmniejszej swobodzie. CLI, DSL i handler muszą
-raportować, czy użyły profilu, czy świadomego nadpisania symulacji.
+raportować, czy użyły profilu, `profile-net-override`, czy świadomego
+nadpisania symulacji.
 
 Kolejność wyszukiwania profilu u adoptera:
 

@@ -3,7 +3,7 @@
   "schema": "wellmanifest.dsl/manifest/v1",
   "id": "wellmanifest.pcb",
   "name": "PCB & Schematic Style Contract Standard",
-  "version": "1.18.0",
+  "version": "1.19.0",
   "status": "stable",
   "purpose": "Deklaratywny kontrakt wyglądu i kontekstu projektu PCB/schematu: zamknięty słownik reguł, bramka regresji oraz kolejność autorytetu przy sprzeczności między plikami.",
   "domain": "electronic-design-automation",
@@ -49,7 +49,7 @@
     {
       "path": "README.md",
       "role": "documentation",
-      "digest": "sha256:e35f2f7cf7e13c9731779073b80e8056d63ad82e0247020841ff0cb644a07603"
+      "digest": "sha256:8adc73c8c9d61cb22ef33126fcf3f1979903d9bcadacf03c75f38c7b8710b6b1"
     },
     {
       "path": "docs/COMPONENT-SUPPLY-CHAIN.md",
@@ -74,7 +74,7 @@
     {
       "path": "examples/default.json",
       "role": "example",
-      "digest": "sha256:286580a187ba8b20ff7b858b37b74331d7c92813898c46a7267cbe01b2e5d574"
+      "digest": "sha256:5df7f5dc7fe08b5f6739ebe3fee5aa78fa52a933eb67619383d00863707d9ce0"
     },
     {
       "path": "examples/panel9-design-intent.json",
@@ -119,12 +119,12 @@
     {
       "path": "examples/panel9-local.json",
       "role": "example",
-      "digest": "sha256:65a7b2253a5864edd224e0371fa59512fdce52dde270b51577f48cc046100cff"
+      "digest": "sha256:7dfdf20a27077200f1d870a643feb6b9e176fa7f5fb4083e991d14baf168ff70"
     },
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:6cf4d2d84c2c6c176950451662ba9e495566fea5643faace2bedfd1f55abca98"
+      "digest": "sha256:940ef224688ab0926641c914a48b46e2cf6fbf6d31778398ff9181900be45ee8"
     },
     {
       "path": "schemas/component-catalog.schema.v1.json",
@@ -169,7 +169,7 @@
     {
       "path": "schemas/pcb-style.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:6e865e3774f96b3e3664b561b545ddc3d422e77868ee438c1278ad7876fbb797"
+      "digest": "sha256:58d702931aee39c8301bbc8674b779d64dd53803e82002281c89d08f08d477b8"
     }
   ],
   "namespaces": [

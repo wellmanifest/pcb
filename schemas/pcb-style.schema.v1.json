@@ -33,6 +33,16 @@
           "type": "number",
           "minimum": 0
         },
+        "via_cost_by_net": {
+          "type": "object",
+          "propertyNames": {
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
         "net_order": {
           "type": "array",
           "uniqueItems": true,
