@@ -233,8 +233,7 @@
       "clears": [],
       "verify": [
         "drc_no_regression",
-        "net_parity",
-        "connectivity_preserved"
+        "net_parity"
       ],
       "reversible": true,
       "why": "Przeniesienie sygnału na inny pin modułu. Dotyka trzech plików naraz — programu, schematu i płytki — więc jest operacją projektu, nie płytki: zmiana w jednym z nich bez pozostałych jest rozjazdem, a nie zmianą. Kolejność rozstrzyga kontekst: program steruje pinami naprawdę, więc to on jest źródłem, a schemat i płytka za nim nadążają."

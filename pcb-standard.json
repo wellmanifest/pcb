@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -55,6 +55,18 @@
       "scope": "pcb",
       "default_severity": "blocking",
       "measures": "obcą miedź pod obrysem elementu z metalem dociskanym do laminatu"
+    },
+    {
+      "id": "RULE_BUS_TRANSIT",
+      "scope": "pcb",
+      "default_severity": "advisory",
+      "measures": "wspólną szynę przechodzącą tranzytem przez obrys elementu zamiast kończyć się na jego własnym padzie"
+    },
+    {
+      "id": "RULE_VIA_BUDGET",
+      "scope": "pcb",
+      "default_severity": "advisory",
+      "measures": "całkowitą liczbę przelotek i budżet zmian warstwy na pojedynczą sieć"
     },
     {
       "id": "RULE_SILK_OVER_PAD",
@@ -483,8 +495,7 @@
       "clears": [],
       "verify": [
         "drc_no_regression",
-        "net_parity",
-        "connectivity_preserved"
+        "net_parity"
       ],
       "reversible": true,
       "why": "Przeniesienie sygnału na inny pin modułu. Dotyka trzech plików naraz — programu, schematu i płytki — więc jest operacją projektu, nie płytki: zmiana w jednym z nich bez pozostałych jest rozjazdem, a nie zmianą. Kolejność rozstrzyga kontekst: program steruje pinami naprawdę, więc to on jest źródłem, a schemat i płytka za nim nadążają."

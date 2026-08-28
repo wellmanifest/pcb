@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.12.0
+
+- `RULE_BUS_TRANSIT` odróżnia krótką odnogę kończącą się na własnym padzie od
+  magistrali GND/zasilania przechodzącej przez obrys elementu. Na panel9 wspólna
+  masa przechodzi tranzytem przez 27 obrysów switchy i przecina wachlarz sygnałów.
+- `RULE_VIA_BUDGET` mierzy całkowitą liczbę przelotek i budżet na sieć. To cel
+  optymalizacji po DRC/parity, nie zakaz przelotek: przekroczenie podpowiada, że
+  wcześniejsza decyzja o pinach, położeniu albo korytarzu wymusza zmiany warstwy.
+- `docs/ROUTING-OPTIMIZATION.md` definiuje kolejność bramek i celów, graf wpływów,
+  kontrfakty i wymagany dowód `before/after` dla symulatora optymalizacji.
+- `reassign_pin` nie żąda już `connectivity_preserved`. Operacja celowo zmienia
+  pin należący do węzła, więc identyczność netlisty blokowałaby każdy poprawny
+  wynik. Wiążącym dowodem pozostają DRC i zgodność firmware/SCH/PCB (`net_parity`).
+
 ## 1.11.0
 
 - `reassign_pin`: przeniesienie sygnału na inny pin modułu. Zakres `project`, bo

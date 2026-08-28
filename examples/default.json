@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
   "rules": {
@@ -22,6 +22,25 @@
       "scope": "pcb",
       "shielded_pattern": "SW|TACT|BUTTON|RJ45|SHIELD|USB|JACK",
       "description": "Obca miedź nie przechodzi tranzytem pod obrysem elementu dociskającego metal do laminatu."
+    },
+    "RULE_BUS_TRANSIT": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "net_pattern": "^(GND|\\+[0-9]+V[0-9]*)$",
+      "part_pattern": "SW|TACT|BUTTON",
+      "max_transits": 0,
+      "endpoint_tolerance_mm": 0.2,
+      "description": "Wspólna szyna może wejść w obrys elementu, żeby skończyć na jego padzie, ale nie przechodzi przez element tranzytem."
+    },
+    "RULE_VIA_BUDGET": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "net_pattern": ".*",
+      "max_total": 24,
+      "max_per_net": 4,
+      "description": "Budżet zmian warstwy po przejściu DRC i parity; przekroczenie wskazuje złą topologię, przypisanie pinów albo zajęty korytarz."
     },
     "RULE_SILK_OVER_PAD": {
       "enabled": true,

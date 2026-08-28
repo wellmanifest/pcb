@@ -42,6 +42,52 @@
             }
           }
         },
+        "RULE_BUS_TRANSIT": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "net_pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "part_pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "max_transits": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "endpoint_tolerance_mm": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "RULE_VIA_BUDGET": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "net_pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "max_total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_per_net": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
         "RULE_ZONE_LAYER_ALLOWLIST": {
           "allOf": [
             {

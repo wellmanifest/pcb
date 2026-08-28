@@ -41,6 +41,9 @@ Kolejność wyszukiwania profilu u adoptera:
 |---|---|---|---|
 | `RULE_LAYER_STACKUP` | pcb | blocking | liczbę i nazwy warstw miedzi |
 | `RULE_NO_COPPER_UNDER_PART` | pcb | blocking | obcą miedź pod obrysem elementu z metalem |
+| `RULE_BUS_TRANSIT` | pcb | advisory | wspólną szynę przechodzącą przez element bez zakończenia na jego padzie |
+| `RULE_VIA_BUDGET` | pcb | advisory | całkowity budżet przelotek i budżet zmian warstwy na sieć |
+| `RULE_SILK_OVER_PAD` | pcb | advisory | sitodruk wchodzący na otwór w masce pada |
 | `RULE_ZONE_LAYER_ALLOWLIST` | pcb | blocking | strefy poza dopuszczonymi warstwami |
 | `RULE_TRACK_WIDTH_MIN` | pcb | blocking | ścieżki poniżej progu procesu |
 | `RULE_TRACK_WIDTH_MAX` | pcb | blocking | ścieżki powyżej górnego limitu |
@@ -54,6 +57,7 @@ Kolejność wyszukiwania profilu u adoptera:
 | `RULE_RAIL_LABEL_CANONICAL` | schematic | blocking | szynę zasilania pod kilkoma nazwami |
 | `RULE_SIGNAL_LABEL_NAMING` | schematic | advisory | etykiety sygnałów poza konwencją |
 | `RULE_SCH_PCB_NET_PARITY` | project | blocking | ten sam pin z różną siecią w sch i w PCB |
+| `RULE_SCH_PCB_FOOTPRINT_PARITY` | project | blocking | inny footprint w schemacie i na płytce |
 | `RULE_POWER_DECOUPLING` | project | advisory | szynę zasilania bez kondensatora do masy |
 
 Zakres `project` obejmuje obie strony projektu naraz: reguły `pcb` i `schematic`
@@ -69,6 +73,16 @@ To dwie różne rzeczy i mają osobne reguły:
 - `RULE_FOOTPRINT_GRID.grid_mm` — **raster montażowy**: siatka, na której
   powinny stać elementy. Odstępstwo jest czytelnym długiem, nie błędem.
 - `RULE_TRACK_GRID.grid_mm` — raster trasowania dla końców ścieżek.
+
+### Przelotka jest skutkiem, nie przyczyną
+
+`RULE_VIA_BUDGET` nie mówi, że każda przelotka jest błędem. Najpierw obowiązują
+łączność, DRC i zgodność projektu; dopiero wśród poprawnych wariantów mniej zmian
+warstwy jest lepsze. Gdy budżet rośnie, `RULE_BUS_TRANSIT` pomaga wskazać przyczynę:
+wspólna szyna prowadzona przez środek pola elementów przecina drogi sygnałowe.
+
+Algorytm diagnozy, graf wpływów i kontrakt wyniku symulatora opisuje
+[`docs/ROUTING-OPTIMIZATION.md`](docs/ROUTING-OPTIMIZATION.md).
 
 ## Bramka regresji
 
@@ -195,7 +209,7 @@ Pakiet trzyma dwa dokumenty i to rozdzielenie jest celowe:
   projekcje, cykl życia, semantyka, granica LLM, polityka ustaleń i publikacji,
   poziomy zgodności oraz mapowania na inne standardy. To po nim `diff-dsl` potrafi
   porównać ten pakiet z pozostałymi.
-- **`pcb-standard.json`** — słownik domenowy: 15 reguł, bramki, kontekst, adopterzy.
+- **`pcb-standard.json`** — słownik domenowy: reguły, bramki, kontekst i adopterzy.
   To jest źródło kanoniczne, na które manifest wskazuje.
 
 Wcześniej wszystko siedziało w `dsl-manifest.json`, przez co plik nie spełniał
