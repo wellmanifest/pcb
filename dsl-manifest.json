@@ -79,7 +79,7 @@
     {
       "path": "examples/operations.json",
       "role": "example",
-      "digest": "sha256:031df1424be766ba08bb2f7cfca329d4c0d62c6c2f8f28aa7b4b561435e7ecbd"
+      "digest": "sha256:18cd41cfd2b5ae432a71873cb483ce954dcd14708c368476a17fdda3f743620e"
     },
     {
       "path": "examples/panel9-baseline.json",
@@ -99,7 +99,7 @@
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:fda37accf2ca05154517038c35b3b516a4064f947597980fef493fb4cac7e31a"
+      "digest": "sha256:f02650f71aa6dd76dd301f71d33cb7c55496407ac920b335091441f6555fedb1"
     },
     {
       "path": "schemas/pcb-context.schema.v1.json",
@@ -114,7 +114,7 @@
     {
       "path": "schemas/pcb-operations.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:57da29a6c19731036c9af19b12fb02adddb9f98f6c7defe50d868032352740d2"
+      "digest": "sha256:7402fcae1655830cf89ffae3fa5baa70119d58cb6a645c189a7f872c15d60a84"
     },
     {
       "path": "schemas/pcb-style-baseline.schema.v1.json",

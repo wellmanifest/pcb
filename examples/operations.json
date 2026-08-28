@@ -224,6 +224,34 @@
       ],
       "reversible": true,
       "why": "Rozjazd sieci między schematem a płytką nie należy do żadnego z tych plików z osobna."
+    },
+    {
+      "id": "reassign_pin",
+      "scope": "project",
+      "entity": "pad",
+      "changes": "netlist",
+      "clears": [],
+      "verify": [
+        "drc_no_regression",
+        "net_parity",
+        "connectivity_preserved"
+      ],
+      "reversible": true,
+      "why": "Przeniesienie sygnału na inny pin modułu. Dotyka trzech plików naraz — programu, schematu i płytki — więc jest operacją projektu, nie płytki: zmiana w jednym z nich bez pozostałych jest rozjazdem, a nie zmianą. Kolejność rozstrzyga kontekst: program steruje pinami naprawdę, więc to on jest źródłem, a schemat i płytka za nim nadążają."
+    },
+    {
+      "id": "remove_component",
+      "scope": "project",
+      "entity": "component",
+      "changes": "bom",
+      "clears": [],
+      "verify": [
+        "drc_no_regression",
+        "net_parity",
+        "footprint_parity"
+      ],
+      "reversible": false,
+      "why": "Usunięcie elementu ze schematu i z płytki. Nieodwracalne tak samo jak dołożenie, bo zmienia listę zakupów i montaż. Element zbędny dlatego, że jego funkcję pełni program — jak podciąg zastąpiony wewnętrznym pull-upem — przestaje być elementem, ale nie przestaje być decyzją."
     }
   ]
 }

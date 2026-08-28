@@ -53,7 +53,9 @@
             "mark_no_connect",
             "merge_split_rails",
             "split_wire_at_tap",
-            "synchronize_net_connectivity"
+            "synchronize_net_connectivity",
+            "reassign_pin",
+            "remove_component"
           ]
         },
         "scope": {

@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.11.0
+
+- `reassign_pin`: przeniesienie sygnału na inny pin modułu. Zakres `project`, bo
+  operacja dotyka trzech plików naraz — programu, schematu i płytki — a zmiana
+  w jednym bez pozostałych jest rozjazdem, nie zmianą. Kolejność rozstrzyga
+  kontekst: program steruje pinami naprawdę, więc to on jest źródłem.
+- `remove_component`: usunięcie elementu ze schematu i z płytki. Nieodwracalne tak
+  samo jak dołożenie, bo zmienia listę zakupów i montaż. Element zbędny dlatego,
+  że jego funkcję pełni program — jak podciąg zastąpiony wewnętrznym pull-upem —
+  przestaje być elementem, ale nie przestaje być decyzją.
+- Obie żądają `net_parity`: przeniesienie sygnału i usunięcie elementu zmieniają
+  netlistę **celowo**, więc dowodem nie jest jej niezmienność, tylko zgodność
+  schematu z płytką po zmianie.
+
 ## 1.10.0
 
 - Diagnostyka rozróżnia teraz, **kto wystawia kod**: `source: gate` dla kodów
