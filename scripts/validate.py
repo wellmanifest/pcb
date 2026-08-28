@@ -163,9 +163,15 @@ def _check_diagnostics(manifest: dict) -> None:
     gates = {item["id"] for item in manifest.get("verifications") or []}
     operations = {item["id"] for item in manifest.get("operations") or []}
     for diagnostic in manifest["diagnostics"]:
-        if diagnostic["gate"] not in gates:
-            _fail(f"diagnostyka {diagnostic['id']} wskazuje nieznaną bramkę "
-                  f"{diagnostic['gate']!r}")
+        # Kod wystawiony przez bramkę musi ją wskazywać; kod przekazany z backendu
+        # nie ma naszej bramki i wskazywanie którejkolwiek byłoby zmyśleniem.
+        # Runbook należy się obu — użytkownik spotyka je w tym samym miejscu.
+        if diagnostic.get("source") == "gate":
+            if diagnostic.get("gate") not in gates:
+                _fail(f"diagnostyka {diagnostic['id']} wskazuje nieznaną bramkę "
+                      f"{diagnostic.get('gate')!r}")
+        elif diagnostic.get("gate"):
+            _fail(f"diagnostyka {diagnostic['id']} pochodzi z backendu, a wskazuje bramkę")
         unknown = [name for name in diagnostic["remedy_operations"] if name not in operations]
         if unknown:
             _fail(f"diagnostyka {diagnostic['id']} poleca nieznaną operację {unknown[0]}")
@@ -173,7 +179,8 @@ def _check_diagnostics(manifest: dict) -> None:
             _fail(f"diagnostyka {diagnostic['id']} blokuje, a nie mówi, co dalej")
     # Każda bramka musi mieć kod na wypadek, gdy się nie wykona. Bramka, która
     # milczy przy braku kontroli, wygląda jak bramka, która przeszła.
-    silent = sorted(gates - {item["gate"] for item in manifest["diagnostics"]})
+    silent = sorted(gates - {item.get("gate") for item in manifest["diagnostics"]
+                             if item.get("source") == "gate"})
     if silent:
         _fail(f"bramka {silent[0]} nie ma żadnej diagnostyki — odmowa byłaby bez nazwy")
     print(f"✔ zamknięty słownik diagnostyk zgodny ({len(declared)} kodów)")

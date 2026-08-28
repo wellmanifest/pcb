@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.10.0
+
+- Diagnostyka rozróżnia teraz, **kto wystawia kod**: `source: gate` dla kodów
+  własnych bramek, `source: backend` dla kodów przekazywanych przez TwinStudio.
+  Runbook należy się obu, bo użytkownik spotyka je w tym samym miejscu — na
+  wyjściu tej samej operacji.
+- Dziesięć kodów backendu dostało opis, w tym `EDA-DSL-VALIDATION-001`, który
+  odpowiada za 24 z 25 nieudanych planowań na referencyjnym panel9. Dotąd
+  planowanie kończyło się kodem bez wyjaśnienia w 40% prób.
+- Walidator wymusza rozdział: kod bramki musi ją wskazywać, kod backendu nie może
+  — wskazywanie którejkolwiek byłoby zmyśleniem. Wymóg „każda bramka ma
+  diagnostykę" liczy odtąd tylko kody własne.
+
 ## 1.9.0
 
 - **Zamknięty słownik diagnostyk** — trzecia noga kontraktu. Reguły mówiły, co

@@ -27,11 +27,11 @@
       "additionalProperties": false,
       "required": [
         "id",
-        "severity",
-        "gate",
         "means",
+        "remedy_note",
         "remedy_operations",
-        "remedy_note"
+        "severity",
+        "source"
       ],
       "properties": {
         "id": {
@@ -50,7 +50,17 @@
             "EDA_DANGLING_NET_REGRESSION",
             "EDA_CONNECTIVITY_NOT_RUN",
             "EDA_DECOUPLING_MISSING",
-            "EDA_DECOUPLING_NOT_RUN"
+            "EDA_DECOUPLING_NOT_RUN",
+            "EDA-DSL-VALIDATION-001",
+            "EDA-DSL-TARGET-REQUIRED-001",
+            "EDA-PCB-DRC-001",
+            "EDA-PCB-CLEARANCE-001",
+            "EDA-PCB-UNCONNECTED-001",
+            "EDA-PCB-ROUTING-001",
+            "EDA-SCH-PCB-SYNC-001",
+            "EDA-NET-RAIL-SPLIT-001",
+            "EDA-SIM-UNDEFINED-LEVEL-001",
+            "SCAD-OPENSCAD-UNAVAILABLE"
           ]
         },
         "severity": {
@@ -100,8 +110,40 @@
         "remedy_note": {
           "type": "string",
           "minLength": 1
+        },
+        "source": {
+          "enum": [
+            "gate",
+            "backend"
+          ],
+          "description": "Kto wystawia ten kod: bramka adoptera czy backend, który go tylko przekazuje. Runbook należy się obu — użytkownik spotyka je w tym samym miejscu."
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "gate"
+              }
+            },
+            "required": [
+              "source"
+            ]
+          },
+          "then": {
+            "required": [
+              "gate",
+              "id",
+              "means",
+              "remedy_note",
+              "remedy_operations",
+              "severity",
+              "source"
+            ]
+          }
+        }
+      ]
     }
   }
 }
