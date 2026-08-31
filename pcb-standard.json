@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.21.0",
+  "version": "1.22.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -176,6 +176,12 @@
       "scope": "pcb",
       "default_severity": "advisory",
       "measures": "całkowitą liczbę przelotek i budżet zmian warstwy na pojedynczą sieć"
+    },
+    {
+      "id": "RULE_TRACK_DETOUR_RATIO",
+      "scope": "pcb",
+      "default_severity": "advisory",
+      "measures": "długość miedzi sieci wobec referencyjnego drzewa prostokątnego po jej padach — obejście wielokrotnie dłuższe od referencji jest długiem kolejności trasowania, nie kosztem geometrii"
     },
     {
       "id": "RULE_VIA_IN_PAD",

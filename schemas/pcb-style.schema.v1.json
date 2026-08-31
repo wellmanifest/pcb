@@ -50,6 +50,10 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "rip_up_passes": {
+          "type": "integer",
+          "minimum": 1
         }
       }
     },
@@ -352,6 +356,32 @@
             },
             "max_per_net": {
               "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "RULE_TRACK_DETOUR_RATIO": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/rule"
+            }
+          ],
+          "properties": {
+            "net_pattern": {
+              "type": "string",
+              "format": "regex"
+            },
+            "reference": {
+              "enum": [
+                "rectilinear-mst"
+              ]
+            },
+            "max_ratio": {
+              "type": "number",
+              "minimum": 1
+            },
+            "min_reference_mm": {
+              "type": "number",
               "minimum": 0
             }
           }

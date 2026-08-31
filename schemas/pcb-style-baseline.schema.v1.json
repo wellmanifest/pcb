@@ -112,6 +112,7 @@
               "RULE_FOOTPRINT_COURTYARD",
               "RULE_FOOTPRINT_INTERNAL_CONNECTIVITY",
               "RULE_VIA_BUDGET",
+              "RULE_TRACK_DETOUR_RATIO",
               "RULE_VIA_IN_PAD",
               "RULE_SILK_OVER_PAD",
               "RULE_ZONE_LAYER_ALLOWLIST",

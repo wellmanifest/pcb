@@ -1,13 +1,14 @@
 {
   "schema_id": "wellmanifest.pcb/style/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.20.0",
+  "version": "1.22.0",
   "profile": "default",
   "title": "Domyślny profil wyglądu płytki i schematu",
   "routing": {
     "via_cost": 60,
     "via_cost_by_net": {},
-    "net_order": []
+    "net_order": [],
+    "rip_up_passes": 1
   },
   "rules": {
     "RULE_LAYER_STACKUP": {
@@ -122,6 +123,16 @@
       "max_total": 24,
       "max_per_net": 4,
       "description": "Budżet zmian warstwy po przejściu DRC i parity; przekroczenie wskazuje złą topologię, przypisanie pinów albo zajęty korytarz."
+    },
+    "RULE_TRACK_DETOUR_RATIO": {
+      "enabled": true,
+      "severity": "advisory",
+      "scope": "pcb",
+      "net_pattern": ".*",
+      "reference": "rectilinear-mst",
+      "max_ratio": 2.0,
+      "min_reference_mm": 5.0,
+      "description": "Miedź sieci wobec prostokątnego drzewa rozpinającego po jej padach. Referencja nie jest dolnym ograniczeniem: drzewo Steinera bywa krótsze, a dojście do krawędzi pada zamiast do środka skraca trasę, więc wynik poniżej 1,0 jest normalny. Próg wyłapuje obejście, którego geometria nie wymaga — najczęściej sieć trasowaną na końcu, po zajęciu korytarza przez sieci wcześniejsze."
     },
     "RULE_VIA_IN_PAD": {
       "enabled": true,

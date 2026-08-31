@@ -3,7 +3,7 @@
   "schema": "wellmanifest.dsl/manifest/v1",
   "id": "wellmanifest.pcb",
   "name": "PCB & Schematic Style Contract Standard",
-  "version": "1.21.0",
+  "version": "1.22.0",
   "status": "stable",
   "purpose": "Deklaratywny kontrakt wyglądu i kontekstu projektu PCB/schematu: zamknięty słownik reguł, bramka regresji oraz kolejność autorytetu przy sprzeczności między plikami.",
   "domain": "electronic-design-automation",
@@ -49,7 +49,7 @@
     {
       "path": "README.md",
       "role": "documentation",
-      "digest": "sha256:8adc73c8c9d61cb22ef33126fcf3f1979903d9bcadacf03c75f38c7b8710b6b1"
+      "digest": "sha256:7a9edb7c48c736ea6c99648b8d77c256a77c1be46a92a1b5006ccec3ee8cb281"
     },
     {
       "path": "docs/COMPONENT-SUPPLY-CHAIN.md",
@@ -74,7 +74,7 @@
     {
       "path": "examples/default.json",
       "role": "example",
-      "digest": "sha256:a35eec1a249535c0cae4cf055246e59146e8af17e39621976f9de9d4f4334d8a"
+      "digest": "sha256:fa36afdfa3b4f03f7f585d43f5f2ee8daf5f7ed65b53d4303faa24c1e94be4f7"
     },
     {
       "path": "examples/panel9-design-intent.json",
@@ -124,7 +124,7 @@
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:05a7c05890a7e53db523143d8f508523fed42fd7929bd2962786a4c11cc87f30"
+      "digest": "sha256:8682a3f04ea5fd9e872d186a38770d807ada2dd522431d1e7270c68aea0704c9"
     },
     {
       "path": "schemas/component-catalog.schema.v1.json",
@@ -164,12 +164,12 @@
     {
       "path": "schemas/pcb-style-baseline.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:51731426cf640798033b518ff4c6e40c55bcbfaf4a481039d34d720d37835037"
+      "digest": "sha256:826d467769b28363088ff6e5ac111a5ba21e5905ecd1bd1a3b1f1de149710c46"
     },
     {
       "path": "schemas/pcb-style.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:ed77470bc39af51f802f007e6f9a7e4565c765ffe999f1a9245db99893360c22"
+      "digest": "sha256:4d736102db91a7da71628d69c8259e7ab971158548b034d10879431f10b5b6fe"
     }
   ],
   "namespaces": [

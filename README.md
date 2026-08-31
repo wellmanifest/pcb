@@ -120,6 +120,7 @@ minimalny komplet w `examples/component-*.json`.
 | `RULE_BUS_TRANSIT` | pcb | advisory | wspólną szynę przechodzącą przez element bez zakończenia na jego padzie |
 | `RULE_FOOTPRINT_INTERNAL_CONNECTIVITY` | pcb | blocking | zgodność sieci w zadeklarowanych grupach terminali zwartych wewnątrz elementu |
 | `RULE_VIA_BUDGET` | pcb | advisory | całkowity budżet przelotek i budżet zmian warstwy na sieć |
+| `RULE_TRACK_DETOUR_RATIO` | pcb | advisory | miedź sieci wobec referencyjnego drzewa prostokątnego po jej padach |
 | `RULE_VIA_IN_PAD` | pcb | advisory | via w padzie SMD lub nachodząca na pad bez jawnego procesu produkcyjnego |
 | `RULE_SILK_OVER_PAD` | pcb | advisory | sitodruk wchodzący na otwór w masce pada |
 | `RULE_ZONE_LAYER_ALLOWLIST` | pcb | blocking | strefy poza dopuszczonymi warstwami |
@@ -158,6 +159,13 @@ To dwie różne rzeczy i mają osobne reguły:
 łączność, DRC i zgodność projektu; dopiero wśród poprawnych wariantów mniej zmian
 warstwy jest lepsze. Gdy budżet rośnie, `RULE_BUS_TRANSIT` pomaga wskazać przyczynę:
 wspólna szyna prowadzona przez środek pola elementów przecina drogi sygnałowe.
+
+`RULE_TRACK_DETOUR_RATIO` pyta o ten sam zasób z drugiej strony: nie „ile
+przelotek", ale „ile miedzi ponad to, czego wymaga rozstawienie padów". Suma
+miedzi płytki tego nie pokazuje, bo sieć rozpięta na całą długość laminatu ma
+prawo być długa. Iloraz liczony wobec drzewa prostokątnego po padach oddziela
+sieć długą z konieczności od sieci, która obeszła zajęty korytarz — a to jest
+zwykle dług **kolejności trasowania**, nie geometrii.
 
 Algorytm diagnozy, graf wpływów i kontrakt wyniku symulatora opisuje
 [`docs/ROUTING-OPTIMIZATION.md`](docs/ROUTING-OPTIMIZATION.md).

@@ -75,6 +75,38 @@ odcinków, liczbę zmian warstwy, długość miedzi i brak trasy dla każdej sie
 To minimalny dowód pozwalający przejść od obserwacji „przybyły cztery via” do
 diagnozy, która decyzja i która sieć spowodowały koszt.
 
+## Obejście jako dług kolejności
+
+Suma miedzi całej płytki nie mówi, czy wariant jest dobry: sieć rozpięta na całą
+długość laminatu ma prawo być długa. `RULE_TRACK_DETOUR_RATIO` porównuje miedź
+każdej sieci z **referencyjnym drzewem prostokątnym** (`rectilinear-mst`) po jej
+padach: minimalnym drzewem rozpinającym w metryce miejskiej, liczonym po środkach
+padów. Referencja nie jest dolnym ograniczeniem — drzewo Steinera bywa krótsze od
+rozpinającego, a trasa kończy się na krawędzi pada, nie w jego środku — więc
+wynik poniżej `1,0` jest normalny i nie oznacza błędu pomiaru.
+
+Próg wyłapuje przypadek, w którym geometria nie wymaga obejścia. Zmierzone na
+panel9: sieć zasilania między pinem modułu a padem kondensatora odsprzęgającego,
+9,25 mm w metryce miejskiej, dostała 103,8 mm miedzi, dwie zmiany warstwy i
+przelotkę pod kopułką przycisku — ponad jedenastokrotność referencji. Przyczyną
+nie był ani koszt via, ani klirens, ani DRC: sieć trasowała się **jako ostatnia**,
+bo kolejność sortowała malejąco po rozpiętości, a najkrótsza sieć dostała
+najbardziej zajętą płytkę. Ta sama sieć puszczona pierwsza w tym samym modelu
+ograniczeń dostała 6,5 mm i zero przelotek.
+
+Dlatego reguła jest doradcza, a nie blokująca: zgłasza dług, którego właściwą
+odpowiedzią jest zmiana kolejności albo rip-up, a nie poluzowanie klirensu.
+`min_reference_mm` odcina szum krótkich odnóg, gdzie samo ominięcie pada daje
+wysoki iloraz przy pomijalnej długości.
+
+`routing.rip_up_passes` deklaruje, ile razy wolno zerwać wynik i poprowadzić go
+ponownie w innej kolejności, zanim wariant zostanie oceniony. `1` to jeden
+przebieg — zachowanie sekwencyjne, w którym miedź sieci wcześniejszej jest dla
+późniejszej nieodwołalna. Wartość większa opisuje **budżet**, nie obietnicę:
+implementacja zatrzymuje się także wtedy, gdy kolejny przebieg nie poprawia
+pomiaru. Liczba przebiegów i kolejność każdego z nich należą do dowodu wariantu,
+bo bez nich wynik nie jest odtwarzalny.
+
 Położenie złącza przechodzi trzy niezależne pomiary przed routingiem:
 
 * `RULE_CONNECTOR_EDGE_CLEARANCE` — obrys mechaniczny złącza względem krawędzi,

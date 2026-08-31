@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.22.0
+
+- `RULE_TRACK_DETOUR_RATIO` mierzy miedź sieci wobec referencyjnego drzewa
+  prostokątnego (`rectilinear-mst`) po jej padach. Suma miedzi całej płytki tego
+  nie pokazywała: sieć rozpięta na całą długość laminatu ma prawo być długa,
+  więc obejście krótkiej sieci ginęło w sumie i przechodziło bramkę stylu.
+- Zmierzone na panel9: `+3V3` między pinem modułu a padem kondensatora
+  odsprzęgającego to 9,25 mm w metryce miejskiej. Dostała **103,8 mm** miedzi,
+  dwie zmiany warstwy i przelotkę 8,4 mm od kopułki przycisku — iloraz 11,2.
+  Ani DRC, ani `RULE_VIA_BUDGET`, ani suma 1887 mm tego nie zgłaszały.
+- Przyczyną nie była geometria: ta sama sieć w tym samym modelu ograniczeń,
+  puszczona pierwsza zamiast ostatniej, dostała 6,5 mm i zero przelotek.
+  Dlatego reguła jest **doradcza** i celowo wskazuje kolejność trasowania jako
+  odpowiedź, a nie poluzowanie klirensu.
+- Referencja nie jest dolnym ograniczeniem — drzewo Steinera bywa krótsze od
+  rozpinającego, a trasa kończy się na krawędzi pada, nie w środku — więc wynik
+  poniżej `1,0` jest normalny. `min_reference_mm` odcina szum krótkich odnóg.
+- `routing.rip_up_passes` deklaruje budżet przebiegów: ile razy wolno zerwać
+  wynik i poprowadzić go w innej kolejności, zanim wariant zostanie oceniony.
+  `1` to dotychczasowe zachowanie sekwencyjne. Liczba przebiegów należy do
+  dowodu wariantu, bo bez niej wynik nie jest odtwarzalny.
+
 ## 1.21.0
 
 - `RULE_FOOTPRINT_COURTYARD` sprawdza, czy footprint rysuje obrys montażowy na
