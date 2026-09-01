@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.23.0
+
+- Dodano zamkniętą operację `optimize_placement_and_routing`: ograniczony,
+  deterministyczny search placementu połączony z ponownym trasowaniem.
+- Operacja jest wyłącznie kandydatowa, nie przyjmuje ukrytych współrzędnych od
+  modelu i wymaga DRC, stylu, parzystości sieci oraz footprintów.
+- Kryteria wyboru, raster, kotwica i budżet prób pozostają danymi profilu lub
+  strategii adoptera; standard określa jedynie znaczenie i obowiązkowe bramki.
+
 ## 1.22.0
 
 - `RULE_TRACK_DETOUR_RATIO` mierzy miedź sieci wobec referencyjnego drzewa

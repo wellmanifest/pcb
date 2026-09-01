@@ -3,7 +3,7 @@
   "schema": "wellmanifest.dsl/manifest/v1",
   "id": "wellmanifest.pcb",
   "name": "PCB & Schematic Style Contract Standard",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "status": "stable",
   "purpose": "Deklaratywny kontrakt wyglądu i kontekstu projektu PCB/schematu: zamknięty słownik reguł, bramka regresji oraz kolejność autorytetu przy sprzeczności między plikami.",
   "domain": "electronic-design-automation",
@@ -49,7 +49,7 @@
     {
       "path": "README.md",
       "role": "documentation",
-      "digest": "sha256:7a9edb7c48c736ea6c99648b8d77c256a77c1be46a92a1b5006ccec3ee8cb281"
+      "digest": "sha256:23ce5db5a98c79ad34b2edb3f80ea31b4d33343342c7c12362e15a771a2705eb"
     },
     {
       "path": "docs/COMPONENT-SUPPLY-CHAIN.md",
@@ -74,7 +74,7 @@
     {
       "path": "examples/default.json",
       "role": "example",
-      "digest": "sha256:fa36afdfa3b4f03f7f585d43f5f2ee8daf5f7ed65b53d4303faa24c1e94be4f7"
+      "digest": "sha256:6cb1cd6f71fb6944c6fe18d6b2cae68cdba5bfa8b324068233a8f1aaf54e6533"
     },
     {
       "path": "examples/panel9-design-intent.json",
@@ -104,7 +104,7 @@
     {
       "path": "examples/operations.json",
       "role": "example",
-      "digest": "sha256:b6a09495ec1fb2e20c446ebc5381b1a93036527e0b4d3c67cfc607e13af9f08b"
+      "digest": "sha256:8a6ab3b7ac20279e77b7a2fd41f127eeb39c8f65745a13bcb00a6c80310c70c7"
     },
     {
       "path": "examples/panel9-baseline.json",
@@ -124,7 +124,7 @@
     {
       "path": "pcb-standard.json",
       "role": "normative-source",
-      "digest": "sha256:8682a3f04ea5fd9e872d186a38770d807ada2dd522431d1e7270c68aea0704c9"
+      "digest": "sha256:92e9d871843bf44ee5772bb787166040568a57567d6b6d66fb8dc8437b9198e7"
     },
     {
       "path": "schemas/component-catalog.schema.v1.json",
@@ -159,7 +159,7 @@
     {
       "path": "schemas/pcb-operations.schema.v1.json",
       "role": "schema",
-      "digest": "sha256:c3d5ba089d4b003f1dbded6e261f68a4ecc0e0865214d2e440f287e08684e3b3"
+      "digest": "sha256:91d3a54173fa9a5eede32e7998e261b56cf6ba8621dd0f2c16a7c3a9b5d6bc46"
     },
     {
       "path": "schemas/pcb-style-baseline.schema.v1.json",

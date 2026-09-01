@@ -1,7 +1,7 @@
 {
   "schema_id": "wellmanifest.pcb/standard/v1",
   "id": "wellmanifest/pcb",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "title": "PCB & Schematic Style Contract Standard",
   "status": "canonical",
   "standardOwner": "wellmanifest",
@@ -458,6 +458,25 @@
       ],
       "reversible": true,
       "why": "Przestawiony element unieważnia każdą trasę, która do niego dochodziła; doklejanie mostków zamienia jedną zmianę w dług."
+    },
+    {
+      "id": "optimize_placement_and_routing",
+      "scope": "pcb",
+      "entity": "footprint",
+      "changes": "placement",
+      "clears": [
+        "RULE_VIA_BUDGET",
+        "RULE_TRACK_DETOUR_RATIO",
+        "RULE_BUS_TRANSIT"
+      ],
+      "verify": [
+        "drc_no_regression",
+        "style_no_regression",
+        "net_parity",
+        "footprint_parity"
+      ],
+      "reversible": true,
+      "why": "Ograniczone przeszukiwanie placementu może skrócić połączenia i zmniejszyć liczbę przelotek, ale każdy ruch unieważnia trasy elementu; dlatego operacja ocenia wariant dopiero po ponownym trasowaniu i zapisuje wyłącznie kandydata."
     },
     {
       "id": "resize_footprint_pads",

@@ -41,6 +41,7 @@
             "set_track_width",
             "orthogonalize_track",
             "reroute_component_nets",
+            "optimize_placement_and_routing",
             "resize_footprint_pads",
             "route_power_net",
             "assign_pad_net",

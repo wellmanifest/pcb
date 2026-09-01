@@ -345,6 +345,13 @@ Operacje są zamkniętym słownikiem czasowników zmiany. Adopter może wykonać
 tylko operację obecną w `pcb-standard.json`; sam wpis nadal nie daje zgody na
 zmianę źródła.
 
+`optimize_placement_and_routing` oznacza ograniczone przeszukiwanie placementu
+połączone z ponownym trasowaniem. Standard nie definiuje współrzędnych ani
+lokalnego progu „dobrego” wariantu: wzorzec elementów, kotwica, raster, limit
+prób i hierarchia celów pochodzą z profilu lub strategii projektu. Model może
+wybrać tę operację, lecz nie może podać ukrytego położenia. Wynik jest wyłącznie
+kandydatem i musi przejść DRC, styl, parity sieci oraz footprintów.
+
 `resize_footprint_pads` zmienia miedź oraz geometrię produkcyjną pada, dlatego
 wymaga bramek DRC i stylu oraz zgodności instancji PCB z kanoniczną biblioteką
 footprintu.
